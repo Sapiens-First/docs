@@ -160,7 +160,8 @@
         "cues": [
           "Keep the source’s conditional framing and attribution to the draft. Explain the three risks without turning them into stronger empirical claims."
         ]
-      }
+      },
+      "tone": "dark"
     },
     {
       "id": "vision",
@@ -343,7 +344,8 @@
         "cues": [
           "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism."
         ]
-      }
+      },
+      "tone": "coral"
     }
   ]
 }

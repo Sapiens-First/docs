@@ -8,3 +8,6 @@ docs/.vitepress/.temp/
 .aws/
 .agents/
 .codex/
+
+# Generated standalone slide presentations
+experiments/slides/output/

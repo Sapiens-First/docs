@@ -106,3 +106,87 @@ test('a Culture gap can classify an empty heading, never substantive text', t =>
   assert.notEqual(result.status, 0)
   assert.ok(result.report.coverage.uncovered.includes(3))
 })
+
+function build(t, data = deck(), flags = []) {
+  const dir = mkdtempSync(join(tmpdir(), 'dna-build-'))
+  t.after(() => rmSync(dir, { recursive: true, force: true }))
+  const input = join(dir, 'deck.json'), output = join(dir, 'deck.html')
+  const original = JSON.stringify(data)
+  writeFileSync(input, original)
+  const run = () => {
+    const result = spawnSync(process.execPath, [fileURLToPath(tool), 'build', input, output, ...flags], { encoding: 'utf8' })
+    assert.ifError(result.error)
+    return result
+  }
+  return { input, output, original, run }
+}
+
+test('build produces ten slides, all six layouts and deterministic self-contained resources', t => {
+  const fixture = build(t, deck(), ['--strict'])
+  const first = fixture.run()
+  assert.equal(first.status, 0, first.stdout + first.stderr)
+  const html = readFileSync(fixture.output, 'utf8')
+  assert.equal((html.match(/class="slide"/g) ?? []).length, 10)
+  for (const layout of ['statement', 'triad', 'cycle', 'question', 'steps', 'roles']) assert.ok(html.includes(`data-layout="${layout}"`))
+  assert.match(html, /data:image\/png;base64,/)
+  assert.equal((html.match(/data:font\/ttf;base64,/g) ?? []).length, 3)
+  assert.match(html, /SIL OPEN FONT LICENSE/)
+  assert.doesNotMatch(html, /<(?:script|link|img)[^>]*(?:src|href)="(?:https?:|\/|\.\.)/i)
+  assert.doesNotMatch(html, /\bfetch\s*\(/)
+  assert.equal(fixture.run().status, 0)
+  assert.equal(readFileSync(fixture.output, 'utf8'), html)
+  assert.equal(readFileSync(fixture.input, 'utf8'), fixture.original)
+})
+
+test('changing JSON labels changes HTML while notes and full source remain exact', t => {
+  const data = deck(); data.slides[4].content.labels[0] = 'Gather'
+  const fixture = build(t, data)
+  const result = fixture.run()
+  assert.equal(result.status, 0, result.stdout + result.stderr)
+  const html = readFileSync(fixture.output, 'utf8')
+  assert.ok(html.includes('Gather</text>'))
+  const embedded = JSON.parse(html.match(/<script id="deck-data" type="application\/json">([\s\S]*?)<\/script>/)[1])
+  assert.equal(embedded.source.text, data.source.text)
+  assert.equal(createHash('sha256').update(embedded.source.text).digest('hex'), data.source.sha256)
+  const lines = data.source.text.split('\n')
+  for (const [index, slide] of data.slides.entries()) {
+    assert.equal(embedded.notes[index].slideId, slide.id)
+    assert.deepEqual(embedded.notes[index].passages, slide.notes.sourceRanges.map(({ start, end }) => lines.slice(start - 1, end).join('\n')))
+    assert.deepEqual(embedded.notes[index].cues, slide.notes.cues)
+  }
+})
+
+test('all authored strings are escaped in HTML and inert embedded JSON', t => {
+  const data = deck(), attack = '</script><img src=x onerror="alert(1)">&\' '
+  data.title = attack; data.id = attack; data.slides[0].title = attack; data.slides[0].id = attack
+  data.slides[0].sectionLabel = attack; data.slides[0].content.lines = [attack]; data.slides[0].notes.cues = [attack]
+  data.slides[4].content.labels[0] = attack; data.slides[8].content.circle = attack; data.slides[8].content.caption = attack
+  data.source.path = attack; data.source.text = attack + '\n' + data.source.text
+  data.source.sha256 = createHash('sha256').update(data.source.text).digest('hex')
+  for (const slide of data.slides) for (const range of slide.notes.sourceRanges) { range.start++; range.end++ }
+  data.slides[0].notes.sourceRanges.unshift({ start: 1, end: 1 })
+  for (const range of data.sourceClassifications) { range.start++; range.end++ }
+  const fixture = build(t, data)
+  const result = fixture.run()
+  assert.equal(result.status, 0, result.stdout + result.stderr)
+  const html = readFileSync(fixture.output, 'utf8')
+  assert.doesNotMatch(html, /<img src=x/)
+  assert.match(html, /&lt;\/script&gt;&lt;img src=x onerror=&quot;alert\(1\)&quot;&gt;&amp;&#39;/)
+  const embedded = JSON.parse(html.match(/<script id="deck-data" type="application\/json">([\s\S]*?)<\/script>/)[1])
+  assert.equal(embedded.source.text, data.source.text)
+  assert.equal(embedded.notes[0].cues[0], attack)
+})
+
+test('invalid and strict-rule-failing inputs leave an existing output untouched', t => {
+  const data = deck(); data.slides[0].layout = 'unsupported'
+  const fixture = build(t, data, ['--strict'])
+  writeFileSync(fixture.output, 'existing usable presentation')
+  const result = fixture.run()
+  assert.notEqual(result.status, 0)
+  assert.match(result.stderr, /opening.*layout/)
+  assert.equal(readFileSync(fixture.output, 'utf8'), 'existing usable presentation')
+  data.slides[0].layout = 'statement'; data.slides[0].title = 'one two three four five six seven'
+  writeFileSync(fixture.input, JSON.stringify(data))
+  assert.notEqual(fixture.run().status, 0)
+  assert.equal(readFileSync(fixture.output, 'utf8'), 'existing usable presentation')
+})
