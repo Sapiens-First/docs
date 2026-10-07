@@ -1,0 +1,48 @@
+[
+  {
+    "file": "civic-park.jpg",
+    "kind": "stock-photo",
+    "author": "Jamie Street",
+    "sourceUrl": "https://unsplash.com/photos/people-in-park-JPyRvvUnQjU",
+    "downloadUrl": "https://images.unsplash.com/photo-1473895908536-7cbe5466790f?w=1200&q=78&fit=max&fm=jpg",
+    "license": "Unsplash License",
+    "licenseUrl": "https://unsplash.com/license",
+    "usage": "Illustrative shared public space, opening and closing; not a Sapiens First event.",
+    "downloadedAt": "2026-10-06",
+    "sha256": "ae431ab007f9f4b8875a839a51415fc14c3a2359b2c59fc9c3ad8d86071bc2d5"
+  },
+  {
+    "file": "city-night.jpg",
+    "kind": "stock-photo",
+    "author": "Nicolao Negrello",
+    "sourceUrl": "https://unsplash.com/photos/aerial-view-of-cityscape-during-night-time-vQy71wPTvgM",
+    "downloadUrl": "https://images.unsplash.com/photo-1518742358367-2fd860fc0ec2?w=1400&q=82&fit=max&fm=jpg",
+    "license": "Unsplash License",
+    "licenseUrl": "https://unsplash.com/license",
+    "usage": "Illustrative Los Angeles cityscape for the technology section.",
+    "downloadedAt": "2026-10-06",
+    "sha256": "a31c34cc687cf15aae12085c652daffa60475f9cdaa3cbfa0ba21baed49fc83c"
+  },
+  {
+    "file": "sapiens-contours.svg",
+    "kind": "brand-artwork",
+    "author": "Sapiens First",
+    "sourceUrl": "https://sapiensfirst.org/assets/homepage-strategy-contours.svg",
+    "downloadUrl": "https://sapiensfirst.org/assets/homepage-strategy-contours.svg",
+    "license": "First-party website artwork; no public stock license declared.",
+    "usage": "Decorative Sapiens First presentation background.",
+    "downloadedAt": "2026-10-06",
+    "sha256": "b7f326f1ab5ade4858044c6b1b70f576b9965459ef0674d34cbea9c2b18ac2d3"
+  },
+  {
+    "file": "sapiens-arcs.svg",
+    "kind": "brand-artwork",
+    "author": "Sapiens First",
+    "sourceUrl": "https://sapiensfirst.org/assets/homepage-involved-arcs.svg",
+    "downloadUrl": "https://sapiensfirst.org/assets/homepage-involved-arcs.svg",
+    "license": "First-party website artwork; no public stock license declared.",
+    "usage": "Decorative Sapiens First presentation background.",
+    "downloadedAt": "2026-10-06",
+    "sha256": "d92f037a8dc8c532d219b91759f26dc805c4995610e1c42b180583cf260ddd6c"
+  }
+]

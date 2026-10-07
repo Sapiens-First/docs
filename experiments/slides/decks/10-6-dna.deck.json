@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "10-6-dna",
   "title": "Sapiens First DNA",
-  "targetDurationSeconds": 840,
+  "targetDurationSeconds": 1020,
   "source": {
     "path": "10-2 content additions/10-6-dna",
     "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
@@ -14,7 +14,7 @@
       "start": 1,
       "end": 1,
       "kind": "heading",
-      "reason": "Introduction heading; the opener speaks its substantive opening paragraph."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 7,
@@ -26,63 +26,68 @@
       "start": 13,
       "end": 13,
       "kind": "heading",
-      "reason": "Story section heading; the following Crisis and Vision material is mapped to slides 2–4."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 15,
       "end": 15,
       "kind": "heading",
-      "reason": "Crisis heading; its complete substantive text is retained on slides 2–3."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 26,
       "end": 26,
       "kind": "heading",
-      "reason": "Vision heading; the complete substantive passage is retained on slide 4."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 33,
       "end": 33,
       "kind": "heading",
-      "reason": "Strategy section heading; the substantive introduction and strategy follow on slide 5."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 37,
       "end": 37,
       "kind": "heading",
-      "reason": "Strategy subheading; the organizing explanation is retained on slide 5."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 52,
       "end": 52,
       "kind": "heading",
-      "reason": "Roadmap heading; the complete roadmap is retained on slide 7."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 66,
       "end": 66,
       "kind": "heading",
-      "reason": "Culture heading; its four current source bullets are retained before the Structure notes on slide 8."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+    },
+    {
+      "start": 73,
+      "end": 73,
+      "kind": "heading",
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     },
     {
       "start": 94,
       "end": 94,
       "kind": "heading",
-      "reason": "Pathways to Action heading; the complete passage is retained on slide 10."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
     }
   ],
   "editorialReview": [
-    "Source drift: the implementation source has four Culture bullets at lines 68–71. The plan described an empty section. All four bullets are retained, in source order, before the Structure notes on slide 8; there is no Culture gap and no invented explanation of the values.",
-    "Audience headlines and diagram labels are editorial paraphrases, not quotations. The original words, spelling, punctuation, trailing spaces, and line breaks remain in source.text and are reproduced by the inclusive notes ranges.",
-    "All substantive source passages are mapped in original order, without duplicated source ranges. Only headings and the navigation agenda are classified outside notes. The Structure heading at line 73 stays inside slide 8 notes to preserve the Culture-to-Structure transition.",
-    "The opener paraphrases the closing invitation to a brighter future. Its notes retain the opening sentence. The literal four-part agenda is classified as navigation rather than spoken or reordered.",
-    "Slide 3 labels shorten the three source risks; Human extinction paraphrases Omnicide. The speaker must retain the source conditional framing: these are the draft’s concerns about AI left unchecked, not new certainty claims.",
-    "Review the draft’s empirical claims before publication, including technology/social-media examples, AI loss-of-control and crime examples, surveillance/corruption claims, and the 3.5% movement threshold. They remain as original source notes and are not independently verified by this rendering experiment.",
-    "Review the roadmap and financial/action details before publication: treaty mission, phases, $1000 action funding, recommended $10 or $20 dues, solidarity dues, Discord, and leadership pathway. These remain in source notes; no link, QR code, policy, or new promise is added.",
-    "The four roadmap phases remain four steps. Federal legislation: an AI treaty shortens the source mission without changing its objective. Slide 7 uses six authored strings, so has no section label.",
-    "Act, Recruit, and Train form the strategy cycle. Supporter, Member, and Organizer show the engagement sequence. The Media Circle encloses the two named example roles; these examples do not define a complete organizational roster.",
-    "The question on slide 6 is an editorial facilitator prompt and a buffer. Its cue is labelled separately from the original 3.5% paragraph. The 840-second schedule is planned timing; live rehearsal remains required.",
-    "No rule exceptions are needed for this authored content. Diagram labels and statement lines have at most five whitespace-delimited words, titles and captions at most six, and every slide has at most six audience strings. Browser checks must still verify actual wrapping and legibility."
+    "User-directed revision: the deck expands from ten to nineteen slides with section headers for Story, Strategy, Culture, Structure, and Pathways to Action. The explicit deck-level slide-count exception preserves the 10-20-30 finding while allowing this authorized structure. Planned timing is 1020 seconds (17 minutes); live rehearsal remains pending.",
+    "Culture is now audience content: all four source values appear verbatim on culture-values and in its source notes. No definitions, handbook policy, or missing teaching have been invented.",
+    "The complete original source snapshot and digest remain unchanged. All substantive passages are mapped in original order without duplicated ranges; original headings and the agenda are classified separately.",
+    "3.5% is a dedicated visual downbeat with the original paragraph in its notes. It remains the draft’s empirical benchmark rather than a new guarantee of success; empirical publication review is pending.",
+    "The Atlas is an additional visual reference authorized by the user. Its nested circles and four selected current Global sub-circles guide the circles overview. The excerpt is not a full roster; role dots are schematic and sizes do not measure staffing or importance. Media Circle roles on the following example slide remain the speech’s illustrations, not a substituted current roster.",
+    "The roadmap keeps its four source phases as expanding strategic horizons, inspired by Getting Things Done; these are neither literal geographical boundaries nor dated completion gates.",
+    "Audience headlines and some labels are editorial paraphrases. Full wording, punctuation, whitespace, and line breaks remain in source.text and exact mapped speaker passages. Human extinction paraphrases Omnicide; original conditional framing remains in notes.",
+    "Illustrative stock photographs retain separate source, photographer, and license credits. None is represented as a Sapiens First event. First-party vector artwork remains credited separately.",
+    "Unverified source claims and operational details remain unchanged in notes, including AI examples, the 3.5% benchmark, roadmap phases, donation amounts, recommended dues, solidarity dues, and Discord. No donation link, QR code, or new financial promise is added.",
+    "Audience slides and speaker notes remain separate offline HTML files, with a linked synchronized presenter window. Browser verification must cover the expanded deck, all layout types, and actual text/circle geometry."
   ],
   "slides": [
     {
@@ -105,7 +110,33 @@
         "cues": [
           "Introduce the movement and its reason for gathering. The four-part source agenda is classified as navigation in the coverage report."
         ]
-      }
+      },
+      "image": {
+        "path": "assets/civic-park.jpg",
+        "alt": "People sharing a public playground on London’s South Bank; illustrative stock photograph.",
+        "credit": "Jamie Street / Unsplash — illustrative public-space photograph, not a Sapiens First event.",
+        "sourceUrl": "https://unsplash.com/photos/people-in-park-JPyRvvUnQjU",
+        "licenseUrl": "https://unsplash.com/license",
+        "position": "center"
+      },
+      "graphic": "contours"
+    },
+    {
+      "id": "story-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Story",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Section transition: introduce Story before advancing to its content."
+        ]
+      },
+      "tone": "dark",
+      "graphic": "contours"
     },
     {
       "id": "technology",
@@ -134,6 +165,14 @@
         "cues": [
           "Connect agriculture and industry to the digital-age examples. Explain the source’s tension between technological benefits and political consequences."
         ]
+      },
+      "image": {
+        "path": "assets/city-night.jpg",
+        "alt": "Downtown Los Angeles at night, photographed from City Hall; illustrative stock photograph.",
+        "credit": "Nicolao Negrello / Unsplash — illustrative Los Angeles cityscape.",
+        "sourceUrl": "https://unsplash.com/photos/aerial-view-of-cityscape-during-night-time-vQy71wPTvgM",
+        "licenseUrl": "https://unsplash.com/license",
+        "position": "bottom"
       }
     },
     {
@@ -190,6 +229,23 @@
       }
     },
     {
+      "id": "strategy-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Strategy",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Section transition: introduce Strategy before advancing to its content."
+        ]
+      },
+      "tone": "coral",
+      "graphic": "arcs"
+    },
+    {
       "id": "momentum",
       "layout": "cycle",
       "purpose": "explain",
@@ -220,13 +276,15 @@
       }
     },
     {
-      "id": "chapter-question",
-      "layout": "question",
+      "id": "participation-threshold",
+      "layout": "impact",
       "purpose": "engage",
       "role": "buffer",
-      "title": "What could your chapter do?",
-      "content": {},
-      "durationSeconds": 60,
+      "title": "3.5%",
+      "content": {
+        "caption": "Sustained, organized participation"
+      },
+      "durationSeconds": 30,
       "notes": {
         "sourceRanges": [
           {
@@ -235,9 +293,26 @@
           }
         ],
         "cues": [
-          "Facilitator prompt: pause for participants to name a possible local action. Link their answers to the upcoming roadmap. The 3.5% paragraph is an original source claim requiring review."
+          "Pause on the percentage before explaining the source’s statement. Present 3.5% as the draft’s cited organizing benchmark, not a guarantee that any movement crossing it wins. Retain the emphasis on sustained, organized engagement; empirical publication review is still pending."
         ]
-      }
+      },
+      "tone": "dark"
+    },
+    {
+      "id": "chapter-question",
+      "layout": "question",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "What could your chapter do?",
+      "content": {},
+      "durationSeconds": 60,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Facilitator prompt: pause for participants to name a possible local action. Relate their choices to sustained organizing and the upcoming horizons of focus."
+        ]
+      },
+      "graphic": "arcs"
     },
     {
       "id": "roadmap",
@@ -252,7 +327,8 @@
           "Red and blue states",
           "Federal policy change"
         ],
-        "caption": "Federal legislation: an AI treaty"
+        "caption": "Federal legislation: an AI treaty",
+        "mode": "horizons"
       },
       "durationSeconds": 105,
       "notes": {
@@ -263,9 +339,72 @@
           }
         ],
         "cues": [
-          "Walk through all four phases. Retain local campaign freedom, the nested campaigns/tactics relationship, experimentation, and sharing successful techniques in notes."
+          "Walk through all four phases. Retain local campaign freedom, the nested campaigns/tactics relationship, experimentation, and sharing successful techniques in notes.",
+          "Present these four source phases as expanding horizons of focus: seed-city actions and campaigns connect to California, cross-state organizing, and federal policy. This is a visual adaptation inspired by Getting Things Done’s Horizons of Focus, not its literal six-level taxonomy or a dated delivery schedule. Keep all horizons in view while choosing local work.",
+          "The nested graphic represents strategic scope, not geographic boundaries: seed-city work is not confined to California. Broader horizons guide local choices; no horizon needs to be completed before attention can move to another."
         ]
       }
+    },
+    {
+      "id": "culture-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Culture",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Section transition: introduce Culture before advancing to its content."
+        ]
+      },
+      "tone": "yellow",
+      "graphic": "contours"
+    },
+    {
+      "id": "culture-values",
+      "layout": "values",
+      "purpose": "explain",
+      "role": "content",
+      "title": "How we work together",
+      "content": {
+        "labels": [
+          "Strategic non-violence",
+          "Regenerative culture",
+          "Essentialism",
+          "Abundant leadership"
+        ]
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 68,
+            "end": 71
+          }
+        ],
+        "cues": [
+          "Read all four source values in their original order. Invite participants to reflect on which value they would bring to their local work. The source gives no definitions, so do not supply new policy or invented commitments."
+        ]
+      }
+    },
+    {
+      "id": "structure-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Structure",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Section transition: introduce Structure before advancing to its content."
+        ]
+      },
+      "tone": "paper",
+      "graphic": "arcs"
     },
     {
       "id": "participation",
@@ -278,18 +417,73 @@
           "Supporter",
           "Member",
           "Organizer"
-        ]
+        ],
+        "mode": "progression"
       },
       "durationSeconds": 75,
       "notes": {
         "sourceRanges": [
           {
-            "start": 68,
+            "start": 75,
             "end": 80
           }
         ],
         "cues": [
-          "Read the four Culture values without inventing definitions, then transition to volunteer participation. Explain the source’s email-list, dues/Discord, and active-role stages."
+          "Explain the source’s volunteer participation, email-list, dues/Discord, and active-role stages. Culture has already been introduced in its own section."
+        ]
+      }
+    },
+    {
+      "id": "circles",
+      "layout": "circles",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Circles within circles",
+      "content": {
+        "circle": "Sapiens First Global",
+        "labels": [
+          "Media",
+          "Advocacy",
+          "Community",
+          "Tech"
+        ]
+      },
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 82,
+            "end": 86
+          }
+        ],
+        "cues": [
+          "Explain self-organization and autonomy within a shared purpose. The diagram adapts the public Atlas’s nested-circle visualization: https://sapiensfirst.org/atlas . Media, Advocacy, Community, and Tech are four current sub-circles of Sapiens First Global as inspected on October 6, 2026. This is a selected excerpt, not the complete organizational roster.",
+          "Small dashed dots represent roles inside a circle; their number and sizes are schematic, not staffing or importance measures. Retired Atlas circles are excluded. Berkeley Chapter is a separate root in the Atlas and is not drawn as a child of Global."
+        ]
+      }
+    },
+    {
+      "id": "ownership-principles",
+      "layout": "pair",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Autonomy needs shared rules",
+      "content": {
+        "labels": [
+          "Rules of the road",
+          "Clear ownership"
+        ]
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 88,
+            "end": 90
+          }
+        ],
+        "cues": [
+          "Use the source’s two principles together: enforceable shared rules and clear areas of authority. This pair connects the nested-circle overview to the named role example that follows."
         ]
       }
     },
@@ -307,18 +501,35 @@
         ],
         "caption": "Clear rules. Clear ownership."
       },
-      "durationSeconds": 120,
+      "durationSeconds": 55,
       "notes": {
         "sourceRanges": [
           {
-            "start": 82,
+            "start": 92,
             "end": 92
           }
         ],
         "cues": [
-          "Explain autonomy and unity through the source’s rules and ownership principles. The two named roles are examples within the Media Circle."
+          "Zoom from the Atlas-inspired overview into the draft’s Media Circle example. Social Media Manager and Email Sender illustrate role ownership as named in the speech; this is not a claim that these two roles are the complete current Atlas roster. Each role owns its areas of responsibility."
         ]
       }
+    },
+    {
+      "id": "pathways-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Pathways to Action",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Section transition: introduce Pathways to Action before advancing to its content."
+        ]
+      },
+      "tone": "coral",
+      "graphic": "contours"
     },
     {
       "id": "next-step",
@@ -345,7 +556,23 @@
           "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism."
         ]
       },
-      "tone": "coral"
+      "tone": "coral",
+      "image": {
+        "path": "assets/civic-park.jpg",
+        "alt": "People sharing a public playground on London’s South Bank; illustrative stock photograph.",
+        "credit": "Jamie Street / Unsplash — illustrative public-space photograph, not a Sapiens First event.",
+        "sourceUrl": "https://unsplash.com/photos/people-in-park-JPyRvvUnQjU",
+        "licenseUrl": "https://unsplash.com/license",
+        "position": "top"
+      },
+      "graphic": "arcs"
+    }
+  ],
+  "ruleExceptions": [
+    {
+      "rule": "10-20-30",
+      "text": "deck",
+      "reason": "The user explicitly requested five section header slides, a separate 3.5% downbeat, dedicated Culture content, and a more descriptive holacracy sequence. Nineteen slides support that structure while the planned talk remains seventeen minutes."
     }
   ]
 }

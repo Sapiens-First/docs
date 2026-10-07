@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="900" viewBox="0 0 900 900" fill="none">
+  <defs>
+    <radialGradient id="fade">
+      <stop offset=".2" stop-color="white" stop-opacity="0"/>
+      <stop offset=".55" stop-color="white"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="edge"><path fill="url(#fade)" d="M0 0h900v900H0z"/></mask>
+  </defs>
+  <g mask="url(#edge)" stroke="#9e8064" stroke-opacity=".2" stroke-width="1">
+    <circle cx="450" cy="450" r="185"/>
+    <circle cx="450" cy="450" r="205"/>
+    <circle cx="450" cy="450" r="230"/>
+    <circle cx="450" cy="450" r="260"/>
+    <circle cx="450" cy="450" r="295"/>
+    <circle cx="450" cy="450" r="335"/>
+    <circle cx="450" cy="450" r="380"/>
+    <circle cx="450" cy="450" r="430"/>
+    <path d="M450 20v245m-215-87 108 141M78 235l212 123M20 450h245M178 665l141-108M235 822l123-212M665 178 557 319M822 235 610 358"/>
+  </g>
+</svg>

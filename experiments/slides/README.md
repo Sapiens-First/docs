@@ -1,6 +1,6 @@
 # DNA slide experiment
 
-This experiment turns the DNA speech into ten audience slides and preserves its original passages as speaker notes. The editable deck lives in `decks/10-6-dna.deck.json`. The presentation deliverable is one self-contained HTML file; authoring files are needed only to rebuild it.
+This experiment turns the DNA speech into ten audience slides and preserves its original passages in a separate presenter notes page. The editable deck lives in `decks/10-6-dna.deck.json`. Building produces two self-contained HTML files; authoring files are needed only to rebuild them.
 
 ## Build and present
 
@@ -12,9 +12,13 @@ node experiments/slides/slides.mjs build experiments/slides/decks/10-6-dna.deck.
 node --test experiments/slides/tests/slides.test.mjs
 ```
 
-Double-click `output/10-6-dna.html` to open it in a browser. Share that HTML file alone. Fonts, logo, diagrams, source notes, original speech, CSS, and navigation code are embedded; presenting needs no installation, internet, or server. Generated output and browser evidence are ignored by Git and can be rebuilt.
+Double-click `output/10-6-dna.html` to open the audience slides. The same build creates `output/10-6-dna.notes.html`. Keep both files in the same folder when presenting, so the Presenter notes link works. Fonts, photographs, artwork, diagrams, styles, and navigation are embedded; neither page needs installation, internet, or a server. Generated output and browser evidence are ignored by Git and can be rebuilt.
 
-Use Left/Right, Page Up/Page Down, Space/Shift-Space, or the Previous/Next buttons. Home and End jump to the boundaries, which do not loop. Press N or click Notes to show the current slide's original passages and separately labelled editorial cues. Notes scroll and update as you navigate. They appear in the same window and are included in the file shared with the audience. Browser modifiers and editable fields retain their own shortcuts.
+Use Left/Right, Page Up/Page Down, Space/Shift-Space, or the Previous/Next buttons. Home and End jump to the boundaries, which do not loop. Press N or click **Presenter notes** to open the notes in a separate window, then move it to your second screen. Navigation in either window keeps the selected slide in sync. Clicking the link again focuses the existing notes window; closing and reopening reconnects it to the current slide. Browser modifiers and editable fields retain their own shortcuts.
+
+The notes window has large reading text, Previous/Next buttons, and a slide selector. Left/Right changes its slide; Space and Page Down retain normal scrolling. It preserves exact source passages, separately labelled editorial cues, and image credits. Opening the notes file directly also works, with independent navigation. Automatic syncing requires opening it from the slides' link. If the browser blocks the new window, allow it or open the linked file manually.
+
+The audience HTML can still be shared alone and opened offline. Source text, speaker passages, editorial cues, and the complete authoring deck are stored only in the separate notes file. Sharing the notes requires sharing that second file explicitly.
 
 `validate --json` prints a machine-readable coverage, notes, and rules report. Structural errors and missing source coverage always fail. Presentation findings fail validation or build when `--strict` is present, unless the slide declares a specific justified exception. The tool does not truncate content or shrink its type to make a deck pass.
 
@@ -24,6 +28,8 @@ The renderer uses the existing `docs/public/logo.png` and local fonts in `fonts/
 
 - [Barlow Condensed upstream license](https://github.com/google/fonts/blob/main/ofl/barlowcondensed/OFL.txt)
 - [DM Sans upstream license](https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt)
+
+Stock photographs show a shared London playground (Jamie Street) and Los Angeles at night (Nicolao Negrello), both from Unsplash. The deck also uses the public Sapiens First site's contour and arc artwork. [Image sources](assets/README.md) and `assets/sources.json` record provenance, usage, and file digests. Photo and artwork credits appear separately in speaker notes. The photographs are illustrative, and are not attributed to Sapiens First events. All image files are local build inputs.
 
 The theme follows the handbook and [public site](https://sapiensfirst.org/): paper `#f8f3eb`, ink `#111111`, coral `#ff7870`, yellow `#ffd60a`, sky `#bcd8ff`, condensed uppercase headlines, rectangular panels, ink borders, and hard shadows. The design uses a 1280 × 720 logical canvas. Principal audience text is at least 40 CSS px (30pt) before scaling. The canvas scales to fit the browser around usable controls; smaller viewports display proportionally smaller text. Use a large screen for a live presentation.
 
@@ -35,16 +41,18 @@ The JSON boundary is `schemaVersion: 1`. A deck contains `id`, `title`, `targetD
 
 Each slide contains a stable unique `id`, `layout`, `purpose` (`explain`, `engage`, or `empower`), `role` (`content` or `buffer`), audience-facing `title`, layout-specific `content`, positive integer `durationSeconds`, and `notes`. An optional `sectionLabel` is audience text too. Optional `tone` selects `paper` (default), `dark`, `coral`, or `yellow` without changing the layout.
 
+Optional `image` contains `path`, `alt`, `credit`, `sourceUrl`, `licenseUrl`, and optional `position` (`center`, `top`, or `bottom`). Paths must identify local JPEG, PNG, or WebP files under `experiments/slides/assets/`; external paths, traversal, escaping symlinks, missing files, and invalid signatures fail validation. Attribution URLs must use HTTPS. Optional `graphic` selects the renderer's trusted `contours` or `arcs` brand artwork. Image alt text and attribution are separate from audience copy.
+
 | Layout | Content fields |
 | --- | --- |
 | `statement` | `lines`: zero to two supporting strings |
 | `triad` | `labels`: exactly three strings |
 | `cycle` | `labels`: exactly three strings in repeating order |
 | `question` | Empty object; the title is the question |
-| `steps` | `labels`: three or four ordered strings; optional `caption` |
+| `steps` | `labels`: three or four strings; optional `caption` and `mode` (`horizons` or `progression`); horizons requires four labels |
 | `roles` | `circle`: one string; `roles`: two or three strings inside that circle; optional `caption` |
 
-Content is plain text. It cannot supply HTML, SVG, executable expressions, or asset URLs. The renderer owns the diagram shapes and relationships.
+Content is plain text. It cannot supply HTML, SVG, executable expressions, or remote image resources. The renderer owns the diagram shapes and relationships. Image metadata supplies local asset paths and separately rendered credit links.
 
 `notes.sourceRanges` is an ordered array of `{ "start": 19, "end": 24 }` objects. These are inclusive, one-based line numbers in `source.text`, not a rewritten summary. Notes assembly takes each range exactly from the snapshot, retaining its line breaks. `notes.cues` is a separate array of editorial prompts and must be labelled as additions when displayed.
 
@@ -56,7 +64,11 @@ Optional slide `ruleExceptions` entries contain `{ rule, reason, text }`; an exc
 
 ## Editorial conversion and source coverage
 
-The narrative follows the speech: technology and political change, AI concerns, the movement's vision, organizing strategy, roadmap, participation, organizational roles, and an invitation to act. The question after slide 5 gives participants a pause and interrupts the content run. The four roadmap phases remain four steps. Ten slides total 840 planned seconds, or 14 minutes.
+The narrative follows the speech: technology and political change, AI concerns, the movement's vision, organizing strategy, roadmap, participation, organizational roles, and an invitation to act. The question after slide 5 gives participants a pause and interrupts the content run. Ten slides total 840 planned seconds, or 14 minutes.
+
+At the user's request, the four source roadmap phases are shown as expanding horizons of focus, inspired by [Getting Things Done](https://gettingthingsdone.com/insights/horizons-of-focus/). Seed cities occupy the closest horizon; California, cross-state organizing, and federal policy broaden the focus. This is an adaptation of the perspective idea, not GTD's literal six-level taxonomy. The graphic represents strategic scope rather than geographic containment or completion gates. Original phase names and mission remain in the speaker notes; no dates, completion claims, or added milestones enter the talk.
+
+Two red teams prioritized clearer relationships before decoration: close the organizing cycle, distinguish roadmap horizons from participation progression, and keep sibling roles inside their circle. Photography adds human context to the opening and closing and civic context to technology. Crisis and vision use distinct icon treatments; the question keeps its pause. Culture remains verbatim in notes within the ten-slide budget.
 
 The source changed after the plan was written: Culture now has four bullets at lines 68–71. They remain verbatim in slide 8 notes before the Structure passage. There is no empty Culture gap to preserve. No definitions or additional Culture teaching have been invented.
 
@@ -103,27 +115,30 @@ It uses Playwright's installed Chromium by default. To select an existing instal
 SLIDES_CHROMIUM=/path/to/chrome node experiments/slides/tests/browser.mjs
 ```
 
-Optional positional arguments select another HTML path and an evidence directory. The harness checks this DNA acceptance deck's ten slides and six layouts. It copies only the HTML to a new temporary directory, disables networking, compares its opener pixels to the original, loads all embedded assets, exercises navigation/notes/focus, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary copied file.
+Optional positional arguments select another HTML path and an evidence directory. The harness checks this DNA acceptance deck's ten slides and six layouts. It copies the audience HTML alone to a temporary directory and verifies its offline appearance, then adds the companion notes file to test the presenter link, synchronized windows, and standalone notes. It loads embedded assets, exercises navigation/focus, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary files.
 
 Checks performed on October 6, 2026:
 
 | Check | Observed result |
 | --- | --- |
 | Strict DNA validation | Ten slides, 840 planned seconds, zero uncovered lines, no rule exceptions |
-| Complete Node suite | 34 passing tests, including 12 slide validation/generation tests |
-| Chromium verification | 280 passing checks at 1280 × 720, 1920 × 1080, and 390 × 844 |
-| Offline portability | Copied HTML alone opens; identical opener pixels; three font faces and all logos load; zero external requests or browser errors |
-| Actual text geometry | Two to six rendered audience lines per slide; every principal font ≥40 logical px; text/diagram bounds and text overlaps pass |
-| Navigation and notes | All defined keys, boundaries, editable controls, focus, notes toggles, exact source passages, and scrolling pass |
+| Complete Node suite | 39 passing tests, including 17 slide validation/generation tests |
+| Chromium verification | 331 passing checks at 1280 × 720, 1920 × 1080, and 390 × 844; 34 screenshots |
+| Offline portability | Copied HTML alone opens; identical opener pixels; fonts, logos, photographs, and website artwork decode; zero external requests or browser errors |
+| Actual text geometry | Two to six rendered audience lines per slide; every principal font ≥40 logical px; authored-to-rendered text parity, bounds, and text overlaps pass |
+| Diagram relationships | Cycle edges connect the correct nodes; all role-box corners fit their enclosing ellipse, including a three-role fixture; horizons describe strategic focus |
+| Photo geometry | Images stay within the stage and viewport and never obscure audience text |
+| Navigation and notes | All slide keys, boundaries, editable controls, focus, separate presenter link, N shortcut, popup reuse/reopening, two-way sync, standalone notes, exact source passages, and scrolling pass |
+| Notes separation | Audience HTML contains no source snapshot, speaker passages, or editorial cues; the separate notes file retains them verbatim |
 | Source drift | All four current Culture bullets remain in source notes; the speech and plan files were untouched |
-| Visual review | All ten 1280 × 720 screenshots reviewed; large-screen diagrams and narrow-screen notes also inspected |
+| Visual review | All ten screenshots reviewed by the visual red team and root; story red team checked horizons, cycle, participation, and close; no material remaining findings |
 | Reuse | Temporary second JSON deck with different source/copy and `statement`/`steps` layouts builds strictly through the unchanged renderer |
 | Handbook regression | `npm run docs:check` and `npm run docs:build` pass |
 | Live speaker rehearsal | Pending; no observed speaking duration is claimed |
 
 The verified browser executable was `/home/rohan/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome`. The JSON report records the HTML digest, actual executable, asset status, every check, viewport geometry, and screenshot names. At 1280 × 720 the controls leave a 0.9333 canvas scale, so 40 logical px displays at about 37.3 effective px. At 1920 × 1080 the scale is 1.4333; at 390 × 844 it is 0.3047. The report distinguishes those effective sizes from the logical 30pt target.
 
-Visual comparison used the existing handbook theme and the public site's paper/ink palette, condensed headlines, coral/yellow/sky panels, marker underline, and hard shadows. Crisis uses a dark surface, the audience question uses yellow, and the closing uses coral. Triads stack three labels to avoid extra wrapped lines; the roadmap keeps four full-width numbered stages. Every diagram label remains text, with an accessible description of its relationships.
+Visual comparison used the existing handbook theme and the public site's paper/ink palette, condensed headlines, coral/yellow/sky panels, marker underline, and restrained shadows. Crisis uses dark outlined rows, vision uses hopeful rounded panels, the audience question uses yellow, and the closing uses coral with photography. The roadmap uses four nested horizon bands; participation uses three connected cards. Every diagram label remains text, with an accessible description of its relationships.
 
 The first generation-test run failed because the CLI had no build operation; all four added generation scenarios then passed. Browser verification initially exposed a test's incorrect assumption about resetting Tab order after blur; the harness now tests focus using actual keyboard movement. Additional containment checks found SVG text extending slightly above its boxes; enlarging the boxes resolved the defect without changing text size. No renderer acceptance check was weakened. Three simplification reviews found one useful filesystem-check reduction; repeated source splitting was left alone because changing the tiny notes API added no practical value. No lint or typecheck command is configured in this repository.
 
