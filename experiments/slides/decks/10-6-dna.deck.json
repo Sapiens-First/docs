@@ -1,0 +1,349 @@
+{
+  "schemaVersion": 1,
+  "id": "10-6-dna",
+  "title": "Sapiens First DNA",
+  "targetDurationSeconds": 840,
+  "source": {
+    "path": "10-2 content additions/10-6-dna",
+    "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
+    "text": "## Introduction\n\nSince the dawn of humanity, people have used technology to build a more beautiful world.\n\nTechnology can be a remedy or a poison. It all depends on how it is used. The agricultural revolution, for example, meant less people had to labor on the fields, but also led to an increasingly feudal society. The industrial revolution increased human productivity, but also led to greater inequality. Technological innovation must be accompanied by political reformation.\n\nThis presentation aims to answer the following questions:\n1. Story. Who are we as a movement? What is our story?\n2. Strategy. What's our approach to creating change? What's our roadmap?\n3. Culture. What culture and values do we have as a movement?\n4. Structure. How are we structured, and how can you get involved?\n\n## Part 1: Story\n\n**Crisis**\n\nIn the digital age, we've seen many nefarious impacts of technology. Social media have allowed people to be more connected then ever, but also led to a teenage mental health crisis. Platform economies like Uber make life more inequality, but also lead to economic displacement.\n\nToday, we are facing a great technological shift: artificial intelligence. Artificial intelligence itself is not bad or good -- it is shaped by us, its human-makers. But right now, AI is being shaped by power-hungry tech companies. \n\nPeople are worried about artificial intelligence, and rightly so. It is likely that left unchecked, AI will lead to:\n- Rampant inequality. In Silicon Valley, people often refer to the \"economic underclass\" that will developed as AI automates vast portions of white collar work. While new jobs may eventually be created, in the meantime, vast numbers of people will be unemployed, while inequality increases.\n- Threats to democracy. The power of AI is unprecedented. Money generated from the AI boom has already corrupted our political institutions. If governments and corporations use AI effectively, we could end up living in a permanent surveillance state.\n- Omnicide. For decades, scientists have worried about \"loss of control\" of AI systems. AI itself is amoral, and often tasked with completing objectives -- even when humans are in the way. Recently, we've seen AI models use superhuman abilities to break out of sandboxes and commit real crimes. Furthermore, bad actors could easily direct AI to create deadly pandemics or take down the cyber grid.\n\n**Vision**\n\nBut not to fear! We have faced disruptive technologies before. As a movement, Sapiens First focuses on three things:\n- Life. We fight to ensure humanity survives the development of superintelligence. This means a global treaty on AI development, and international coordination to ensure advanced AI is aligned with human interests.\n- Liberty. We demand a reformation to our democracy. We believe in a government for the people, by the people -- not tech oligarchs. We also believe that technology can enhance democracy by increasing civic participation, eg. by experimenting with new democratic institutions like Citizens Assemblies and liquid democracy.\n- Happiness. We believe that technology should uplift humanity, not just the rich few. In practice, this means that the wealth of the AI boom should be distributed. We also believe in the reformation of governmental institutions, so that technology accelerates the development of science, public health, and economic development.\n\n## Part 2: Strategy\n\nCentral to our DNA is a cohesive strategy & roadmap. With a clear strategy, Sapiens First chapters can be both autonomous and unified under a common goal.\n\n**Strategy**\n\nPeople typically see advocacy as falling into one of two camps:\n- Structure-based organizing (eg. labor unions, typical political campaigns) use lots of one-on-one conversations and trainings to build a base.\n- Mass protests get lots of people out on the streets at critical periods (eg. Black Lives Matter; Occupy Wall Street)\n\nSuccessful social movements use a best-of-both-worlds approach: momentum-driven organizing. This means having solid structures & leadership development for your base, while also using \"trigger events\" to spur mass mobilization, and then absorbing those people into the movement.\n\nThis can be summarized in a simple diagram:\n- Act. Anything from a potluck to a protest.\n- Recruit. Getting connecting with participants.\n- Train. Empowering recruits to self-organize new actions.\n\nScholars have found that successful movements win -- doing things as serious as toppling dictators -- when they get 3.5% of the population engaged in a sustain, organized manner. \n\n**Roadmap**\n\nGiven the fact that AI may kill us all, we focus on this as our initial primary objective. \n\nMission: Federal legislation for an AI treaty\n  - Phase 1: Seed cities\n    - Campaigns\n      - Tactics\n  - Phase 2: California state\n  - Phase 3: Red & blue states\n  - Phase 4: 3.5%, Federal policy change\n\nWithin each Phase 1, local chapters have the freedom to organize any campaign that relates to AI safety, democracy, and abundance. We also hope chapters will experiment with tactics and share successful techniques through our shared tools.\n\n## Part 3: Culture\n\n- Strategic non-violence\n- Regenerative culture\n- Essentialism\n- Abundant leadership\n\n## Part 4: Structure\n\nTo scale to the size we need, we rely on volunteers to fuel our work.\n\nWe have a Cycle of Engagement, which follows from our strategy:\n- Act -> new Supporters (on the email list)\n- Recruit -> new Members (pay dues + on the Discord)\n- Train -> new Organizers (have an active role)\n\nBut what do Organizers do? How do we allow everyone to have a meaningful role while we scale to hundreds of thousands of people?\n\nSapiens First uses a system of Holacracy to allow self-organization. \n\nEssentially, we want people to be autonomous but also unified in our movement. This means an organizational structure that is less like a militaristic hierarchy, and more like organs in your body, or people in a city. \n\nThis boils down to two principles:\n- Rules of the road (enforceable rules)\n- Clear ownership (property rights)\n\nIn Sapiens First, when you become an Organizer, you are given one or more roles. Each Role has full authority over their areas of responsibility. Roles make up Circles -- for example, the Media Circle may include a Social Media Manager, an Email Sender, and so on. \n\n## Pathways to Action\n\nWe all have a choice: will we continue to be trodden on by corporate elites, or will we fight for a brighter future?\n\nWe believe we can achieve revolutionary social change around technology in this decade -- and we need your help.\n- Donate. $1000 funds an action.\n- Join. Our members host events and are part of an online community. Recommend $10 or $20 dollars. We also have a solidarity dues program.\n- Organize. Connect people in your area and develop as a leader."
+  },
+  "sourceGaps": [],
+  "sourceClassifications": [
+    {
+      "start": 1,
+      "end": 1,
+      "kind": "heading",
+      "reason": "Introduction heading; the opener speaks its substantive opening paragraph."
+    },
+    {
+      "start": 7,
+      "end": 11,
+      "kind": "agenda",
+      "reason": "Literal four-part agenda is navigation. Classify it rather than move it ahead of the technology paragraph in speaker notes."
+    },
+    {
+      "start": 13,
+      "end": 13,
+      "kind": "heading",
+      "reason": "Story section heading; the following Crisis and Vision material is mapped to slides 2–4."
+    },
+    {
+      "start": 15,
+      "end": 15,
+      "kind": "heading",
+      "reason": "Crisis heading; its complete substantive text is retained on slides 2–3."
+    },
+    {
+      "start": 26,
+      "end": 26,
+      "kind": "heading",
+      "reason": "Vision heading; the complete substantive passage is retained on slide 4."
+    },
+    {
+      "start": 33,
+      "end": 33,
+      "kind": "heading",
+      "reason": "Strategy section heading; the substantive introduction and strategy follow on slide 5."
+    },
+    {
+      "start": 37,
+      "end": 37,
+      "kind": "heading",
+      "reason": "Strategy subheading; the organizing explanation is retained on slide 5."
+    },
+    {
+      "start": 52,
+      "end": 52,
+      "kind": "heading",
+      "reason": "Roadmap heading; the complete roadmap is retained on slide 7."
+    },
+    {
+      "start": 66,
+      "end": 66,
+      "kind": "heading",
+      "reason": "Culture heading; its four current source bullets are retained before the Structure notes on slide 8."
+    },
+    {
+      "start": 94,
+      "end": 94,
+      "kind": "heading",
+      "reason": "Pathways to Action heading; the complete passage is retained on slide 10."
+    }
+  ],
+  "editorialReview": [
+    "Source drift: the implementation source has four Culture bullets at lines 68–71. The plan described an empty section. All four bullets are retained, in source order, before the Structure notes on slide 8; there is no Culture gap and no invented explanation of the values.",
+    "Audience headlines and diagram labels are editorial paraphrases, not quotations. The original words, spelling, punctuation, trailing spaces, and line breaks remain in source.text and are reproduced by the inclusive notes ranges.",
+    "All substantive source passages are mapped in original order, without duplicated source ranges. Only headings and the navigation agenda are classified outside notes. The Structure heading at line 73 stays inside slide 8 notes to preserve the Culture-to-Structure transition.",
+    "The opener paraphrases the closing invitation to a brighter future. Its notes retain the opening sentence. The literal four-part agenda is classified as navigation rather than spoken or reordered.",
+    "Slide 3 labels shorten the three source risks; Human extinction paraphrases Omnicide. The speaker must retain the source conditional framing: these are the draft’s concerns about AI left unchecked, not new certainty claims.",
+    "Review the draft’s empirical claims before publication, including technology/social-media examples, AI loss-of-control and crime examples, surveillance/corruption claims, and the 3.5% movement threshold. They remain as original source notes and are not independently verified by this rendering experiment.",
+    "Review the roadmap and financial/action details before publication: treaty mission, phases, $1000 action funding, recommended $10 or $20 dues, solidarity dues, Discord, and leadership pathway. These remain in source notes; no link, QR code, policy, or new promise is added.",
+    "The four roadmap phases remain four steps. Federal legislation: an AI treaty shortens the source mission without changing its objective. Slide 7 uses six authored strings, so has no section label.",
+    "Act, Recruit, and Train form the strategy cycle. Supporter, Member, and Organizer show the engagement sequence. The Media Circle encloses the two named example roles; these examples do not define a complete organizational roster.",
+    "The question on slide 6 is an editorial facilitator prompt and a buffer. Its cue is labelled separately from the original 3.5% paragraph. The 840-second schedule is planned timing; live rehearsal remains required.",
+    "No rule exceptions are needed for this authored content. Diagram labels and statement lines have at most five whitespace-delimited words, titles and captions at most six, and every slide has at most six audience strings. Browser checks must still verify actual wrapping and legibility."
+  ],
+  "slides": [
+    {
+      "id": "opening",
+      "layout": "statement",
+      "purpose": "engage",
+      "role": "content",
+      "title": "Fight for a brighter future",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 3,
+            "end": 3
+          }
+        ],
+        "cues": [
+          "Introduce the movement and its reason for gathering. The four-part source agenda is classified as navigation in the coverage report."
+        ]
+      }
+    },
+    {
+      "id": "technology",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Technology needs political change",
+      "content": {
+        "lines": [
+          "A remedy",
+          "A poison"
+        ]
+      },
+      "durationSeconds": 75,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 5,
+            "end": 5
+          },
+          {
+            "start": 17,
+            "end": 17
+          }
+        ],
+        "cues": [
+          "Connect agriculture and industry to the digital-age examples. Explain the source’s tension between technological benefits and political consequences."
+        ]
+      }
+    },
+    {
+      "id": "crisis",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Unchecked AI threatens our future",
+      "content": {
+        "labels": [
+          "Inequality",
+          "Threats to democracy",
+          "Human extinction"
+        ]
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 19,
+            "end": 24
+          }
+        ],
+        "cues": [
+          "Keep the source’s conditional framing and attribution to the draft. Explain the three risks without turning them into stronger empirical claims."
+        ]
+      }
+    },
+    {
+      "id": "vision",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Life. Liberty. Happiness.",
+      "content": {
+        "labels": [
+          "Human survival",
+          "Democratic power",
+          "Shared prosperity"
+        ]
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 28,
+            "end": 31
+          }
+        ],
+        "cues": [
+          "Explain the treaty, democracy, and distribution proposals in the original notes. The three values serve one shared vision."
+        ]
+      }
+    },
+    {
+      "id": "momentum",
+      "layout": "cycle",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Build momentum together",
+      "content": {
+        "labels": [
+          "Act",
+          "Recruit",
+          "Train"
+        ]
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 35,
+            "end": 35
+          },
+          {
+            "start": 39,
+            "end": 48
+          }
+        ],
+        "cues": [
+          "Follow the cycle from action to recruitment to training and back to new actions. Retain both organizing approaches and the trigger-event explanation."
+        ]
+      }
+    },
+    {
+      "id": "chapter-question",
+      "layout": "question",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "What could your chapter do?",
+      "content": {},
+      "durationSeconds": 60,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 50,
+            "end": 50
+          }
+        ],
+        "cues": [
+          "Facilitator prompt: pause for participants to name a possible local action. Link their answers to the upcoming roadmap. The 3.5% paragraph is an original source claim requiring review."
+        ]
+      }
+    },
+    {
+      "id": "roadmap",
+      "layout": "steps",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Build toward federal action",
+      "content": {
+        "labels": [
+          "Seed cities",
+          "California",
+          "Red and blue states",
+          "Federal policy change"
+        ],
+        "caption": "Federal legislation: an AI treaty"
+      },
+      "durationSeconds": 105,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 54,
+            "end": 64
+          }
+        ],
+        "cues": [
+          "Walk through all four phases. Retain local campaign freedom, the nested campaigns/tactics relationship, experimentation, and sharing successful techniques in notes."
+        ]
+      }
+    },
+    {
+      "id": "participation",
+      "layout": "steps",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Grow through participation",
+      "content": {
+        "labels": [
+          "Supporter",
+          "Member",
+          "Organizer"
+        ]
+      },
+      "durationSeconds": 75,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 68,
+            "end": 80
+          }
+        ],
+        "cues": [
+          "Read the four Culture values without inventing definitions, then transition to volunteer participation. Explain the source’s email-list, dues/Discord, and active-role stages."
+        ]
+      }
+    },
+    {
+      "id": "roles",
+      "layout": "roles",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Own a role. Build together.",
+      "content": {
+        "circle": "Media Circle",
+        "roles": [
+          "Social Media Manager",
+          "Email Sender"
+        ],
+        "caption": "Clear rules. Clear ownership."
+      },
+      "durationSeconds": 120,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 82,
+            "end": 92
+          }
+        ],
+        "cues": [
+          "Explain autonomy and unity through the source’s rules and ownership principles. The two named roles are examples within the Media Circle."
+        ]
+      }
+    },
+    {
+      "id": "next-step",
+      "layout": "triad",
+      "purpose": "empower",
+      "role": "content",
+      "title": "Choose your next step",
+      "content": {
+        "labels": [
+          "Donate",
+          "Join",
+          "Organize"
+        ]
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 96,
+            "end": 101
+          }
+        ],
+        "cues": [
+          "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism."
+        ]
+      }
+    }
+  ]
+}
