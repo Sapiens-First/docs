@@ -33,14 +33,15 @@ CONTRIBUTING.md           Writing conventions and maintenance guidance
 
 Top-level directories:
 
-- Root: `README.md`, `CONTRIBUTING.md`, `STYLE-GUIDE.md`, `TODO.md` and build configuration; loose source inputs remain pending reconciliation.
+- Root: `README.md`, `CONTRIBUTING.md`, `STYLE-GUIDE.md`, `TODO.md` and build configuration.
 - `docs/`: published handbook content, and nothing else.
 - `handbook-data/`: the ordered table of contents (`toc.json`) and other data the build reads.
 - `scripts/`: validators, TOC/reference tooling and their tests, and the book builder.
-- `maintenance/`: the [current implementation plan](maintenance/HANDBOOK-IMPLEMENTATION-PLAN.md), [generated-slide formula](maintenance/generated-slides.md), decisions, the content map, and implementation progress. Earlier audit and migration paths point to the current plan and archived originals.
+- `maintenance/`: the [current implementation plan](maintenance/HANDBOOK-IMPLEMENTATION-PLAN.md), [generated-slide formula](maintenance/generated-slides.md), decisions, the content map, and implementation progress. `maintenance/reviews/` holds one-off findings (10-2 reconciliation, chapter source comparison, layout review) and `maintenance/plans/` the deck plans. Earlier audit and migration paths point to the current plan and archived originals.
 - `maintenance/history/`: superseded plans and reviews kept for provenance, unchanged.
 - `archive/`: unchanged original input documents (`archive/sources/`, including the original movement guide and Fellowship handbook with embedded images and dated material). See [the content map](archive/README.md) for where material moved and what still needs clarification.
-- `archive/sources/2026-10-02/`: October 2 input notes, rubrics and original diagrams, archived after reconciliation (see [maintenance/10-2-reconciliation.md](maintenance/10-2-reconciliation.md)); published diagram copies live in `docs/public/diagrams/`. `slides/sources/` holds deck speech sources.
+- `archive/sources/2026-10-02/`: October 2 input notes, rubrics and original diagrams, archived after reconciliation (see [maintenance/reviews/10-2-reconciliation.md](maintenance/reviews/10-2-reconciliation.md)); published diagram copies live in `docs/public/diagrams/`. `slides/sources/` holds deck speech sources.
+- `archive/unverified-images/`: images whose source and licence are unconfirmed; not used by any deck.
 - `slides/`: slide decks (source JSON, renderer, notes, assets and tests). The DNA deck is the first handcrafted sample.
 
 ## Local development

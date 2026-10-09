@@ -2,7 +2,7 @@
 
 Started 2026-10-09. Slide-specific revisions to the DNA deck live separately in `slides/TODO.md`.
 
-Implementation note (2026-10-09): the checked items below are verified locally. Remaining: D6 (review the two starter decks with Rohan), E5 (review the source comparison before filling content), F2 and G1. The DNA deck is still `approved: false`, so it publishes only with `SLIDES_PREVIEW=1`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/layout-review.md).
+Implementation note (2026-10-09): the checked items below are verified locally. Remaining: D6 (review the two starter decks with Rohan), E5 (review the source comparison before filling content), F2 and G1. The DNA deck is still `approved: false`, so it publishes only with `SLIDES_PREVIEW=1`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/reviews/layout-review.md).
 
 ## Decisions so far
 

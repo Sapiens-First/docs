@@ -8,6 +8,7 @@
     "book:build": "node scripts/build-book.mjs",
     "docs:preview": "vitepress preview docs",
     "docs:check": "node scripts/validate-docs.mjs && npm run diagrams:check",
+    "test": "node --test scripts/*.test.mjs slides/tests/*.test.mjs",
     "diagrams:check": "python3 scripts/validate-diagrams.py"
   },
   "repository": {
