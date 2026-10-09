@@ -3,7 +3,7 @@ title: "A.2.5 Tech team meeting agenda"
 description: "The tech team's two-week sprint cycle: six meetings, from sprint planning to demo day, with the steps for each."
 section: Reference materials
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: tech-team-meeting-agenda
 handbook_number: "A.2.5"
 canonical: /appendices/reference/tech-team-meeting-agenda
@@ -51,7 +51,7 @@ The tactical and governance meetings are the tech team's versions of the general
 
 ## 1:1 {#one-on-one}
 
-**Week 1, Friday.** A private conversation about how the work is going for the person, not only what they shipped. For general guidance on running one-to-ones, see [2.4.4 Choosing the right meeting](../../leadership/facilitation.md#choosing-the-right-meeting); for giving useful feedback, see [2.1.1 Feedback culture](../../leadership/culture-in-leadership.md#feedback-culture).
+**Week 1, Friday.** A private conversation about how the work is going for the person, not only what they shipped. For general guidance on running one-to-ones, see [3.4.4 Choosing the right meeting](../../leadership/facilitation.md#choosing-the-right-meeting); for giving useful feedback, see [3.1.1 Feedback culture](../../leadership/culture-in-leadership.md#feedback-culture).
 
 1. **Check workload and capacity.** Is the current load sustainable?
 2. **Give and receive feedback.** Feedback runs in both directions.
@@ -100,4 +100,4 @@ Keep each meeting's notes with the team's current work records; this page holds 
 | Open question or blocker | What remains unresolved and who will follow up |
 | Next action | Owner and agreed completion or follow-up date |
 
-For the strategy behind the tech team's work, see [3.4.1 Tech team: strategy primer](../../staff/department-specific-guidance.md#tech-team-strategy). For general facilitation and update practices, see [2.4 Facilitation](../../leadership/facilitation.md).
+For the strategy behind the tech team's work, see [E.4.1 Tech team: strategy primer](../staff/department-specific-guidance.md#tech-team-strategy). For general facilitation and update practices, see [3.4 Facilitation](../../leadership/facilitation.md).

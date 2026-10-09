@@ -1,11 +1,11 @@
 ---
 layout: home
 markdownStyles: false
-last_updated: "2026-10-02"
+last_updated: "2026-10-09"
 hero:
   name: Sapiens First
   text: The Handbook
-  tagline: "Understand the AI Crisis. Find your community. Learn to organize."
+  tagline: "Learn our DNA. Practice organizing. Help others learn."
   actions:
     - theme: brand
       text: Start here

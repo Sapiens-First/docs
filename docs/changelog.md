@@ -3,7 +3,7 @@ title: "Version log"
 description: "What changed in each release of the Sapiens First handbook, newest first."
 section: For Members
 status: reference
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 canonical: /changelog
 ---
 
@@ -56,10 +56,10 @@ Not yet versioned. These changes are in the working copy and will ship in the ne
 - [1.2 Strategy](/dna/strategy)
 - [Home](/)
 - [0.2 How the handbook works](/introduction/how-the-handbook-works)
-- [0 Introduction](/introduction/)
+- [0 Start here](/introduction/)
 - [0.1 Welcome to Sapiens First](/introduction/welcome)
-- [3.4 Department-specific guidance](/staff/department-specific-guidance)
-- [3.1 Expectations](/staff/expectations)
+- [E.4 Department-specific guidance](/appendices/staff/department-specific-guidance)
+- [E.1 Expectations](/appendices/staff/expectations)
 
 </details>
 

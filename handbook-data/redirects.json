@@ -11,7 +11,7 @@
   "/organizers/fellows": "/introduction/getting-involved#where-to-start-as-an-organizer",
   "/organizers/stewards": "/introduction/getting-involved#where-to-start-as-an-organizer",
   "/organizers/leads": "/introduction/getting-involved#where-to-start-as-an-organizer",
-  "/organizers/compensation": "/staff/compensation",
+  "/organizers/compensation": "/appendices/staff/compensation",
   "/strategy/": "/dna/strategy",
   "/strategy/resources": "/further-reading/",
   "/organization/": "/dna/structure",
@@ -35,5 +35,11 @@
   "/practices/actions": "/appendices/reference/field-guides/actions",
   "/practices/starting-a-circle": "/appendices/reference/field-guides/starting-a-circle",
   "/practices/training": "/appendices/reference/field-guides/training",
-  "/practices/organizing-conversations": "/appendices/reference/field-guides/organizing-conversations"
+  "/practices/organizing-conversations": "/appendices/reference/field-guides/organizing-conversations",
+  "/staff/": "/appendices/staff/",
+  "/staff/compensation": "/appendices/staff/compensation",
+  "/staff/department-specific-guidance": "/appendices/staff/department-specific-guidance",
+  "/staff/beliefs-about-staff": "/appendices/staff/beliefs-about-staff",
+  "/staff/professional-development": "/appendices/staff/professional-development",
+  "/staff/expectations": "/appendices/staff/expectations"
 }

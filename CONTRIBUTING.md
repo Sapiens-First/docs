@@ -18,9 +18,9 @@ A handbook page may explain what a project record contains. It should link to th
 
 ## Add pages incrementally
 
-New pages follow [HANDBOOK-OUTLINE.md](maintenance/HANDBOOK-OUTLINE.md), with numbered chapters and Appendices A–D. The legacy audience pages have been retired; their routes redirect to the numbered pages through `handbook-data/redirects.json` (validated by `npm run docs:check`, with redirect stubs written at build time). The [migration ledger](maintenance/content-map.md) records where each block went. When you move or delete a page, add its old route to `redirects.json`. The first pilot adds 3.4 Department-specific guidance and A.2.5 Tech team meeting agenda.
+The chapter order is **0 Start here, 1 DNA, 2 Go deeper, 3 Lead, 4 Train others, and 5 Supplemental**, followed by **A Reference materials, B Further Reading, C Citations, D Glossary, and E Staff**. [TODO.md](TODO.md) records the restructuring; [HANDBOOK-OUTLINE.md](maintenance/HANDBOOK-OUTLINE.md) records the earlier outline. Legacy audience and staff routes redirect through `handbook-data/redirects.json` (validated by `npm run docs:check`, with redirect stubs written at build time). The [migration ledger](maintenance/content-map.md) records the earlier content moves. When you move or delete a page, add its old route to `redirects.json`. Department-specific guidance is E.4; the tech meeting agenda remains A.2.5.
 
-Use a matching numbered H1 and `title`, `handbook_id` (stable descriptive ID), `handbook_number` (display number), `## Summary`, numbered content headings with stable anchors, and existing status/date/canonical metadata. Chapter section values are `Introduction`, `DNA`, `Leadership`, `Staff`, `Reference materials`, `Further Reading`, `Citations`, and `Glossary`. Do not equate staff with Leads.
+Use a matching numbered H1 and `title`, `handbook_id` (stable descriptive ID), `handbook_number` (display number), `## Summary`, numbered content headings with stable anchors, and existing status/date/canonical metadata. Section values are `Introduction`, `DNA`, `Go deeper`, `Leadership`, `Train others`, `Supplemental`, `Reference materials`, `Further Reading`, `Citations`, `Glossary`, and `Staff`. `Introduction` and `Leadership` remain the metadata values for the reader-facing Start here and Lead chapters. Staff pages live in `docs/appendices/staff/`. Do not equate staff with Leads.
 
 Register new numbered pages in `handbook-data/toc.json`; navigation is generated from it. Use relative `.md` links between handbook pages and keep current assignments/priorities in live records. Canonical reusable material lives in Appendix A; use links until the embed pilot is verified. Preserve missing organizational decisions as draft gaps.
 
@@ -99,14 +99,14 @@ Every content page (everything under `docs/` except `docs/index.md`) carries fro
 
 ```yaml
 ---
-title: "2.2 Strategic planning"       # identical to the page's H1 text
+title: "3.2 Strategic planning"       # identical to the page's H1 text
 description: One sentence saying what the page covers.
 section: Leadership                      # one of the chapter values above
-status: adopted                          # one of the five statuses below
+status: adopted                          # one of the statuses below
 last_updated: 2026-09-27                 # YYYY-MM-DD; quote it if you want it to stay a plain string
 canonical: /leadership/strategic-planning # site path, no base, no .md; index pages end in /
 handbook_id: leadership-strategic-planning # stable ID; never changes when the number does
-handbook_number: "2.2"                   # display number; title and H1 start with it
+handbook_number: "3.2"                   # display number; title and H1 start with it
 tags: [metrics, planning]                # optional
 owner: …                                 # optional; only if the source names one — never invent
 ---
@@ -114,7 +114,7 @@ owner: …                                 # optional; only if the source names 
 
 **Sections:** use the chapter values above.
 
-**Status** (fixed list, rendered as a badge near the top of the page): `adopted` · `proposal` · `draft` · `experimental` · `reference`. A page that's mostly current practice but contains `::: proposal` blocks is still `adopted`; say which parts are proposals in `## In brief`. Each page displays one status badge beneath its metadata. Draft or proposal content remains subject to review.
+**Status** (fixed list, rendered as a badge near the top of the page): `adopted` · `proposal` · `draft` · `experimental` · `reference` · `under-construction` · `planned`. Use `planned` for an unwritten module stub and `under-construction` for a page with some content and substantial unfinished sections. Keep a `construction_note` beside either status to explain what remains. A page that's mostly current practice but contains `::: proposal` blocks is still `adopted`; say which parts are proposals in its summary. Each page displays one status badge beneath its metadata. Draft or proposal content remains subject to review.
 
 Note that YAML parses an unquoted `2026-09-27` as a date value, not a string — this handbook's build code accepts both forms, but if you want to be certain `last_updated` stays a plain string, quote it (`last_updated: "2026-09-27"`).
 

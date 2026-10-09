@@ -34,7 +34,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs'
 import { join, dirname, relative, resolve, posix } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { validateHandbookToc } from './handbook-toc.mjs'
+import { CHAPTER_LABELS, PAGE_STATUSES, validateHandbookToc } from './handbook-toc.mjs'
 import { loadRedirects, validateRedirects } from './handbook-redirects.mjs'
 import { resolveReferences } from './handbook-references.mjs'
 
@@ -42,10 +42,10 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DOCS = join(ROOT, 'docs')
 const warnOnly = process.argv.includes('--warn-only')
 
-const ALLOWED_STATUS = ['adopted', 'proposal', 'draft', 'experimental', 'reference', 'under-construction']
+const ALLOWED_STATUS = Object.keys(PAGE_STATUSES)
 const ALLOWED_SECTIONS = ['For Supporters', 'For Members', 'For Organizers']
-const HANDBOOK_SECTIONS = ['Introduction', 'DNA', 'Leadership', 'Staff', 'Supplemental', 'Reference materials', 'Further Reading', 'Citations', 'Glossary']
-const HANDBOOK_NUMBER = /^(?:\d+|[A-D])(?:\.\d+)*$/
+const HANDBOOK_SECTIONS = Object.keys(CHAPTER_LABELS)
+const HANDBOOK_NUMBER = /^(?:\d+|[A-E])(?:\.\d+)*$/
 
 function isCalendarDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false

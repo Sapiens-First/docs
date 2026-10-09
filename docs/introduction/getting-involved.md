@@ -3,7 +3,7 @@ title: "0.3 Getting involved"
 description: "Take your first steps, find people and work, understand the volunteer Fellowship, and choose where to start as an organizer."
 section: Introduction
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: introduction-getting-involved
 handbook_number: "0.3"
 canonical: /introduction/getting-involved
@@ -75,7 +75,7 @@ Atlas holds current Fellowship assignments and support contacts. This page expla
 | Test and improve | Learn from users, colleagues, or other relevant evidence | A better result and clearer understanding of what works |
 | Finish and hand off | Check success criteria, organize the work, and explain what comes next | Work another person can use or continue |
 
-Projects differ. Research, organizing, and software projects won't follow an identical calendar. Use your cohort schedule and agreed plan for actual dates. Each stage is explained in [2.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs).
+Projects differ. Research, organizing, and software projects won't follow an identical calendar. Use your cohort schedule and agreed plan for actual dates. Each stage is explained in [3.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs).
 
 ::: roles Preparing for your first project conversation
 
@@ -84,7 +84,7 @@ Bring your interests, available time, and questions. Discuss who will use the re
 If you're unsure how the project helps the mission, ask. Understanding the purpose makes good decisions easier as the work develops.
 :::
 
-**Keep people in the loop.** If you can't complete an action item, attend a meeting, or need time away, let your team know. Share blockers while there's still time to help. A useful update says what changed, what you learned, and what you need next. See [2.4.5 Written updates and follow-through](../leadership/facilitation.md#written-updates-and-follow-through) and [2.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs).
+**Keep people in the loop.** If you can't complete an action item, attend a meeting, or need time away, let your team know. Share blockers while there's still time to help. A useful update says what changed, what you learned, and what you need next. See [3.4.5 Written updates and follow-through](../leadership/facilitation.md#written-updates-and-follow-through) and [3.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs).
 
 **After the Fellowship.** You might continue as a Fellow, take on a coordination or leadership role, or use what you learned elsewhere. Discuss the next step with your contact and arrange a handoff if you're leaving a project.
 
@@ -104,7 +104,7 @@ The handbook explains how we work; Atlas records current roles, projects, and re
 
 **Stay in touch.** Use whichever channel your group has agreed on. Groups agree their own communication channel; the Fellowship uses Discord for day-to-day communication and coordination, and some groups also use Signal. The website helps people find events and ways to participate. Email keeps supporters informed.
 
-Keep project decisions and useful work somewhere others can find them, and link to them from the relevant work record. Protect passwords, member data, donor information, and private conversations. See [2.4 Facilitation](../leadership/facilitation.md) for check-ins, written updates, and general meetings.
+Keep project decisions and useful work somewhere others can find them, and link to them from the relevant work record. Protect passwords, member data, donor information, and private conversations. See [3.4 Facilitation](../leadership/facilitation.md) for check-ins, written updates, and general meetings.
 
 ## 0.3.4 Where to start as an organizer {#where-to-start-as-an-organizer}
 
@@ -112,7 +112,7 @@ Keep project decisions and useful work somewhere others can find them, and link 
 
 An **organizer** is anyone taking ongoing responsibility for organizing. The lists below suggest a reading order: work through the earlier material when you need the foundation, or jump to the article that answers today's question. They don't define permissions or graduation requirements; current assignments and decision rights are recorded in Atlas.
 
-Organizers hold one or more role types: Individual Contributor, Directly Responsible Individual, and Player-Coach. See [1.4.4 Participation, responsibility, and employment](../dna/structure.md#participation-responsibility-employment) and [3.1 Expectations](../staff/expectations.md).
+Organizers hold one or more role types: Individual Contributor, Directly Responsible Individual, and Player-Coach. See [1.4.4 Participation, responsibility, and employment](../dna/structure.md#participation-responsibility-employment) and [E.1 Expectations](../appendices/staff/expectations.md).
 
 **Understand the vision and strategy.**
 
@@ -131,7 +131,7 @@ Organizers hold one or more role types: Individual Contributor, Directly Respons
 **Put it into practice.**
 
 9. [Weekly planning and project execution](../leadership/strategic-planning.md#project-execution-and-handoffs)
-10. [2.4 Facilitation: meetings and updates](../leadership/facilitation.md)
+10. [3.4 Facilitation: meetings and updates](../leadership/facilitation.md)
 11. [Field guides overview](../appendices/index.md#templates-agendas-and-guides)
 12. [The Organizer Conversation](../leadership/people.md#organizer-conversation)
 13. [Gatherings](../appendices/reference/field-guides/gatherings.md)
@@ -161,8 +161,8 @@ Organizers hold one or more role types: Individual Contributor, Directly Respons
 
 **Staff and compensation.**
 
-1. [3.1 Expectations](../staff/expectations.md)
-2. [3.2 Compensation](../staff/compensation.md)
+1. [E.1 Expectations](../appendices/staff/expectations.md)
+2. [E.2 Compensation](../appendices/staff/compensation.md)
 
 ::: related
 - [0.1 Welcome to Sapiens First](welcome.md) — Meet the movement and find a useful starting point.

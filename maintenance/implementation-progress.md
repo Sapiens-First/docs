@@ -1,6 +1,29 @@
 # Incremental handbook implementation
 
-Last updated: 2026-10-02
+Last updated: 2026-10-09
+
+## 2026-10-09: Handbook restructuring
+
+Implemented and verified locally: **A1–A6, B1–B4, D1, E1–E4, F1/F3/F4, G3–G5**. [TODO.md](../TODO.md) records the checked requirements; the [current implementation plan](HANDBOOK-IMPLEMENTATION-PLAN.md) governs the remaining work. Earlier entries below describe historical work and superseded roadmaps.
+
+- Chapters now run 0 Start here, 1 DNA, 2 Go deeper, 3 Lead, 4 Train others and 5 Supplemental. Appendices A–D retain their existing numbers; Staff is E, with all five original pages under `docs/appendices/staff/` and a new landing page.
+- All 75 numbered pages live in the TOC. Renumbered links, headings, citations and contributor instructions agree. Old staff URLs and historic compensation links go directly to their new destinations. Redirects preserve bookmarked subsections unless the mapping explicitly names a replacement anchor.
+- Frontmatter supplies every navigation status and construction note. Sidebar, home and handbook-guide contents show symbols; the guide and home show a legend. Planned pages have a visible banner. Machine-readable exports use the same chapter order and allowed statuses.
+- Added 12 planned pages: two chapter landings and ten topic outlines. They link existing organizer/training guidance. The book and Momentum source comparison is recorded on the landings; Rohan's E5 review remains pending before content is filled in.
+- Kept the shared warm palette and adjusted contents spacing, narrow-screen typography and tablet navigation. [Layout findings and changes](layout-review.md) are recorded. The responsive menu opens through 959px.
+- Documented the [deterministic slide formula](generated-slides.md); the generator is still unimplemented. Consolidated current planning and preserved five superseded originals unchanged in `maintenance/history/`. Local tool directories were already ignored and contain no tracked files; verified again.
+
+Verification:
+
+- `npm run docs:check`: 76 pages and 2 SVG diagrams, zero errors or warnings.
+- `node --test scripts/handbook-*.test.mjs`: 25 tests pass, including frontmatter status refresh, TOC status conflicts, all moved staff routes and incoming bookmark preservation.
+- `npm run docs:build`: production build passes. After the final redirect fix, regenerated stubs using the same `writeRedirects` helper as `buildEnd` and checked them in Chromium.
+- `npm run book:build`: downloadable HTML, PDF and EPUB build successfully with the complete new chapter order.
+- Chromium: 50 route/viewport/theme checks at 320, 390, 768, 1024 and 1440px, in light and dark mode; zero horizontal overflow, duplicate IDs or page errors. Menu interactions work; all 75 status marks render. Seven staff redirect checks pass, including `/staff/expectations.html#individual-contributor`. Evidence and the runnable local harness are under `/tmp/handbook-restructure-evidence/` and `/tmp/handbook-restructure-browser.mjs`.
+- Built Markdown exports retain planned/under-construction statuses, current chapter order and new Staff links. `git diff --check` passes.
+- Independent code review found a bookmark-loss defect in the original redirect stubs. The regression test failed before the fix and passes after it; the final browser check confirms closure. Review receipt: `/tmp/compound-engineering-1000/ce-code-review/20261009-124850-14e35268/review.json`; applied finding #1 and final verification are recorded in `closure.json`, with no unresolved review findings. No lint or standalone typecheck command is configured; VitePress compilation supplies the Vue/TypeScript build check.
+
+Remaining: C1–C7 and D2–D6 need integration with the concurrent slide work; F2 needs explicit published-deck mappings; E5 needs Rohan's outline review. G1 needs resolved image licences, and G2 needs source reconciliation and a coordinated move of the DNA speech, which remains the slide deck's active source. No slide files, loose image inputs or local tool state were changed by this restructuring work. Changes remain uncommitted in the shared feature branch.
 
 ## Completed locally
 

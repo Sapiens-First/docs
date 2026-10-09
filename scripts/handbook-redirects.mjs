@@ -65,6 +65,9 @@ export function redirectFiles(redirects, { base, siteUrl }) {
     const suffix = hash ? `#${hash}` : ''
     const href = `${base}${route}${suffix}`
     const canonical = `${siteUrl.replace(/\/$/, '')}/${route}${suffix}`
+    // Keep bookmarked section IDs through page moves. An explicit target
+    // fragment instead names the replacement for a retired section.
+    const preserveFragment = hash ? '' : `<script>location.replace(${JSON.stringify(href).replace(/</g, '\\u003c')} + location.hash)</script>\n`
     const html = `<!doctype html>
 <html lang="en">
 <head>
@@ -73,7 +76,7 @@ export function redirectFiles(redirects, { base, siteUrl }) {
 <meta name="robots" content="noindex">
 <link rel="canonical" href="${canonical}">
 <meta http-equiv="refresh" content="0; url=${href}">
-</head>
+${preserveFragment}</head>
 <body>
 <p>This page has moved to <a href="${href}">${canonical}</a>.</p>
 </body>

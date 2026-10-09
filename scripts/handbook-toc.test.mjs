@@ -14,14 +14,14 @@ function fixture(t, entries = [first, second]) {
   for (const entry of entries) {
     const path = join(root, entry.path)
     mkdirSync(dirname(path), { recursive: true })
-    writeFileSync(path, `---\ntitle: "${entry.title}"\nsection: ${entry.section}\nhandbook_id: ${entry.id}\nhandbook_number: "${entry.number}"\n---\n\n# ${entry.title}\n`)
+    writeFileSync(path, `---\ntitle: "${entry.title}"\nsection: ${entry.section}\nstatus: draft\nhandbook_id: ${entry.id}\nhandbook_number: "${entry.number}"\n---\n\n# ${entry.title}\n`)
   }
   return root
 }
 
 test('current handbook registry matches all numbered pages', () => {
   assert.deepEqual(validateHandbookToc(), [])
-  assert.equal(getHandbookItems().length, 62)
+  assert.equal(getHandbookItems().length, 75)
 })
 
 test('navigation follows registry order and handles landing paths', () => {
@@ -56,6 +56,27 @@ test('metadata and heading mismatches fail', t => {
   assert.match(errors, /TOC title differs from H1/)
 })
 
+test('navigation reads status and construction notes from the page on every call', t => {
+  const root = fixture(t)
+  const path = join(root, second.path)
+  assert.equal(getHandbookChapters([first, second], root)[0].pages[0].statusEmoji, '📝')
+  writeFileSync(path, `---\ntitle: "${second.title}"\nsection: Introduction\nstatus: planned\nconstruction_note: "Outline awaiting review <&>"\nhandbook_id: ${second.id}\nhandbook_number: "0.1"\n---\n# ${second.title}\n`)
+  const page = getHandbookChapters([first, second], root)[0].pages[0]
+  assert.equal(page.status, 'planned')
+  assert.equal(page.statusEmoji, '⬜')
+  assert.equal(page.constructionNote, 'Outline awaiting review <&>')
+  const item = getSidebarGroups([first, second], root)[0].items[0]
+  assert.match(item.text, /⬜/)
+  assert.match(item.text, /Outline awaiting review &lt;&amp;&gt;/)
+  assert.equal(item.plainText, second.title)
+  assert.deepEqual(validateHandbookToc(root, [first, second]), [])
+})
+
+test('TOC status cannot contradict page frontmatter', t => {
+  const root = fixture(t)
+  assert.match(validateHandbookToc(root, [first, { ...second, status: 'adopted' }]).join('\n'), /TOC status differs from status/)
+})
+
 test('heading drift fails even when frontmatter matches', t => {
   const root = fixture(t, [first])
   const path = join(root, first.path)
@@ -65,14 +86,18 @@ test('heading drift fails even when frontmatter matches', t => {
 
 test('chapters carry reader-facing labels in registry order', () => {
   const chapters = getHandbookChapters()
-  assert.deepEqual(chapters.slice(0, 5).map(c => [c.label, c.number, c.link]), [
+  assert.deepEqual(chapters.slice(0, 6).map(c => [c.label, c.number, c.link]), [
     ['Start here', '0', '/introduction/'],
     ['DNA', '1', '/dna/'],
-    ['Lead', '2', '/leadership/'],
-    ['Staff', '3', '/staff/beliefs-about-staff'],
-    ['Supplemental', '4', '/supplemental/'],
+    ['Go deeper', '2', '/go-deeper/'],
+    ['Lead', '3', '/leadership/'],
+    ['Train others', '4', '/train-others/'],
+    ['Supplemental', '5', '/supplemental/'],
   ])
-  assert.ok(chapters.slice(0, 5).every(c => !c.appendix) && chapters.slice(5).every(c => c.appendix))
+  assert.ok(chapters.slice(0, 6).every(c => !c.appendix) && chapters.slice(6).every(c => c.appendix))
+  assert.deepEqual(chapters.slice(6).map(c => [c.label, c.number]), [
+    ['Reference', 'A'], ['Further reading', 'B'], ['Citations', 'C'], ['Glossary', 'D'], ['Staff', 'E'],
+  ])
   // every registry page appears exactly once, either as a landing or a page
   const linked = chapters.flatMap(c => [c.link, ...c.pages.map(p => p.link)])
   assert.equal(new Set(linked).size, getHandbookItems().length)
@@ -94,14 +119,15 @@ test('three-part numbers are grouped under their two-part prefix', () => {
 test('sidebar headings link to landing pages and never repeat them', () => {
   const groups = getSidebarGroups()
   assert.deepEqual(groups.slice(0, 4).map(g => [g.plainText, g.link]), [
-    ['0. Introduction', '/introduction/'],
+    ['0. Start here', '/introduction/'],
     ['1. DNA', '/dna/'],
-    ['2. Leadership', '/leadership/'],
-    ['3. Staff', undefined],
+    ['2. Go deeper', '/go-deeper/'],
+    ['3. Lead', '/leadership/'],
   ])
   assert.ok(groups.every(g => !g.items?.some(i => i.link === g.link)))
-  assert.equal(groups[3].items[0].link, '/staff/beliefs-about-staff')
-  const glossary = groups.at(-1)
+  assert.equal(groups.at(-1).link, '/appendices/staff/')
+  assert.equal(groups.at(-1).items[0].link, '/appendices/staff/beliefs-about-staff')
+  const glossary = groups.find(g => g.link === '/appendices/glossary')
   assert.deepEqual(glossary.items, [])
   assert.equal(glossary.collapsed, undefined)
 })

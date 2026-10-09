@@ -4,7 +4,7 @@ description: "The reusable agenda for a circle's governance meeting, with the te
 section: Reference materials
 status: under-construction
 construction_note: "No governance constitution, agenda, or decision authority has been adopted yet; only the tech team's variant (A.2.5) exists so far."
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: governance-meeting-agenda
 handbook_number: "A.2.4"
 canonical: /appendices/reference/governance-meeting-agenda
@@ -14,7 +14,7 @@ canonical: /appendices/reference/governance-meeting-agenda
 
 ## Summary
 
-This page will hold the reusable governance meeting agenda: where a circle processes tensions and changes its roles and policies. [2.4.3 Governance meetings](../../leadership/facilitation.md#governance-meetings) explains what governance meetings are for. Until a general format is agreed, the tech team's version is a working example.
+This page will hold the reusable governance meeting agenda: where a circle processes tensions and changes its roles and policies. [3.4.3 Governance meetings](../../leadership/facilitation.md#governance-meetings) explains what governance meetings are for. Until a general format is agreed, the tech team's version is a working example.
 
 <!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, A.2.4. Placeholder created during the structure migration; no source content was supplied. -->
 

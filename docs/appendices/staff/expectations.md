@@ -1,15 +1,15 @@
 ---
-title: "3.1 Expectations"
+title: "E.1 Expectations"
 description: "Draft performance principles and guidance for overlapping contributor, outcome-owner, and player-coach roles."
 section: Staff
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: staff-expectations
-handbook_number: "3.1"
-canonical: /staff/expectations
+handbook_number: "E.1"
+canonical: /appendices/staff/expectations
 ---
 
-# 3.1 Expectations
+# E.1 Expectations
 
 ## Summary
 
@@ -17,31 +17,31 @@ Make expectations explicit before evaluating performance. Evaluate outcomes and 
 
 <!-- Source provenance: repository-local 10-2 content additions/10-2.txt, supplied October 2, 2026. Source recommendations and bibliographic leads are draft inputs, not adopted policy or independently verified research claims. The appendix pages maintain the score tables. -->
 
-## 3.1.1 Individual Contributor {#individual-contributor}
+## E.1.1 Individual Contributor {#individual-contributor}
 
 An Individual Contributor directly creates value through their craft. The central question is: **How effectively do you produce excellent work?** The dimensions are Output, Communication, and Judgment.
 
-Use [A.1.2 IC expectations](../appendices/reference/ic-expectations.md) for the maintained rating descriptions and suggested weighting. This section explains the role; the reference page maintains the score table.
+Use [A.1.2 IC expectations](../reference/ic-expectations.md) for the maintained rating descriptions and suggested weighting. This section explains the role; the reference page maintains the score table.
 
 <!-- handbook:include appendices/reference/ic-expectations.md#ic-expectations-rubric -->
 
-## 3.1.2 Directly Responsible Individual {#directly-responsible-individual}
+## E.1.2 Directly Responsible Individual {#directly-responsible-individual}
 
 A DRI owns an outcome, especially one spanning functions, systems, or contributors. The central question is: **Did you make the outcome happen?** The dimensions are Outcome, Ownership, and Judgment.
 
-A DRI needs a clear purpose, domain, accountabilities, and decision authority. Responsibility without corresponding authority prevents effective ownership. Use [A.1.3 DRI expectations](../appendices/reference/dri-expectations.md) for the maintained rating descriptions.
+A DRI needs a clear purpose, domain, accountabilities, and decision authority. Responsibility without corresponding authority prevents effective ownership. Use [A.1.3 DRI expectations](../reference/dri-expectations.md) for the maintained rating descriptions.
 
 <!-- handbook:include appendices/reference/dri-expectations.md#dri-expectations-rubric -->
 
-## 3.1.3 Player-Coach {#player-coach}
+## E.1.3 Player-Coach {#player-coach}
 
 A Player-Coach combines substantive work in their craft with developing other people. The central question is: **Are people and systems becoming more capable because of you?** The dimensions are Direction, Enablement, and Systems.
 
-Consider whether people understand priorities, receive useful feedback and appropriate autonomy, and have systems that help them do effective work. Use [A.1.4 Player-Coach expectations](../appendices/reference/player-coach-expectations.md) for the maintained rating descriptions and suggested weighting.
+Consider whether people understand priorities, receive useful feedback and appropriate autonomy, and have systems that help them do effective work. Use [A.1.4 Player-Coach expectations](../reference/player-coach-expectations.md) for the maintained rating descriptions and suggested weighting.
 
 <!-- handbook:include appendices/reference/player-coach-expectations.md#player-coach-expectations-rubric -->
 
-## 3.1.4 Mixed roles and predominant role {#mixed-roles}
+## E.1.4 Mixed roles and predominant role {#mixed-roles}
 
 | Role | Core accountability | Dimensions |
 | --- | --- | --- |
@@ -53,7 +53,7 @@ Someone might spend most of their week building a membership system as an IC, ow
 
 There is no combined score across roles yet.
 
-## 3.1.5 Performance evaluation {#guiding-beliefs}
+## E.1.5 Performance evaluation {#guiding-beliefs}
 
 **Set expectations before evaluating performance.** People should know what excellent performance looks like before being evaluated against it. Clear expectations direct attention and make feedback coaching against a shared standard. Share the relevant rubric during hiring and onboarding, discuss it in 1:1s, and use it consistently when assessing performance. These are recommendations, pending adoption.
 
@@ -86,4 +86,4 @@ This framework draws on:
 - Andy Grove, *High Output Management*: contribution through the capability and output of others.
 - Holacracy, organizational structure: people holding multiple roles defined around work.
 
-See [C.3.1 Expectations](../citations/staff-sources.md#expectations) for source details.
+See [C.3.1 Expectations](../../citations/staff-sources.md#expectations) for source details.

@@ -34,7 +34,8 @@
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
-.VPSidebar .sf-toc-title { min-width: 0; }
+.VPSidebar .sf-toc-title { min-width: 0; overflow-wrap: anywhere; }
+.VPSidebar .sf-toc-status { font-size: 12px; }
 
 /* ── level 0: chapter headings, "1.  DNA", linked to the chapter landing ── */
 .VPSidebar .VPSidebarItem.level-0 { padding-bottom: 12px; }
@@ -129,3 +130,13 @@
 
 /* ─── Navbar "More" menu: chapter group heading ─────────────────────────── */
 .VPMenu .VPMenuGroup .title { font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11.5px; }
+
+/* Keep the six chapter destinations usable before the desktop sidebar fits. */
+@media (min-width: 768px) and (max-width: 959px) {
+  .VPNavBar .VPNavBarMenu,
+  .VPNavBar .VPNavBarAppearance,
+  .VPNavBar .VPNavBarSocialLinks,
+  .VPNavBar .VPNavBarExtra { display: none !important; }
+  .VPNavBar .VPNavBarHamburger { display: flex !important; }
+  .VPNav .VPNavScreen { display: block !important; }
+}

@@ -14,7 +14,7 @@ This guide sets out how we do that. It covers **framing, wording, and visuals**,
 
 ## Page structure and names
 
-The new handbook follows [HANDBOOK-OUTLINE.md](maintenance/HANDBOOK-OUTLINE.md): **0 Introduction, 1 DNA, 2 Leadership, 3 Staff, and Appendices A–D**. Existing audience pages remain available during incremental migration; their template is transitional.
+The handbook supports continuous training through **0 Start here, 1 DNA, 2 Go deeper, 3 Lead, 4 Train others, and 5 Supplemental**. Appendices keep **A Reference materials, B Further Reading, C Citations, and D Glossary**, with **E Staff** for employment-specific guidance. [TODO.md](TODO.md) records this restructuring; [HANDBOOK-OUTLINE.md](maintenance/HANDBOOK-OUTLINE.md) is the earlier outline. Retired audience and staff routes redirect to their current pages.
 
 New section pages have a numbered, descriptive H1 matching frontmatter `title`, a `## Summary`, and numbered, named content subsections with explicit stable anchors. Use `handbook_id` for stable identity and `handbook_number` for the current display number. Summary, Further Reading, and Citations are unnumbered page furniture. Metadata supplies the visible status and calendar date. Omit empty reading/citation lists until the catalog pilot supplies assigned entries.
 

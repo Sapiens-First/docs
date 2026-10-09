@@ -1,16 +1,20 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
+import PageStatus from './PageStatus.vue'
+import StatusLegend from './StatusLegend.vue'
 
 // Home page table of contents. Chapters, labels and pages come from
 // themeConfig.handbookChapters (getHandbookChapters in scripts/handbook-toc.mjs,
 // built from handbook-data/toc.json); styles live in theme/home.css.
-interface Page { number: string; title: string; link: string; shortNumber?: string }
+interface Page { number: string; title: string; link: string; shortNumber?: string; statusEmoji?: string; statusLabel?: string; constructionNote?: string }
 interface Group { number: string; title: string; link: string; pages: Page[] }
-interface Chapter {
-  section: string; label: string; number: string; title: string
-  blurb: string; appendix: boolean; link: string; pages: Page[]; groups?: Group[]
+interface Chapter extends Page {
+  section: string; label: string
+  blurb: string; appendix: boolean; pages: Page[]; groups?: Group[]
 }
+
+defineProps<{ compact?: boolean }>()
 
 const { theme } = useData()
 const chapters = computed<Chapter[]>(() => theme.value.handbookChapters ?? [])
@@ -19,8 +23,9 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
 </script>
 
 <template>
-  <nav class="sf-map" aria-labelledby="sf-map-title">
+  <nav class="sf-map" :class="{ 'sf-map--compact': compact }" aria-labelledby="sf-map-title">
     <h2 id="sf-map-title" class="sf-map__title">Contents</h2>
+    <StatusLegend />
 
     <ol class="sf-map__chapters">
       <li v-for="chapter in main" :key="chapter.section" class="sf-chapter">
@@ -28,7 +33,7 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
           <span class="sf-chapter__num" aria-hidden="true">{{ chapter.number }}</span>
           <span class="sf-chapter__text">
             <span class="sf-chapter__eyebrow">Chapter {{ chapter.number }} · {{ chapter.title }}</span>
-            <span class="sf-chapter__label">{{ chapter.label }}</span>
+            <span class="sf-chapter__label"><PageStatus :page="chapter" /> {{ chapter.label }}</span>
             <span class="sf-chapter__blurb">{{ chapter.blurb }}</span>
           </span>
         </a>
@@ -36,7 +41,7 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
           <li v-for="page in chapter.pages" :key="page.link">
             <a class="sf-toc-row" :href="withBase(page.link)">
               <span class="sf-toc-row__num">{{ page.number }}</span>
-              <span class="sf-toc-row__title">{{ page.title }}</span>
+              <span class="sf-toc-row__title"><PageStatus :page="page" /> {{ page.title }}</span>
             </a>
           </li>
         </ol>
@@ -50,7 +55,7 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
           <a class="sf-appendix__head" :href="withBase(chapter.link)">
             <span class="sf-appendix__num" aria-hidden="true">{{ chapter.number }}</span>
             <span class="sf-appendix__text">
-              <span class="sf-appendix__label">{{ chapter.label }}</span>
+              <span class="sf-appendix__label"><PageStatus :page="chapter" /> {{ chapter.label }}</span>
               <span class="sf-appendix__blurb">{{ chapter.blurb }}</span>
             </span>
           </a>
@@ -64,7 +69,7 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
                 <li v-for="page in group.pages" :key="page.link">
                   <a class="sf-toc-row" :href="withBase(page.link)">
                     <span class="sf-toc-row__num">{{ page.shortNumber }}</span>
-                    <span class="sf-toc-row__title">{{ page.title }}</span>
+                    <span class="sf-toc-row__title"><PageStatus :page="page" /> {{ page.title }}</span>
                   </a>
                 </li>
               </ol>
@@ -79,7 +84,7 @@ const appendices = computed(() => chapters.value.filter((c) => c.appendix))
               <li v-for="page in chapter.pages" :key="page.link">
                 <a class="sf-toc-row" :href="withBase(page.link)">
                   <span class="sf-toc-row__num">{{ page.number }}</span>
-                  <span class="sf-toc-row__title">{{ page.title }}</span>
+                  <span class="sf-toc-row__title"><PageStatus :page="page" /> {{ page.title }}</span>
                 </a>
               </li>
             </ol>

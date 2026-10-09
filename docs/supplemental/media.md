@@ -1,16 +1,16 @@
 ---
-title: "4.3 Media"
+title: "5.3 Media"
 description: "Working with journalists, press and public channels."
 section: Supplemental
-status: under-construction
+status: planned
 construction_note: "Media guidance has not been written: spokespeople, approved messages, social media rules and crisis procedures are still to be decided. Until then, follow the representation rules in A.1.1."
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: supplemental-media
-handbook_number: "4.3"
+handbook_number: "5.3"
 canonical: /supplemental/media
 ---
 
-# 4.3 Media
+# 5.3 Media
 
 ## Summary
 
@@ -18,7 +18,7 @@ Working with journalists, press and public channels.
 
 <!-- Source provenance: user request, 2026-10-02. Placeholder; no source content supplied. -->
 
-## 4.3.1 What this section will cover {#what-this-section-needs}
+## 5.3.1 What this section will cover {#what-this-section-needs}
 
 - Who may speak to media on behalf of Sapiens First, and how requests are routed.
 - Approved messages, boilerplate and spokesperson preparation.

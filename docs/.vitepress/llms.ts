@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { join, dirname, posix } from 'node:path'
 import type { SiteConfig } from 'vitepress'
 import { resolveReferences } from '../../scripts/handbook-references.mjs'
-import { getHandbookItems } from '../../scripts/handbook-toc.mjs'
+import { getHandbookItems, getHandbookSections, PAGE_STATUSES } from '../../scripts/handbook-toc.mjs'
 
 // Generates /llms.txt, /llms-full.md, /llms-full.txt, and a raw-Markdown
 // twin of every page (e.g. dist/leadership/strategic-planning.md next to strategic-planning.html),
@@ -13,9 +13,9 @@ const SITE_ORIGIN = 'https://sapiens-first.github.io'
 const BASE_PATH = '/docs'
 const ATLAS_URL = 'https://sapiensfirst.org/atlas'
 
-const SECTION_ORDER = ['Introduction', 'DNA', 'Leadership', 'Staff', 'Supplemental', 'Reference materials', 'Further Reading', 'Citations', 'Glossary', 'For Supporters', 'For Members', 'For Organizers']
+const SECTION_ORDER = [...getHandbookSections().map(section => section.text), 'For Supporters', 'For Members', 'For Organizers']
 
-const STATUS_VALUES = new Set(['adopted', 'proposal', 'draft', 'experimental', 'reference'])
+const STATUS_VALUES = new Set(Object.keys(PAGE_STATUSES))
 
 // Handbook callout blocks (docs/.vitepress/containers.ts) rendered as plain
 // Markdown for the full-text dump. `related` isn't in containers' `kinds`
@@ -243,7 +243,7 @@ function buildLlmsTxt(pages: PageInfo[]): string {
   lines.push(`- Atlas (${ATLAS_URL}) holds current people, roles, projects, objectives, and metrics.`)
   lines.push('- Where the handbook and Atlas differ about current operational state, prefer Atlas.')
   lines.push(
-    '- Pages marked "proposal" or "draft" below describe possible future practice, not current Sapiens First policy.'
+    '- Pages marked "planned", "under-construction", "proposal" or "draft" below are unfinished or describe possible future practice, not current Sapiens First policy.'
   )
   lines.push(
     `- Each page listed below is also available as raw Markdown at the same path with a \`.md\` suffix, for example ${toAbsoluteUrl(
@@ -276,7 +276,7 @@ function buildLlmsFull(pages: PageInfo[]): string {
   lines.push('- This handbook explains stable concepts, rules, and procedures: what things mean and how they work.')
   lines.push(`- Atlas (${ATLAS_URL}) holds current people, roles, projects, objectives, and metrics.`)
   lines.push('- Where the handbook and Atlas differ about current operational state, prefer Atlas.')
-  lines.push('- Pages marked "proposal" or "draft" describe possible future practice, not current Sapiens First policy.')
+  lines.push('- Pages marked "planned", "under-construction", "proposal" or "draft" are unfinished or describe possible future practice, not current Sapiens First policy.')
   lines.push('- Inside adopted pages, text labelled **Proposal** or **Under construction** is not current policy either.')
   lines.push('- On the website some labelled blocks are collapsible; here they are flattened into ordinary paragraphs.')
   lines.push('')

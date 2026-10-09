@@ -2,7 +2,7 @@
   {
     "id": "introduction",
     "number": "0",
-    "title": "0 Introduction",
+    "title": "0 Start here",
     "path": "introduction/index.md",
     "section": "Introduction"
   },
@@ -63,107 +63,156 @@
     "section": "DNA"
   },
   {
-    "id": "leadership",
+    "id": "go-deeper",
     "number": "2",
-    "title": "2 Leadership",
+    "title": "2 Go deeper",
+    "path": "go-deeper/index.md",
+    "section": "Go deeper"
+  },
+  {
+    "id": "go-deeper-why-nonviolence-works",
+    "number": "2.1",
+    "title": "2.1 Why nonviolence works",
+    "path": "go-deeper/why-nonviolence-works.md",
+    "section": "Go deeper"
+  },
+  {
+    "id": "go-deeper-strategy-deep-dive",
+    "number": "2.2",
+    "title": "2.2 Strategy deep dive",
+    "path": "go-deeper/strategy-deep-dive.md",
+    "section": "Go deeper"
+  },
+  {
+    "id": "go-deeper-ai-safety-deep-dive",
+    "number": "2.3",
+    "title": "2.3 AI safety deep dive",
+    "path": "go-deeper/ai-safety-deep-dive.md",
+    "section": "Go deeper"
+  },
+  {
+    "id": "go-deeper-organizer-conversation",
+    "number": "2.4",
+    "title": "2.4 The organizer conversation",
+    "path": "go-deeper/organizer-conversation.md",
+    "section": "Go deeper"
+  },
+  {
+    "id": "leadership",
+    "number": "3",
+    "title": "3 Lead",
     "path": "leadership/index.md",
     "section": "Leadership"
   },
   {
     "id": "leadership-culture",
-    "number": "2.1",
-    "title": "2.1 Culture in leadership",
+    "number": "3.1",
+    "title": "3.1 Culture in leadership",
     "path": "leadership/culture-in-leadership.md",
     "section": "Leadership"
   },
   {
     "id": "leadership-strategic-planning",
-    "number": "2.2",
-    "title": "2.2 Strategic planning",
+    "number": "3.2",
+    "title": "3.2 Strategic planning",
     "path": "leadership/strategic-planning.md",
     "section": "Leadership"
   },
   {
     "id": "leadership-people",
-    "number": "2.3",
-    "title": "2.3 People",
+    "number": "3.3",
+    "title": "3.3 People",
     "path": "leadership/people.md",
     "section": "Leadership"
   },
   {
     "id": "leadership-facilitation",
-    "number": "2.4",
-    "title": "2.4 Facilitation",
+    "number": "3.4",
+    "title": "3.4 Facilitation",
     "path": "leadership/facilitation.md",
     "section": "Leadership"
   },
   {
-    "id": "staff-beliefs",
-    "number": "3.0",
-    "title": "3.0 Beliefs about staff",
-    "path": "staff/beliefs-about-staff.md",
-    "section": "Staff"
+    "id": "train-others",
+    "number": "4",
+    "title": "4 Train others",
+    "path": "train-others/index.md",
+    "section": "Train others"
   },
   {
-    "id": "staff-expectations",
-    "number": "3.1",
-    "title": "3.1 Expectations",
-    "path": "staff/expectations.md",
-    "section": "Staff"
+    "id": "train-others-designing-an-agenda",
+    "number": "4.1",
+    "title": "4.1 Designing an agenda",
+    "path": "train-others/designing-an-agenda.md",
+    "section": "Train others"
   },
   {
-    "id": "staff-compensation",
-    "number": "3.2",
-    "title": "3.2 Compensation",
-    "path": "staff/compensation.md",
-    "section": "Staff"
+    "id": "train-others-teaching-adults",
+    "number": "4.2",
+    "title": "4.2 Teaching adults",
+    "path": "train-others/teaching-adults.md",
+    "section": "Train others"
   },
   {
-    "id": "staff-professional-development",
-    "number": "3.3",
-    "title": "3.3 Professional development",
-    "path": "staff/professional-development.md",
-    "section": "Staff"
+    "id": "train-others-role-plays-and-simulations",
+    "number": "4.3",
+    "title": "4.3 Role-plays and simulations",
+    "path": "train-others/role-plays-and-simulations.md",
+    "section": "Train others"
   },
   {
-    "id": "department-specific-guidance",
-    "number": "3.4",
-    "title": "3.4 Department-specific guidance",
-    "path": "staff/department-specific-guidance.md",
-    "section": "Staff"
+    "id": "train-others-facilitating-a-room",
+    "number": "4.4",
+    "title": "4.4 Facilitating a room",
+    "path": "train-others/facilitating-a-room.md",
+    "section": "Train others"
+  },
+  {
+    "id": "train-others-training-trainers",
+    "number": "4.5",
+    "title": "4.5 Training trainers",
+    "path": "train-others/training-trainers.md",
+    "section": "Train others"
+  },
+  {
+    "id": "train-others-logistics-and-follow-up",
+    "number": "4.6",
+    "title": "4.6 Logistics and follow-up",
+    "path": "train-others/logistics-and-follow-up.md",
+    "section": "Train others"
   },
   {
     "id": "supplemental",
-    "number": "4",
-    "title": "4 Supplemental",
+    "number": "5",
+    "title": "5 Supplemental",
     "path": "supplemental/index.md",
     "section": "Supplemental"
   },
   {
     "id": "supplemental-fundraising",
-    "number": "4.1",
-    "title": "4.1 Fundraising",
+    "number": "5.1",
+    "title": "5.1 Fundraising",
     "path": "supplemental/fundraising.md",
     "section": "Supplemental"
   },
   {
     "id": "supplemental-interviewing",
-    "number": "4.2",
-    "title": "4.2 Interviewing",
+    "number": "5.2",
+    "title": "5.2 Interviewing",
     "path": "supplemental/interviewing.md",
     "section": "Supplemental"
   },
   {
     "id": "supplemental-media",
-    "number": "4.3",
-    "title": "4.3 Media",
+    "number": "5.3",
+    "title": "5.3 Media",
     "path": "supplemental/media.md",
     "section": "Supplemental"
   },
   {
     "id": "supplemental-running-for-office",
-    "number": "4.4",
-    "title": "4.4 Running for office",
+    "number": "5.4",
+    "title": "5.4 Running for office",
     "path": "supplemental/running-for-office.md",
     "section": "Supplemental"
   },
@@ -432,5 +481,47 @@
     "title": "D Glossary",
     "path": "appendices/glossary.md",
     "section": "Glossary"
+  },
+  {
+    "id": "staff",
+    "number": "E",
+    "title": "E Staff",
+    "path": "appendices/staff/index.md",
+    "section": "Staff"
+  },
+  {
+    "id": "staff-beliefs",
+    "number": "E.0",
+    "title": "E.0 Beliefs about staff",
+    "path": "appendices/staff/beliefs-about-staff.md",
+    "section": "Staff"
+  },
+  {
+    "id": "staff-expectations",
+    "number": "E.1",
+    "title": "E.1 Expectations",
+    "path": "appendices/staff/expectations.md",
+    "section": "Staff"
+  },
+  {
+    "id": "staff-compensation",
+    "number": "E.2",
+    "title": "E.2 Compensation",
+    "path": "appendices/staff/compensation.md",
+    "section": "Staff"
+  },
+  {
+    "id": "staff-professional-development",
+    "number": "E.3",
+    "title": "E.3 Professional development",
+    "path": "appendices/staff/professional-development.md",
+    "section": "Staff"
+  },
+  {
+    "id": "department-specific-guidance",
+    "number": "E.4",
+    "title": "E.4 Department-specific guidance",
+    "path": "appendices/staff/department-specific-guidance.md",
+    "section": "Staff"
   }
 ]

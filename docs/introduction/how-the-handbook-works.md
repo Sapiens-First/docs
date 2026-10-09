@@ -3,7 +3,7 @@ title: "0.2 How the handbook works"
 description: "Understand the handbook's numbering, status labels, information sources, and how to suggest changes."
 section: Introduction
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: introduction-how-the-handbook-works
 handbook_number: "0.2"
 canonical: /introduction/how-the-handbook-works
@@ -19,17 +19,19 @@ The handbook explains durable concepts and guidance; live records hold current r
 
 ## 0.2.1 Chapters, sections, subsections, and appendices {#chapters-sections-and-appendices}
 
-The handbook has five chapters: **0 Introduction**, **1 DNA**, **2 Leadership**, **3 Staff**, and **4 Supplemental**. Appendices A–D hold reference materials, further reading, citations, and the glossary.
+The handbook supports continuous training through six chapters: **0 Start here**, **1 DNA**, **2 Go deeper**, **3 Lead**, **4 Train others**, and **5 Supplemental**. Appendices A–E hold reference materials, further reading, citations, the glossary, and staff guidance. Start with DNA, then choose a deeper module, a leadership practice, or a training skill as your work calls for it.
 
 Numbers show where a topic sits. **0** identifies this chapter; **0.2** identifies this section; **0.2.1** identifies this subsection. Appendix numbering follows the same pattern, such as **A.1.2**.
 
-A chapter landing page summarizes the chapter and links to its sections. A section usually has its own page, with named subsections inside it. Each page has a Summary, a status, and a last-updated date. Summary and source lists are page elements, not extra numbered sections.
+A chapter landing page summarizes the chapter and links to its sections. A section usually has its own page, with named subsections inside it. Each page has a Summary, a status, and a last-updated date. Summary and source lists are page elements, not extra numbered sections. The contents below read status directly from each page. Hover over a status symbol to see any note about unfinished material.
+
+<ChapterMap compact />
 
 ## 0.2.2 Beliefs, current practice, proposals, and open questions {#reading-status}
 
 **Beliefs explain our outlook.** They describe the reasoning and values behind our work. A belief alone does not establish a process, assign authority, or approve a new requirement.
 
-**Status shows adoption.** An adopted page describes established guidance. Draft pages are unfinished material for review; proposal pages describe possible future practice; experimental pages describe trials; reference pages provide supporting material. Read the page's status and any qualifications before treating an instruction as settled.
+**Status shows adoption.** An adopted page describes established guidance. Draft pages are unfinished material for review; proposal pages describe possible future practice; experimental pages describe trials; reference pages provide supporting material. Planned pages are outlines for future modules, awaiting review before content is filled in. Read the page's status and any qualifications before treating an instruction as settled. The status legend in the contents also distinguishes reference material from adopted guidance: both use ✅, with their full status on hover.
 
 **Labels show what isn't settled.** A **Proposal** block describes a possible practice, with a dashed border so it can't be mistaken for current practice. A page that is still being written shows an **Under construction** banner at the top saying what is missing; read it as a starting point, not settled guidance. Publishing a page does not change decision rights or adopt its recommendations. Some practices are already in use; others are still taking shape as we prepare for more people to join.
 
@@ -77,10 +79,10 @@ Common questions, routed to the page, or the [Atlas](https://sapiensfirst.org/at
 **I want to know…**
 
 **Where staff should start**
-→ [3.1 Expectations](../staff/expectations.md) and [3.0 Beliefs about staff](../staff/beliefs-about-staff.md).
+→ [E.1 Expectations](../appendices/staff/expectations.md) and [E.0 Beliefs about staff](../appendices/staff/beliefs-about-staff.md).
 
 **Where compensation is explained**
-→ [3.2 Compensation](../staff/compensation.md)
+→ [E.2 Compensation](../appendices/staff/compensation.md)
 
 **What Sapiens First is trying to accomplish**
 → [1.1 Story](../dna/story.md) and [1.2 Strategy](../dna/strategy.md)
@@ -107,31 +109,31 @@ Common questions, routed to the page, or the [Atlas](https://sapiensfirst.org/at
 → [1.4.2 Roles, circles, accountabilities, and decision rights](../dna/structure.md#roles-circles-decision-rights)
 
 **How to propose or start a new project**
-→ [2.2.5 Project portfolio management](../leadership/strategic-planning.md#project-portfolio-management)
+→ [3.2.5 Project portfolio management](../leadership/strategic-planning.md#project-portfolio-management)
 
 **How to hand off a project when you're finishing**
-→ [2.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs)
+→ [3.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs)
 
 **How objectives and key results work**
-→ [2.2.2 Objectives and key results (OKRs)](../leadership/strategic-planning.md#okrs)
+→ [3.2.2 Objectives and key results (OKRs)](../leadership/strategic-planning.md#okrs)
 
 **How Sapiens First defines a metric**
-→ [2.2.3 Metrics](../leadership/strategic-planning.md#metrics)
+→ [3.2.3 Metrics](../leadership/strategic-planning.md#metrics)
 
 **The difference between inputs, outputs, and outcomes**
-→ [2.2.3 Metrics](../leadership/strategic-planning.md#metrics)
+→ [3.2.3 Metrics](../leadership/strategic-planning.md#metrics)
 
 **What we currently measure, and what our metrics show**
 → [Atlas](https://sapiensfirst.org/atlas): current objectives and metric values.
 
 **How to review metrics with a circle**
-→ [2.2.7 Reviewing performance of the strategy](../leadership/strategic-planning.md#reviewing-performance-of-the-strategy)
+→ [3.2.7 Reviewing performance of the strategy](../leadership/strategic-planning.md#reviewing-performance-of-the-strategy)
 
 **How weekly planning works, and how to write a task that is actually actionable**
-→ [2.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs)
+→ [3.2.6 Project execution and handoffs](../leadership/strategic-planning.md#project-execution-and-handoffs)
 
 **How to run a check-in, update, or general meeting**
-→ [2.4 Facilitation](../leadership/facilitation.md)
+→ [3.4 Facilitation](../leadership/facilitation.md)
 
 **How to start a local circle, or a chapter**
 → [A.2.8 Starting a local circle](../appendices/reference/field-guides/starting-a-circle.md) and [1.4.5 Local circles and movement growth](../dna/structure.md#local-circles-and-growth) — every local group starts as a circle; chapter criteria aren't adopted yet.
@@ -143,16 +145,16 @@ Common questions, routed to the page, or the [Atlas](https://sapiensfirst.org/at
 → [A.2.6 Running gatherings](../appendices/reference/field-guides/gatherings.md) and [A.2.7 Planning peaceful actions](../appendices/reference/field-guides/actions.md)
 
 **How to have an organizing conversation**
-→ [A.2.10 Having organizing conversations](../appendices/reference/field-guides/organizing-conversations.md) and [2.3.1 The Organizer Conversation](../leadership/people.md#organizer-conversation)
+→ [A.2.10 Having organizing conversations](../appendices/reference/field-guides/organizing-conversations.md) and [3.3.1 The Organizer Conversation](../leadership/people.md#organizer-conversation)
 
 **How to train other organizers**
-→ [A.2.9 Training organizers](../appendices/reference/field-guides/training.md)
+→ [4 Train others](../train-others/index.md) — planned modules — and [A.2.9 Training organizers](../appendices/reference/field-guides/training.md)
 
 **Our values, and the red lines nobody may cross**
 → [1.3.1 Core values](../dna/culture.md#core-values) and [1.3.3 Behavioral commitments and red lines](../dna/culture.md#behavioral-commitments-and-red-lines)
 
 **How to give useful feedback, or grow through responsibility**
-→ [2.1.1 Feedback culture](../leadership/culture-in-leadership.md#feedback-culture) and [2.3.4 Supporting growth](../leadership/people.md#supporting-growth)
+→ [3.1.1 Feedback culture](../leadership/culture-in-leadership.md#feedback-culture) and [3.3.4 Supporting growth](../leadership/people.md#supporting-growth)
 
 **A copyable template for a scope, plan, update, or handoff**
 → [A.2.1 Planning templates](../appendices/reference/planning-templates.md)

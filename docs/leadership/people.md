@@ -1,16 +1,16 @@
 ---
-title: "2.3 People"
+title: "3.3 People"
 description: "Organizer conversations, fit and roles, supporting growth, and recruiting and developing volunteers."
 section: Leadership
 status: under-construction
-construction_note: "Nature and nurture (2.3.2) and guidance on fitting people to roles (2.3.3) are still to be written, and our approach to coaching and to welcoming new volunteers is not yet agreed."
-last_updated: 2026-10-02
+construction_note: "Nature and nurture (3.3.2) and guidance on fitting people to roles (3.3.3) are still to be written, and our approach to coaching and to welcoming new volunteers is not yet agreed."
+last_updated: 2026-10-09
 handbook_id: leadership-people
-handbook_number: "2.3"
+handbook_number: "3.3"
 canonical: /leadership/people
 ---
 
-# 2.3 People
+# 3.3 People
 
 ## Summary
 
@@ -18,7 +18,7 @@ Leading well means helping the right people take on responsibilities they can gr
 
 <!-- Source provenance: docs/practices/organizing-conversations.md (adopted, last_updated 2026-09-27), five-step wording retained verbatim; docs/learning/feedback.md#develop-through-responsibility, first paragraph retained verbatim (second paragraph at 2.1.4; #give-useful-feedback at 2.1.1; the rubric proposal moved verbatim to 2.3.4); docs/practices/training.md and docs/organization/roles-and-circles.md linked, not copied; maintenance/HANDBOOK-OUTLINE.md, 2.3. 2.3.2 and 2.3.3 have no source text. Framing written 2026-10-02. -->
 
-## 2.3.1 The Organizer Conversation {#organizer-conversation}
+## 3.3.1 The Organizer Conversation {#organizer-conversation}
 
 A good conversation moves through five steps, from first contact to a clear next step.
 
@@ -30,19 +30,19 @@ A good conversation moves through five steps, from first contact to a clear next
 
 For preparation, the listening reminder and door-knocking, use the [organizing conversations guide](../appendices/reference/field-guides/organizing-conversations.md#a-simple-conversation).
 
-## 2.3.2 Nature and nurture {#nature-and-nurture}
+## 3.3.2 Nature and nurture {#nature-and-nurture}
 
 This section is still being written. It will set out how we think about people's strengths and how they develop, and how that shapes the way we lead.
 
-## 2.3.3 The right people in the right roles {#right-people-right-roles}
+## 3.3.3 The right people in the right roles {#right-people-right-roles}
 
 Roles describe the work; people take them on and hand them over. For what roles and circles are, how to read them in Atlas, and how a role changes hands, use [1.4.2 Roles, circles, and decision rights](../dna/structure.md#roles-circles-decision-rights) and [Taking on or handing over a role](../dna/structure.md#roles-circles-decision-rights). Live assignments stay in Atlas. Guidance on judging fit between a person and a role is still being written.
 
-## 2.3.4 Supporting growth without assuming rapid transformation {#supporting-growth}
+## 3.3.4 Supporting growth without assuming rapid transformation {#supporting-growth}
 
 A next step might be running part of a meeting, completing a project, supporting another Fellow, or coordinating a team. Choose something that stretches your skills while fitting your capacity.
 
-Honest feedback goes with this; see [2.1.1](culture-in-leadership.md#feedback-culture). Leadership also includes making it easier for other people to contribute; see [2.1.4](culture-in-leadership.md#modeling-the-culture).
+Honest feedback goes with this; see [3.1.1](culture-in-leadership.md#feedback-culture). Leadership also includes making it easier for other people to contribute; see [3.1.4](culture-in-leadership.md#modeling-the-culture).
 
 ::: proposal Role-specific development rubrics
 
@@ -53,9 +53,9 @@ Possible dimensions include quality, reliability, judgment, collaboration, and h
 Before adoption, define who reviews whom, what evidence is used, how feedback is discussed, and what decisions the review affects. Separate a project's results from judgments about an individual's contribution: outcomes can depend on resources and circumstances outside their control.
 :::
 
-Draft rubrics for the Individual Contributor, DRI, and Player-Coach role types already exist; see [3.1 Expectations](../staff/expectations.md).
+Draft rubrics for the Individual Contributor, DRI, and Player-Coach role types already exist; see [E.1 Expectations](../appendices/staff/expectations.md).
 
-## 2.3.5 Recruiting and developing volunteers {#recruiting-and-developing-volunteers}
+## 3.3.5 Recruiting and developing volunteers {#recruiting-and-developing-volunteers}
 
 Welcoming participants, following up, training, and handing over sustainable responsibility already have practical guides:
 

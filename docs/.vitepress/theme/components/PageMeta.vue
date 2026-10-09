@@ -33,6 +33,7 @@ const STATUS_LABELS: Record<string, string> = {
   proposal: 'Proposal — not current policy',
   experimental: 'Experimental — may not continue',
   reference: 'Reference',
+  planned: 'Planned — outline awaiting review',
 }
 
 const status = computed(() => {
@@ -42,6 +43,7 @@ const status = computed(() => {
 const statusLabel = computed(() => status.value && STATUS_LABELS[status.value])
 
 const underConstruction = computed(() => frontmatter.value.status === 'under-construction')
+const planned = computed(() => frontmatter.value.status === 'planned')
 const constructionNote = computed(() => {
   const n = frontmatter.value.construction_note
   return typeof n === 'string' && n.trim() ? n.trim() : undefined
@@ -70,16 +72,16 @@ const lastUpdated = computed(() => {
   <p v-if="statusLabel" class="sf-status-line">
     <span class="sf-status-badge" :class="`sf-status-${status}`">{{ statusLabel }}</span>
   </p>
-  <aside v-if="underConstruction" class="sf-construction" role="note" aria-label="Page status">
+  <aside v-if="underConstruction || planned" class="sf-construction" role="note" aria-label="Page status">
     <svg class="sf-construction__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
       <path d="M12 2.5 1.5 21h21L12 2.5Z" fill="currentColor" />
       <path d="M12 9v5.5" stroke="var(--sf-construction-mark)" stroke-width="2.4" stroke-linecap="square" />
       <circle cx="12" cy="17.6" r="1.4" fill="var(--sf-construction-mark)" />
     </svg>
     <div class="sf-construction__body">
-      <p class="sf-construction__label">Under construction</p>
+      <p class="sf-construction__label">{{ planned ? 'Planned module' : 'Under construction' }}</p>
       <p class="sf-construction__text">
-        {{ constructionNote ?? 'This page is still being written. Parts may be missing or change before it is final.' }}
+        {{ constructionNote ?? (planned ? 'This outline names a future module. Review it before writing or using it as a training.' : 'This page is still being written. Parts may be missing or change before it is final.') }}
       </p>
     </div>
   </aside>

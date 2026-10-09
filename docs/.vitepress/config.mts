@@ -5,7 +5,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 import { handbookContainers } from './containers'
 import { headingNumbers } from './heading-numbers'
 import { generateLlmsFiles } from './llms'
-import { getHandbookChapters, getSidebarGroups, validateHandbookToc } from '../../scripts/handbook-toc.mjs'
+import { getHandbookChapters, getSidebarGroups, PAGE_STATUSES, validateHandbookToc } from '../../scripts/handbook-toc.mjs'
 import { resolveReferences } from '../../scripts/handbook-references.mjs'
 import { loadRedirects, writeRedirects } from '../../scripts/handbook-redirects.mjs'
 import { VERSION } from './version.mjs'
@@ -24,7 +24,7 @@ const chapter = (section: string) => handbookChapters.find((c) => c.section === 
 const chapterLink = (section: string) => ({ text: chapter(section).label, link: chapter(section).link })
 const activeMatch = (section: string) => `^/${chapter(section).link.split('/')[1]}/`
 // Chapters with their own navbar link; the rest go under "More".
-const navChapters = ['Introduction', 'DNA', 'Leadership', 'Staff']
+const navChapters = ['Introduction', 'DNA', 'Go deeper', 'Leadership', 'Train others']
 
 // Retired legacy routes (handbook-data/redirects.json) still resolve through
 // the redirect stubs written at buildEnd, so links to them (e.g. historic
@@ -154,6 +154,7 @@ export default withMermaid(defineConfig({
 
     // Read by the home page chapter map (theme/components/ChapterMap.vue).
     handbookChapters,
+    handbookStatuses: PAGE_STATUSES,
 
     // Numbered handbook chapters (from handbook-data/toc.json), headed
     // "1. DNA" and linked to their landing pages; the group holding the

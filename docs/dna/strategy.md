@@ -3,7 +3,7 @@ title: "1.2 Strategy"
 description: "How acting, recruiting, and training can build the movement's capacity for political change."
 section: DNA
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: dna-strategy
 handbook_number: "1.2"
 canonical: /dna/strategy
@@ -39,7 +39,7 @@ Use the [gatherings guide](../appendices/reference/field-guides/gatherings.md) a
 
 Recruitment grows through relationships, listening, invitations, and follow-up. Help someone find a next step that fits their interests and capacity. Joining an activity can lead to a small responsibility, then to helping others participate.
 
-The [organizing conversations guide](../appendices/reference/field-guides/organizing-conversations.md) provides a practical starting point, and [2.3.1 The Organizer Conversation](../leadership/people.md#organizer-conversation) explains why it matters. Use the [local circle guide](../appendices/reference/field-guides/starting-a-circle.md) when a group is ready to organize together.
+The [organizing conversations guide](../appendices/reference/field-guides/organizing-conversations.md) provides a practical starting point, and [3.3.1 The Organizer Conversation](../leadership/people.md#organizer-conversation) explains why it matters. Use the [local circle guide](../appendices/reference/field-guides/starting-a-circle.md) when a group is ready to organize together.
 
 ## 1.2.4 Train {#train}
 
@@ -78,7 +78,7 @@ Shared direction, governance, resources, and support hold it all together. Atlas
 
 The cycle can compound when people stay involved, take responsibility, and help others lead. Recruitment without retention or support can leave the movement with more contacts and little additional capacity.
 
-We aim for exponential growth. The cycle illustrates a possible mechanism for it, not a measured growth rate or a promise. For the proposed technical support, see [3.4.1 Tech team: strategy primer](../staff/department-specific-guidance.md#tech-team-strategy).
+We aim for exponential growth. The cycle illustrates a possible mechanism for it, not a measured growth rate or a promise. For the proposed technical support, see [E.4.1 Tech team: strategy primer](../appendices/staff/department-specific-guidance.md#tech-team-strategy).
 
 ## 1.2.6 Assumptions and strategic choices {#assumptions-and-strategic-choices}
 
@@ -86,7 +86,7 @@ Our strategy assumes that participation can become organizing capacity and that 
 
 For a particular activity, state the intended outcome and the assumption connecting the work to it. If invitations increase but sustained participation does not, examine the invitation and onboarding approach. If more people complete training but few lead activities, examine what practice and support they need. These are examples of questions for learning, not adopted performance thresholds.
 
-Use [strategic hypotheses](../leadership/strategic-planning.md#strategic-hypotheses), [metrics](../leadership/strategic-planning.md#metrics), and [reviews of strategy performance](../leadership/strategic-planning.md#reviewing-performance-of-the-strategy) in [2.2 Strategic planning](../leadership/strategic-planning.md) to develop and assess a plan.
+Use [strategic hypotheses](../leadership/strategic-planning.md#strategic-hypotheses), [metrics](../leadership/strategic-planning.md#metrics), and [reviews of strategy performance](../leadership/strategic-planning.md#reviewing-performance-of-the-strategy) in [3.2 Strategic planning](../leadership/strategic-planning.md) to develop and assess a plan.
 
 ::: background Assumptions, evidence, and strategy
 

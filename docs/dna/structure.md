@@ -3,7 +3,7 @@ title: "1.4 Structure"
 description: "How roles, circles, participation, and decision rights fit together, and what is still unsettled."
 section: DNA
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: dna-structure
 handbook_number: "1.4"
 canonical: /dna/structure
@@ -61,7 +61,7 @@ Atlas holds the current roles, circles, and who fills each one. This page explai
 
 **How circles and work relate.** Atlas holds two related views: how responsibilities are organized (circles and roles), and how work contributes to the mission (programs, products, and projects).
 
-This distinction helps when responsibilities change. A product can continue even when its owner or supporting circle changes. For the kinds of work records Atlas uses, see [2.2.1 From mission to work](../leadership/strategic-planning.md#from-mission-to-objectives).
+This distinction helps when responsibilities change. A product can continue even when its owner or supporting circle changes. For the kinds of work records Atlas uses, see [3.2.1 From mission to work](../leadership/strategic-planning.md#from-mission-to-objectives).
 
 **Taking on or handing over a role.** Review the purpose, responsibilities, linked work, access needs, and available capacity with the person coordinating the assignment. Make sure Atlas reflects the current assignment.
 
@@ -109,7 +109,7 @@ You can contribute in different ways at different points in your life; choose a 
 
 **Governance roles.** A role is a specific responsibility. A role title alone doesn't establish permissions or authority.
 
-**Employment.** Staff status is a separate concept from participation level and governance role. See [3.0.4 What counts as staff?](../staff/beliefs-about-staff.md#what-counts-as-staff)
+**Employment.** Staff status is a separate concept from participation level and governance role. See [E.0.4 What counts as staff?](../appendices/staff/beliefs-about-staff.md#what-counts-as-staff)
 
 **Ways to participate.** There are three main ways to participate: Supporter, Member, and Organizer.
 
@@ -139,15 +139,15 @@ The ladder groups the ways to participate above. Atlas holds the current state o
 Atlas holds current membership terms, role assignments, and engagement levels. This page explains what each way of participating means.
 :::
 
-**Organizers and role types.** "Organizer" is the umbrella term for people who take responsibility for work. Organizers hold one or more of three role types, defined in [3.1 Expectations](../staff/expectations.md). You may still meet the older titles Fellow, Steward, and Lead; they map as follows:
+**Organizers and role types.** "Organizer" is the umbrella term for people who take responsibility for work. Organizers hold one or more of three role types, defined in [E.1 Expectations](../appendices/staff/expectations.md). You may still meet the older titles Fellow, Steward, and Lead; they map as follows:
 
 | Older title | Role type | Where it is defined |
 | --- | --- | --- |
-| Fellow | Individual Contributor (IC) | [3.1.1](../staff/expectations.md#individual-contributor) |
-| Steward | Domain owner / Directly Responsible Individual (DRI) | [3.1.2](../staff/expectations.md#directly-responsible-individual) |
-| Lead | Player-Coach (PC) | [3.1.3](../staff/expectations.md#player-coach) |
+| Fellow | Individual Contributor (IC) | [E.1.1](../appendices/staff/expectations.md#individual-contributor) |
+| Steward | Domain owner / Directly Responsible Individual (DRI) | [E.1.2](../appendices/staff/expectations.md#directly-responsible-individual) |
+| Lead | Player-Coach (PC) | [E.1.3](../appendices/staff/expectations.md#player-coach) |
 
-Role types are not mutually exclusive positions or a managerial ladder: one person can hold more than one ([3.1.4](../staff/expectations.md#mixed-roles)). A Fellow takes responsibility for a project through the supported volunteer [Fellowship](../introduction/getting-involved.md#volunteer-and-fellowship-pathways). "Steward" described a further engagement level for Fellows after three months and graduation, separate from any role with "Steward" in its title. A title alone doesn't establish permissions or authority.
+Role types are not mutually exclusive positions or a managerial ladder: one person can hold more than one ([E.1.4](../appendices/staff/expectations.md#mixed-roles)). A Fellow takes responsibility for a project through the supported volunteer [Fellowship](../introduction/getting-involved.md#volunteer-and-fellowship-pathways). "Steward" described a further engagement level for Fellows after three months and graduation, separate from any role with "Steward" in its title. A title alone doesn't establish permissions or authority.
 
 **Keep role and participation separate.** Leading a team is a responsibility, not a requirement that everyone must progress toward. Continuing as an individual contributor can be a valuable choice.
 

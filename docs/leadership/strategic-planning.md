@@ -1,15 +1,15 @@
 ---
-title: "2.2 Strategic planning"
+title: "3.2 Strategic planning"
 description: "Turning the mission into objectives, measures, projects, and regular review."
 section: Leadership
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: leadership-strategic-planning
-handbook_number: "2.2"
+handbook_number: "3.2"
 canonical: /leadership/strategic-planning
 ---
 
-# 2.2 Strategic planning
+# 3.2 Strategic planning
 
 ## Summary
 
@@ -17,9 +17,9 @@ Strategic planning connects the mission to the work people do this quarter and t
 
 <!-- Source provenance: docs/work/index.md (adopted, 2026-09-28), docs/work/projects.md (adopted, 2026-09-28), docs/work/weekly-work.md (proposal, 2026-09-27), docs/learning/index.md (adopted, 2026-09-27), docs/learning/metrics.md (adopted, 2026-09-28), docs/learning/reviewing-metrics.md (adopted, 2026-09-27), docs/learning/strategic-hypotheses.md (adopted, 2026-09-27); docs/work/templates.md via A.2.1; maintenance/HANDBOOK-OUTLINE.md, 2.2. Practical content carried in with wording retained (tables, examples, diagrams, proposals); Atlas and AI is at 1.4.6; framing written 2026-10-02. -->
 
-Good work starts with a clear purpose. Before you take on a task, know three things: **who it helps, what should change, and how it moves the mission forward.** Learning runs as a loop: define what matters, observe what happens, reflect together, and change the next attempt ([2.2.7](#reviewing-performance-of-the-strategy)). The handbook explains the approach; [Atlas](https://sapiensfirst.org/atlas) holds current work records. Proposals on this page need to be discussed and adopted before they become requirements.
+Good work starts with a clear purpose. Before you take on a task, know three things: **who it helps, what should change, and how it moves the mission forward.** Learning runs as a loop: define what matters, observe what happens, reflect together, and change the next attempt ([3.2.7](#reviewing-performance-of-the-strategy)). The handbook explains the approach; [Atlas](https://sapiensfirst.org/atlas) holds current work records. Proposals on this page need to be discussed and adopted before they become requirements.
 
-## 2.2.1 From mission to objectives {#from-mission-to-objectives}
+## 3.2.1 From mission to objectives {#from-mission-to-objectives}
 
 Durable strategy and current priorities are different things. The theory of change and its assumptions belong in [1.2](../dna/strategy.md#assumptions-and-strategic-choices); current objectives, projects, and owners belong in planning and change as conditions change.
 
@@ -51,7 +51,7 @@ A product or service can need several projects over its life. Finishing a projec
 
 [Metrics](#metrics) calls that change an **outcome**, and adds **input** for an early, fast-moving measure of effort. A workshop is an output. Participants who can run their first meeting are the outcome. Both matter: we need to deliver the workshop, and find out whether it helps.
 
-Each key result should point to a defined metric, so everyone reads it the same way. Track the outcome, and also the inputs a role can directly influence; [2.2.3](#metrics) explains how.
+Each key result should point to a defined metric, so everyone reads it the same way. Track the outcome, and also the inputs a role can directly influence; [3.2.3](#metrics) explains how.
 
 ::: proposal Connecting objectives, products, and tasks
 
@@ -86,9 +86,9 @@ flowchart TB
 4. **Break it down.** Split the work into milestones and concrete next actions.
 5. **Review it.** Look at what happened and adjust the plan.
 
-## 2.2.2 Objectives and key results (OKRs) {#okrs}
+## 3.2.2 Objectives and key results (OKRs) {#okrs}
 
-**Start from objectives.** An **objective** describes a change we want to achieve; **key results** tell us how we'll recognize progress ([2.2.1](#from-mission-to-objectives) defines the terms). Each key result should point to a clearly defined **metric**, with a starting point, a target, and a date.
+**Start from objectives.** An **objective** describes a change we want to achieve; **key results** tell us how we'll recognize progress ([3.2.1](#from-mission-to-objectives) defines the terms). Each key result should point to a clearly defined **metric**, with a starting point, a target, and a date.
 
 ::: example
 **Objective:** Build a strong Berkeley chapter.
@@ -105,9 +105,9 @@ Start with the outcome you care about. Then ask what you can observe, how you'll
 
 Treat this as guidance rather than an adopted OKR process: the planning cadence, and who owns and reviews each objective, are not settled yet.
 
-## 2.2.3 Metrics {#metrics}
+## 3.2.3 Metrics {#metrics}
 
-We use metrics to understand the health of the movement and to decide where to put our limited time, money, and attention. A metric is useful when it helps someone make a better decision; otherwise, don't collect it. Three ideas make that work: start from the objective ([2.2.2](#okrs)), pair inputs with outcomes, and define each measure clearly.
+We use metrics to understand the health of the movement and to decide where to put our limited time, money, and attention. A metric is useful when it helps someone make a better decision; otherwise, don't collect it. Three ideas make that work: start from the objective ([3.2.2](#okrs)), pair inputs with outcomes, and define each measure clearly.
 
 Metrics come in three kinds: an **input** is an early, fast-moving measure a role can directly influence; an **output** is what gets produced; an **outcome** is the change that resulted. We track inputs and outcomes together, because inputs show where to act and outcomes show whether the work is succeeding.
 
@@ -191,7 +191,7 @@ For example, more recruits may not lead to more active organizers if nobody has 
 Define each variable, the time period, the assumptions, and the evidence behind it. Compare the model's predictions with actual results and revise it. An “R0” for movement growth is an exploratory analogy, not an established metric or a guarantee of exponential growth.
 :::
 
-## 2.2.4 Strategic decisions and hypotheses {#strategic-hypotheses}
+## 3.2.4 Strategic decisions and hypotheses {#strategic-hypotheses}
 
 Most plans start from what we already do and ask what to add next. That habit protects the status quo. Working backwards starts from the change you want. Then it asks what would have to be true to get there, a sharper way to choose which inputs deserve attention. Work backward from the outcome you want, state the assumption connecting the work to it, review the evidence, and adjust. [1.2.6](../dna/strategy.md#assumptions-and-strategic-choices) frames the organization-level assumptions.
 
@@ -218,15 +218,15 @@ This draws on the *Working Backwards* approach described by Colin Bryar and Bill
 What still needs to be settled: which circles adopt this as a standing habit, how often a hypothesis gets reviewed, and where "if this, then that" statements get recorded in Atlas.
 :::
 
-Working backwards asks a question before you build a metric at all: what outcome are we chasing? Everything in [2.2.3 Metrics](#metrics) and [2.2.7](#reviewing-performance-of-the-strategy) follows from a good answer to that.
+Working backwards asks a question before you build a metric at all: what outcome are we chasing? Everything in [3.2.3 Metrics](#metrics) and [3.2.7](#reviewing-performance-of-the-strategy) follows from a good answer to that.
 
-## 2.2.5 Project portfolio management {#project-portfolio-management}
+## 3.2.5 Project portfolio management {#project-portfolio-management}
 
-Projects are bounded efforts to create or change something. A [project](../appendices/glossary.md#project) has a scope, a plan, and a defined hand-off; [2.2.6](#project-execution-and-handoffs) explains how to scope and plan one. Guidance on selecting, sequencing, resourcing, pausing, and stopping projects across the whole portfolio is still being written; in the meantime, check [decision rights](../dna/structure.md#roles-circles-decision-rights) before committing the organization.
+Projects are bounded efforts to create or change something. A [project](../appendices/glossary.md#project) has a scope, a plan, and a defined hand-off; [3.2.6](#project-execution-and-handoffs) explains how to scope and plan one. Guidance on selecting, sequencing, resourcing, pausing, and stopping projects across the whole portfolio is still being written; in the meantime, check [decision rights](../dna/structure.md#roles-circles-decision-rights) before committing the organization.
 
 **Propose a new project.** To propose a new project, write a scope using the [project scope template](../appendices/reference/planning-templates.md#project-scope), and check who holds decision rights for the area in [Checking decision rights](../dna/structure.md#roles-circles-decision-rights). Discuss the proposal with the relevant circle or role holder before investing heavily in an approach; who approves new projects isn't formally defined yet. Once it's agreed, record the project in Atlas.
 
-## 2.2.6 Project execution and handoffs {#project-execution-and-handoffs}
+## 3.2.6 Project execution and handoffs {#project-execution-and-handoffs}
 
 Here's the shape that work takes, with room to loop back and improve before you finish. Execution runs from scope through plan, testing, and completion. A product or service can need several projects over its life, and finishing a project doesn't necessarily end the responsibility to maintain what it produced.
 
@@ -308,7 +308,7 @@ We draw on Getting Things Done (GTD). The useful habit here is to capture commit
 Choose tools that support that habit. The handbook does not require a particular task app or a full GTD system.
 :::
 
-## 2.2.7 Reviewing performance of the strategy {#reviewing-performance-of-the-strategy}
+## 3.2.7 Reviewing performance of the strategy {#reviewing-performance-of-the-strategy}
 
 Collecting numbers is the easy part. The value comes from looking at them regularly, understanding what changed, and deciding what to do. Review the strategy through its metrics: what the numbers show, where the bottleneck is, and where resources should go.
 
@@ -322,7 +322,7 @@ flowchart TB
   class D accent
 ```
 
-We want to get better at the work, and help others do the same. That means paying attention to results, welcoming feedback ([2.1.1](culture-in-leadership.md#feedback-culture)), and sharing what we learn. For the theory behind this approach, see the reading list on movements and our approach.
+We want to get better at the work, and help others do the same. That means paying attention to results, welcoming feedback ([3.1.1](culture-in-leadership.md#feedback-culture)), and sharing what we learn. For the theory behind this approach, see the reading list on movements and our approach.
 
 **Give each level the view it needs.** Not everyone needs the same numbers. Metrics should roll up from the work to the whole movement.
 
@@ -389,6 +389,6 @@ Use metrics to see where help is needed. Use conversations and [feedback](cultur
 
 ::: related
 - [Planning templates (A.2.1)](../appendices/reference/planning-templates.md) — Copyable templates for scopes, plans, updates, and handoffs.
-- [2.4 Facilitation](facilitation.md) — Check-ins, written updates, and general meetings.
+- [3.4 Facilitation](facilitation.md) — Check-ins, written updates, and general meetings.
 - [1.4.6 Atlas and AI](../dna/structure.md#atlas-and-the-handbook) — Where we're heading: Atlas and AI that help us notice what needs attention.
 :::

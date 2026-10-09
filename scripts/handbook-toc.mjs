@@ -4,6 +4,17 @@ import { fileURLToPath } from 'node:url'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const toc = JSON.parse(readFileSync(join(ROOT, 'handbook-data/toc.json'), 'utf8'))
+const DOCS = join(ROOT, 'docs')
+
+export const PAGE_STATUSES = {
+  adopted: { emoji: '✅', label: 'Adopted' },
+  reference: { emoji: '✅', label: 'Reference' },
+  draft: { emoji: '📝', label: 'Draft' },
+  'under-construction': { emoji: '🚧', label: 'Under construction' },
+  planned: { emoji: '⬜', label: 'Planned' },
+  proposal: { emoji: '📝', label: 'Proposal' },
+  experimental: { emoji: '🧪', label: 'Experimental' },
+}
 
 export function getHandbookItems(entries = toc) {
   return entries.map(({ title, path }) => ({
@@ -26,6 +37,23 @@ function metadata(source) {
     const match = line.match(/^([\w_]+):\s*(.*?)\s*$/)
     return match ? [[match[1], match[2].replace(/^(["'])(.*)\1$/, '$2')]] : []
   }))
+}
+
+function pageStatus(entry, docsRoot) {
+  const path = join(docsRoot, entry.path)
+  let meta = {}
+  try {
+    meta = metadata(readFileSync(path, 'utf8'))
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error
+  }
+  const info = PAGE_STATUSES[meta.status]
+  return {
+    status: meta.status,
+    statusEmoji: info?.emoji,
+    statusLabel: info?.label,
+    constructionNote: meta.construction_note,
+  }
 }
 
 export function validateHandbookToc(docsRoot = join(ROOT, 'docs'), entries = toc) {
@@ -51,6 +79,8 @@ export function validateHandbookToc(docsRoot = join(ROOT, 'docs'), entries = toc
     for (const [field, key] of [['id', 'handbook_id'], ['number', 'handbook_number'], ['title', 'title'], ['section', 'section']]) {
       if (entry[field] !== page.meta[key]) errors.push(`${entry.path}: TOC ${field} differs from ${key}`)
     }
+    if (entry.status !== undefined && entry.status !== page.meta.status) errors.push(`${entry.path}: TOC status differs from status`)
+    if (!Object.hasOwn(PAGE_STATUSES, page.meta.status)) errors.push(`${entry.path}: missing or invalid page status`)
     const heading = page.source.match(/^#\s+(.+?)\s*$/m)?.[1]
     if (heading !== entry.title) errors.push(`${entry.path}: TOC title differs from H1`)
     if (!entry.title?.startsWith(`${entry.number} `)) errors.push(`${entry.path}: title must begin with number ${entry.number}`)
@@ -74,12 +104,14 @@ export function getHandbookSections(entries = toc) {
 /**
  * Reader-facing chapter labels, keyed by TOC `section`. The single source for
  * the short names used in the navbar, sidebar group headings and home page
- * chapter map ("Start here" → 0 Introduction, "Lead" → 2 Leadership, …).
+ * chapter map ("Start here" → 0 Start here, "Lead" → 3 Lead, …).
  */
 export const CHAPTER_LABELS = {
   Introduction: { label: 'Start here', blurb: 'Who we are, how this handbook works, and how to take a first step.' },
   DNA: { label: 'DNA', blurb: 'Our story, theory of change, values, and how we are organized.' },
+  'Go deeper': { label: 'Go deeper', blurb: 'Explore nonviolence, movement strategy, AI safety, and organizing conversations.' },
   Leadership: { label: 'Lead', blurb: 'Leading well in any role: culture, planning, people, and facilitation.' },
+  'Train others': { label: 'Train others', blurb: 'Plan and facilitate trainings that help people practice and organize.' },
   Staff: { label: 'Staff', blurb: 'Why we have staff, what we expect, and how we pay and develop people.' },
   Supplemental: { label: 'Supplemental', blurb: 'Practical topics beyond the core chapters, from fundraising to media.' },
   'Reference materials': {
@@ -148,9 +180,9 @@ function pageGroups(section, pages, landing) {
  * One record per chapter (TOC `section`), in TOC order: its friendly label,
  * chapter number and title, landing link, and pages. A chapter's root entry
  * (the one numbered without a dot, e.g. "2") is its landing page and is not
- * repeated in `pages`; a chapter without one (Staff) lands on its first page.
+ * repeated in `pages`; a chapter without one lands on its first page.
  */
-export function getHandbookChapters(entries = toc) {
+export function getHandbookChapters(entries = toc, docsRoot = DOCS) {
   const groups = new Map()
   for (const entry of entries) {
     if (!groups.has(entry.section)) groups.set(entry.section, [])
@@ -162,7 +194,7 @@ export function getHandbookChapters(entries = toc) {
     const title = root ? splitTitle(root).title : section
     const { label = title, blurb = '' } = CHAPTER_LABELS[section] ?? {}
     const link = linkFor(root ?? items[0])
-    const pages = items.filter(entry => entry !== root).map(entry => ({ ...splitTitle(entry), link: linkFor(entry) }))
+    const pages = items.filter(entry => entry !== root).map(entry => ({ ...splitTitle(entry), link: linkFor(entry), ...pageStatus(entry, docsRoot) }))
     return {
       section,
       label,
@@ -172,6 +204,7 @@ export function getHandbookChapters(entries = toc) {
       // Appendices are numbered with letters or numerals rather than digits.
       appendix: !/^\d/.test(number),
       link,
+      ...pageStatus(root ?? items[0], docsRoot),
       pages,
       groups: pageGroups(section, pages, link),
     }
@@ -181,21 +214,24 @@ export function getHandbookChapters(entries = toc) {
 /**
  * Sidebar groups for VitePress. Each chapter heading reads "<number>. <Title>"
  * and links to the chapter's landing page, so the landing page is not repeated
- * as an item; a chapter without one (Staff) has an unlinked heading and keeps
+ * as an item; a chapter without one has an unlinked heading and keeps
  * its first page as an item. A chapter with no other pages (Glossary) is a
  * plain heading link with no items. Headings and page titles are split into a
  * number column and a title so they align like a printed table of contents
  * (styled in docs/.vitepress/theme/nav.css); `plainText` keeps a tag-free
  * form for consumers such as scripts/build-book.mjs.
  */
-export function getSidebarGroups(entries = toc) {
+export function getSidebarGroups(entries = toc, docsRoot = DOCS) {
   const cell = (number, body) => `<span class="sf-toc-num">${escapeHtml(number)}</span><span class="sf-toc-title">${body}</span>`
+  const status = page => page.statusEmoji
+    ? `<span class="sf-toc-status" role="img" aria-label="${escapeHtml(page.statusLabel)}" title="${escapeHtml([page.statusLabel, page.constructionNote].filter(Boolean).join(': '))}">${page.statusEmoji}</span> `
+    : ''
   const pageItem = (page, number = page.number) => ({
-    text: cell(number, escapeHtml(page.title)),
+    text: cell(number, `${status(page)}${escapeHtml(page.title)}`),
     plainText: `${page.number} ${page.title}`,
     link: page.link,
   })
-  return getHandbookChapters(entries).map(chapter => {
+  return getHandbookChapters(entries, docsRoot).map(chapter => {
     const hasLanding = entries.some(entry => entry.section === chapter.section && !entry.number.includes('.'))
     const items = chapter.groups
       ? chapter.groups.map(group => ({
@@ -206,7 +242,7 @@ export function getSidebarGroups(entries = toc) {
         }))
       : chapter.pages.map(page => pageItem(page))
     return {
-      text: cell(`${chapter.number}.`, `<strong class="sf-toc-label">${escapeHtml(chapter.title)}</strong>`),
+      text: cell(`${chapter.number}.`, `${status(chapter)}<strong class="sf-toc-label">${escapeHtml(chapter.title)}</strong>`),
       plainText: `${chapter.number}. ${chapter.title}`,
       appendix: chapter.appendix,
       ...(hasLanding ? { link: chapter.link } : {}),

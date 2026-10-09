@@ -418,14 +418,16 @@
   text-transform: uppercase;
 }
 .VPHero .text {
-  max-width: 9ch !important;
+  max-width: min(11ch, 100%) !important;
   font-family: var(--sf-font-display);
-  font-size: clamp(4rem, 11vw, 7.5rem) !important;
+  font-size: clamp(2.6rem, 10vw, 7.5rem) !important;
   font-weight: 800;
   line-height: 0.87 !important;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   color: var(--vp-c-text-1);
+  overflow-wrap: normal;
+  word-break: normal;
 }
 .VPHero .text::after {
   content: '';

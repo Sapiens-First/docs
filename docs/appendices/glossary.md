@@ -3,7 +3,7 @@ title: "D Glossary"
 description: "Short definitions of the terms used across the Sapiens First handbook, with links to where each is explained."
 section: Glossary
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: glossary
 handbook_number: "D"
 canonical: /appendices/glossary
@@ -53,7 +53,7 @@ An area of related work that Atlas groups roles and projects under, alongside it
 
 ### Directly Responsible Individual (DRI)
 
-A person who owns an outcome, especially one spanning functions, systems, or contributors, with a clear purpose, domain, accountabilities, and decision authority. See [3.1.2 Directly Responsible Individual](../staff/expectations.md#directly-responsible-individual).
+A person who owns an outcome, especially one spanning functions, systems, or contributors, with a clear purpose, domain, accountabilities, and decision authority. See [E.1.2 Directly Responsible Individual](staff/expectations.md#directly-responsible-individual).
 
 ### Fellow
 
@@ -65,7 +65,7 @@ A structured volunteer program, not employment, in which each Fellow takes respo
 
 ### Individual Contributor (IC)
 
-A person who directly creates value through their craft. See [3.1.1 Individual Contributor](../staff/expectations.md#individual-contributor).
+A person who directly creates value through their craft. See [E.1.1 Individual Contributor](staff/expectations.md#individual-contributor).
 
 ### Key result
 
@@ -101,7 +101,7 @@ An early-stage measure a role holder can directly influence, such as how quickly
 
 ### Player-Coach (PC)
 
-A person who combines substantive work in their craft with developing other people. See [3.1.3 Player-Coach](../staff/expectations.md#player-coach).
+A person who combines substantive work in their craft with developing other people. See [E.1.3 Player-Coach](staff/expectations.md#player-coach).
 
 ### Product or service
 
@@ -129,7 +129,7 @@ What a project includes and excludes, with its objective, success criteria, cons
 
 ### Staff
 
-People paid to work for Sapiens First. Staff status is separate from participation level, governance role, and performance role. See [3.0.4 What counts as staff?](../staff/beliefs-about-staff.md#what-counts-as-staff)
+People paid to work for Sapiens First. Staff status is separate from participation level, governance role, and performance role. See [E.0.4 What counts as staff?](staff/beliefs-about-staff.md#what-counts-as-staff)
 
 ### Lead
 

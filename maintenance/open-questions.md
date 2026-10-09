@@ -95,7 +95,7 @@ Unresolved: the adopted Holacracy constitution and version, any local adaptation
 
 ### 1.4.4 Participation, responsibility, and employment (#participation-responsibility-employment)
 
-- How does organizer status relate to employment (staff status is a separate concept; see [3.1](../staff/expectations.md))?
+- How does organizer status relate to employment (staff status is a separate concept; see [E.1](../docs/appendices/staff/expectations.md))?
 - Do the older conditions for the Steward engagement level (three months and graduation) still apply to DRIs?
 
 ### 1.4.5 Local circles and movement growth (#local-circles-and-growth)
@@ -208,7 +208,7 @@ Still needed: which system is the authoritative record for decisions and commitm
 
 ## 3.0 Beliefs about staff
 
-Page: `docs/staff/beliefs-about-staff.md` (/staff/beliefs-about-staff)
+Page: `docs/appendices/staff/beliefs-about-staff.md` (/appendices/staff/beliefs-about-staff)
 
 ### 3.0.1 Why pay staff in a volunteer movement? (#why-pay-staff)
 
@@ -228,7 +228,7 @@ Needed: which arrangements count as staff (employees, contractors, paid fellows 
 
 ## 3.2 Compensation
 
-Page: `docs/staff/compensation.md` (/staff/compensation)
+Page: `docs/appendices/staff/compensation.md` (/appendices/staff/compensation)
 
 ### Summary
 
@@ -256,7 +256,7 @@ Undecided: review timing, who approves changes, how decisions are communicated, 
 
 ## 3.3 Professional development
 
-Page: `docs/staff/professional-development.md` (/staff/professional-development)
+Page: `docs/appendices/staff/professional-development.md` (/appendices/staff/professional-development)
 
 ### 3.3.1 Mastery, autonomy, and purpose (#mastery-autonomy-purpose)
 
@@ -296,7 +296,7 @@ Page: `docs/supplemental/interviewing.md` (/supplemental/interviewing)
 ### 4.2.1 What this section needs (#what-this-section-needs)
 
 - Scope: hiring and volunteer-selection interviews, media interviews, or both? (Media is covered in 4.3.)
-- Interview structure, question bank and evaluation criteria, and how they connect to [3.1 Expectations](../staff/expectations.md).
+- Interview structure, question bank and evaluation criteria, and how they connect to [E.1 Expectations](../docs/appendices/staff/expectations.md).
 - Who interviews, who decides, and how candidates hear back.
 - Fairness, privacy and record-keeping expectations.
 
@@ -598,7 +598,7 @@ Page: `docs/citations/staff-sources.md` (/citations/staff-sources)
 
 ### C.3.2 Compensation (3.2) (#compensation)
 
-- Which benchmark sources underlie [3.2](../staff/compensation.md)?
+- Which benchmark sources underlie [E.2](../docs/appendices/staff/compensation.md)?
 - What is the provenance of the compensation policy?
 
 ### C.3.3 Development (3.3) (#development)
@@ -608,7 +608,7 @@ Page: `docs/citations/staff-sources.md` (/citations/staff-sources)
 
 ### C.3.4 Department guidance (3.4) (#department-guidance)
 
-- Which tech primer and meeting-format influences apply to [3.4](../staff/department-specific-guidance.md)?
+- Which tech primer and meeting-format influences apply to [E.4](../docs/appendices/staff/department-specific-guidance.md)?
 
 ## C.4 Reference-material sources
 

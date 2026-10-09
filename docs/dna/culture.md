@@ -3,7 +3,7 @@ title: "1.3 Culture"
 description: "Shared values, operating principles, and the standards for acting in Sapiens First's name."
 section: DNA
 status: draft
-last_updated: 2026-10-02
+last_updated: 2026-10-09
 handbook_id: dna-culture
 handbook_number: "1.3"
 canonical: /dna/culture
@@ -59,7 +59,7 @@ The following standards have one canonical home in [A.1.1](../appendices/referen
 
 Apply the values to concrete choices. Before an action, consider risks to participants and the public. When a plan is contested, listen to the disagreement and explain the tradeoffs. When work depends on information you hold, share the context so others can act. If you can no longer fulfill a responsibility, arrange a handover rather than letting it become a bottleneck.
 
-These examples explain the principles. Check [decision rights](structure.md#roles-circles-decision-rights) before making organizational commitments. For practical conversations, see [2.1.1 Feedback culture](../leadership/culture-in-leadership.md#feedback-culture).
+These examples explain the principles. Check [decision rights](structure.md#roles-circles-decision-rights) before making organizational commitments. For practical conversations, see [3.1.1 Feedback culture](../leadership/culture-in-leadership.md#feedback-culture).
 
 ## 1.3.5 What is distinctive about our culture? {#distinctive-culture}
 
