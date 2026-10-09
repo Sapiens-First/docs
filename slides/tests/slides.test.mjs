@@ -30,8 +30,8 @@ test('DNA deck passes strict coverage and rule validation', t => {
   assert.equal(result.status, 0, result.stdout + result.stderr)
   assert.equal(result.report.errors.length, 0)
   assert.equal(result.report.coverage.uncovered.length, 0)
-  assert.equal(result.report.durationSeconds, 1145)
-  assert.equal(result.report.slideCount, 25)
+  assert.equal(result.report.durationSeconds, 1135)
+  assert.equal(result.report.slideCount, 24)
   assert.equal(result.report.coverage.duplicated.length, 0)
 })
 
@@ -144,7 +144,7 @@ test('private presenter cues are absent from audience HTML and preserved in sepa
   assert.equal(embeddedDeck(presenter).source.text, data.source.text)
 })
 
-test('build produces twenty-five slides and deterministic self-contained resources', t => {
+test('build produces twenty-four slides and deterministic self-contained resources', t => {
   const fixture = build(t, deck(), ['--strict'])
   const first = fixture.run()
   assert.equal(first.status, 0, first.stdout + first.stderr)
@@ -157,7 +157,7 @@ test('build produces twenty-five slides and deterministic self-contained resourc
   assert.ok(audience.slides.every(slide => slide.notes === undefined))
   assert.doesNotMatch(html, /class="(?:source-passage|editorial-cues|slide-notes)"|id="notes-panel"/)
   const sections = html.match(/<section\b[^>]*>/g) ?? []
-  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 25)
+  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 24)
   for (const layout of ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'montage', 'agenda', 'tree']) assert.ok(html.includes(`data-layout="${layout}"`))
   assert.match(html, /data:image\/png;base64,/)
   assert.equal((html.match(/data:font\/ttf;base64,/g) ?? []).length, 3)
@@ -290,10 +290,10 @@ test('reusable steps horizons retain their four-level focus mode; unknown modes 
   assert.notEqual(check(t, data).status, 0, 'four nested focus levels are required')
 })
 
-test('five section dividers, the participation threshold and Culture have dedicated audience slides', () => {
+test('four section dividers, the participation threshold and Culture have dedicated audience slides', () => {
   const data = deck()
   assert.deepEqual(data.slides.filter(slide => slide.layout === 'divider').map(slide => slide.id),
-    ['story-section', 'strategy-section', 'culture-section', 'structure-section', 'pathways-section'])
+    ['story-section', 'strategy-section', 'culture-section', 'structure-section'])
   const threshold = byId(data, 'participation-threshold')
   assert.equal(threshold.layout, 'impact')
   assert.equal(threshold.title, '3.5%')
@@ -341,7 +341,7 @@ test('new layout contracts reject unsupported content and invalid label counts',
   }
 })
 
-test('twenty-five slides require an explicit exception that cannot waive the twenty-minute limit', t => {
+test('twenty-four slides require an explicit exception that cannot waive the twenty-minute limit', t => {
   const data = deck(), accepted = check(t, data, '--strict')
   assert.ok(accepted.report.findings.some(finding => /slide count/.test(finding.message) && finding.justified))
   delete data.ruleExceptions
@@ -373,4 +373,12 @@ test('invalid and strict-rule-failing inputs leave an existing output untouched'
   assert.notEqual(fixture.run().status, 0)
   assert.equal(readFileSync(fixture.output, 'utf8'), 'existing usable presentation')
   assert.equal(readFileSync(fixture.notesOutput, 'utf8'), 'existing usable notes')
+})
+
+test('Pathways to Action is a Structure slide title, not a section', () => {
+  const data = deck()
+  assert.equal(byId(data, 'next-step').title, 'Pathways to Action')
+  assert.equal(byId(data, 'next-step').section, 'structure')
+  assert.ok(data.slides.every(slide => slide.section !== 'pathways'))
+  assert.deepEqual(byId(data, 'agenda').content.labels, ['Story', 'Strategy', 'Culture', 'Structure'])
 })

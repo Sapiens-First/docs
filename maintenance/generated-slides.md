@@ -1,6 +1,6 @@
 # Generated slides: deterministic formula
 
-Last updated: 2026-10-09. This is the D1 contract for the future generator. `slides.mjs generate <page.md>`, generated deck metadata and the visible generated footer are not implemented by this document; they remain TODO D2–D5. The current renderer is under `slides/` while another agent edits the DNA deck; the intended final location is `slides/` after C1.
+Last updated: 2026-10-09. D1 contract, now implemented by `slides/generate.mjs` (`node slides/slides.mjs generate PAGE.md`), the generated-deck footer in the renderer, and the regeneration step in `scripts/build-slides.mjs`. Generated decks with unresolved presentation findings are withheld from the site until reviewed.
 
 ## Input and output
 
@@ -40,3 +40,15 @@ Run the existing strict validator and source-coverage check. Report long labels,
 ## Publication contract
 
 Generated output has `origin: generated`, initial `approved: false`, and `covers` matching its explicitly mapped handbook page IDs; approval never presents it as handcrafted. Every slide, including title and dividers, displays **Auto-generated from the handbook text**. The handbook TOC, module buttons and Slides index also show the 🤖 label. The generator regenerates when module source changes, then validates before publication. These renderer, metadata and build behaviors remain implementation requirements, not existing functionality.
+
+
+## Refinements after the first two starter decks (D6)
+
+Applied in `slides/generate.mjs` after generating Leadership and the strategy deep dive:
+
+- **Link-and-description list items** (`[3.1 Culture in leadership](page.md) — description`) use the link text as the label. The description stays in the notes.
+- **Five-word limit.** A list item, paragraph or Summary over five words is not shown on the slide. The slide shows its heading only, the full text stays in the notes, and the block is listed under `generation.flags` as `long-label`, `long-paragraph` or `long-summary`. Nothing is shortened.
+- **Slide count.** A deck over ten slides carries one explicit deck-level `10-20-30` exception that names the formula as the reason, so it remains visible in the JSON.
+- **Headings over six words** are still reported as findings. A person must retitle the page heading or handcraft the deck; the deck is withheld from the site until then.
+
+Result: Leadership publishes (5 slides, 2 flagged blocks). The strategy deep dive is withheld because two section headings run seven words.

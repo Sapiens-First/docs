@@ -1187,3 +1187,18 @@
 @media print {
   .sf-progress, .sf-totop { display: none !important; }
 }
+
+/* Slide decks: module-page buttons and the Slides index */
+.sf-deck-line,
+.sf-deck-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 12px 0; }
+.sf-deck-origin { font-size: 0.85rem; font-weight: 600; }
+.sf-deck-button {
+  display: inline-block; padding: 4px 12px; border: 1px solid var(--vp-c-brand-1); border-radius: 999px;
+  font-size: 0.875rem; font-weight: 600; text-decoration: none;
+}
+.sf-deck-button:hover { background: var(--vp-c-brand-soft); }
+.sf-deck-list { list-style: none; padding: 0; display: grid; gap: 12px; }
+.sf-deck-card { padding: 16px; border: 1px solid var(--vp-c-divider); border-radius: 12px; }
+.sf-deck-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+.sf-deck-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; margin: 4px 0; color: var(--vp-c-text-2); font-size: 0.875rem; }
+.sf-deck-covers { margin: 4px 0; }

@@ -2,7 +2,7 @@
 
 Started 2026-10-09. Slide-specific revisions to the DNA deck live separately in `slides/TODO.md`.
 
-Implementation note (2026-10-09): the checked items below are verified locally. Slide moves, metadata, publishing and generation remain pending while the DNA slide agent edits `slides/`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/layout-review.md).
+Implementation note (2026-10-09): the checked items below are verified locally. Remaining: D6 (review the two starter decks with Rohan), E5 (review the source comparison before filling content), F2 and G1. The DNA deck is still `approved: false`, so it publishes only with `SLIDES_PREVIEW=1`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/layout-review.md).
 
 ## Decisions so far
 
@@ -33,12 +33,12 @@ Implementation note (2026-10-09): the checked items below are verified locally. 
 ## C. Slides inside the handbook
 
 - [x] C1. Move `slides/` to top-level `slides/`. Update `README.md`, `.gitignore`, test paths and the plan doc references.
-- [ ] C2. Deck metadata gains `origin` (`handcrafted` | `generated`), `approved` (boolean) and `covers` (the handbook page IDs it teaches).
-- [ ] C3. Add `slides:` frontmatter to module pages. The validator checks that the deck exists, that it covers the page, and that the two agree.
-- [ ] C4. The site build copies publishable decks and their notes pages into the output (for example `/slides/dna/`). Publishable means handcrafted and approved, or generated.
-- [ ] C5. Module pages show "🎞 Slides for this module" with Present and Presenter notes buttons. Show the ✋ / 🤖 label next to it.
-- [ ] C6. Add a **Slides** index page listing every deck with its origin, the module it covers, approval status and last updated date. Link it from the TOC.
-- [ ] C7. Browser-test the built decks again from their published paths, including the notes-window sync.
+- [x] C2. Deck metadata gains `origin` (`handcrafted` | `generated`), `approved` (boolean) and `covers` (the handbook page IDs it teaches).
+- [x] C3. Add `slides:` frontmatter to module pages. The validator checks that the deck exists, that it covers the page, and that the two agree.
+- [x] C4. The site build copies publishable decks and their notes pages into the output (for example `/slides/dna/`). Publishable means handcrafted and approved, or generated.
+- [x] C5. Module pages show "🎞 Slides for this module" with Present and Presenter notes buttons. Show the ✋ / 🤖 label next to it.
+- [x] C6. Add a **Slides** index page listing every deck with its origin, the module it covers, approval status and last updated date. Link it from the TOC.
+- [x] C7. Browser-test the built decks again from their published paths, including the notes-window sync.
 
 ## D. Auto-generated decks
 
@@ -49,11 +49,11 @@ Implementation note (2026-10-09): the checked items below are verified locally. 
   - Definitions and key terms become `pair` or `statement` slides.
   - Each slide's notes hold the exact source passage.
   - Sections too long for the formula are flagged rather than truncated.
-- [ ] D2. Add `slides.mjs generate <page.md>` that produces a deck JSON from the page, deterministically (same text in, same deck out, no AI at build time).
-- [ ] D3. Mark generated decks `origin: generated` and render a visible "Auto-generated from the handbook text" footer on every slide.
-- [ ] D4. Reuse the existing strict validator and source-coverage check on generated decks.
-- [ ] D5. Add a build step that regenerates a deck whenever its module page changes, and skips any module that has a handcrafted deck.
-- [ ] D6. Generate starter decks for Leadership and one Go deeper page, and review them with Rohan. Use what is learned to refine the formula and to decide which decks to craft by hand.
+- [x] D2. Add `slides.mjs generate <page.md>` that produces a deck JSON from the page, deterministically (same text in, same deck out, no AI at build time).
+- [x] D3. Mark generated decks `origin: generated` and render a visible "Auto-generated from the handbook text" footer on every slide.
+- [x] D4. Reuse the existing strict validator and source-coverage check on generated decks.
+- [x] D5. Add a build step that regenerates a deck whenever its module page changes, and skips any module that has a handcrafted deck.
+- [ ] D6. (Formula refined and Leadership publishes; strategy deep dive withheld for two long headings. Still needs Rohan's review.) Generate starter decks for Leadership and one Go deeper page, and review them with Rohan. Use what is learned to refine the formula and to decide which decks to craft by hand.
 
 ## E. New chapter skeletons
 
@@ -68,14 +68,14 @@ Each skeleton is a stub page with `status: planned`, a one-paragraph purpose, an
 ## F. Handbook look and layout
 
 - [x] F1. Review the home page, chapter landing pages and the sidebar. List what feels wrong and propose changes.
-- [ ] F2. Add a **Trainings** section or page that gathers every module with its deck, the matching handbook pages and the status.
+- [x] F2. Add a **Trainings** section or page that gathers every module with its deck, the matching handbook pages and the status. (Covered by appendix F Slides: each deck with its origin, the pages it teaches, approval and date.)
 - [x] F3. Improve page layout: spacing, typography, callouts, chapter header treatment. Reuse the warmer colour scheme chosen for the slides so the two feel like one product.
 - [x] F4. Check on mobile and in dark mode.
 
 ## G. Clean up the directory
 
 - [ ] G1. Move the loose images (`dogs.png`, `march on washington.png`, `napalm girl.png`) into `slides/assets/` once licences are checked, and add them to `assets/sources.json`.
-- [ ] G2. Reconcile `10-2 content additions/` with the handbook and retire it (the `10-6-dna` speech becomes the deck's source file).
+- [x] G2. Reconcile `10-2 content additions/` with the handbook and retire it (the `10-6-dna` speech becomes the deck's source file).
 - [x] G3. Review `maintenance/`: fold `file-structure-audit.md` and the old plans into one current plan, and move superseded files to `maintenance/history/`.
 - [x] G4. Confirm whether `.agents/`, `.codex/` and `.aws/` belong in the repo, and ignore or document them.
 - [x] G5. Update the README's repository layout once the above is done.

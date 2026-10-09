@@ -1,6 +1,7 @@
 import { h, onMounted, onUnmounted } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import PageMeta from './components/PageMeta.vue'
+import SlidesIndex from './components/SlidesIndex.vue'
 import SearchButton from './components/SearchButton.vue'
 import NotFound from './components/NotFound.vue'
 import ReadingProgress from './components/ReadingProgress.vue'
@@ -39,6 +40,7 @@ export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
     app.component('ChapterMap', ChapterMap)
+    app.component('SlidesIndex', SlidesIndex)
   },
   Layout: {
     setup() {

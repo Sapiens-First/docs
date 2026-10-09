@@ -2,9 +2,10 @@ import { createHash } from 'node:crypto'
 import { readFileSync, mkdirSync, writeFileSync, renameSync, rmSync, realpathSync } from 'node:fs'
 import { resolve, dirname, basename, extname, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { generateDeck } from './generate.mjs'
 
 const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree']
-const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure', pathways: 'Pathways to Action' }
+const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure' }
 const topicalGraphics = ['book', 'route', 'hands', 'nested', 'signpost']
 const purposes = ['explain', 'engage', 'empower']
 const words = text => text.trim().split(/\s+/).filter(Boolean).length
@@ -374,15 +375,18 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .diagram .node { stroke:var(--ink); stroke-width:2; fill:var(--coral); }
 .diagram .edge { stroke:var(--ink); stroke-width:4; fill:none; }
 .caption { font-size:40px; line-height:1.2; margin:14px 0 0; }
+.generated-label { font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
 .slide-footer { position:absolute; bottom:24px; left:72px; right:72px; display:flex; justify-content:space-between; align-items:center; font-size:20px; }
 .brand-logo { width:42px; height:42px; object-fit:contain; }
 .slide.with-photo .slide-footer > span { background:var(--paper); color:var(--ink); padding:3px 9px; border-radius:5px; }
-/* Default progress-strip design; section data is independent of its styling. */
-.section-progress { display:flex; gap:14px; align-items:center; width:760px; padding:6px 12px; border-radius:10px; background:var(--paper); color:var(--ink); }
-.progress-label { width:180px; flex:none; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
-.progress-track { flex:1; display:flex; gap:8px; }
-.progress-seg { flex:1; height:8px; border-radius:4px; background:#241d181c; overflow:hidden; }
-.progress-seg::before { content:''; display:block; width:var(--fill); height:100%; background:var(--sage); }
+/* Quiet progress indicator: a thin line of section ticks and a small label, no panel. */
+.section-progress { display:flex; gap:12px; align-items:center; width:520px; color:var(--ink); opacity:.7; }
+.slide[data-tone="dark"] .section-progress { color:var(--paper); }
+.slide.with-photo .section-progress { padding:3px 9px; border-radius:5px; background:var(--paper); color:var(--ink); opacity:.9; }
+.progress-label { flex:none; font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:1.5px; }
+.progress-track { flex:1; display:flex; gap:6px; }
+.progress-seg { flex:1; height:3px; border-radius:2px; background:color-mix(in srgb, currentColor 22%, transparent); overflow:hidden; position:relative; }
+.progress-seg::before { content:''; position:absolute; inset:0 auto 0 0; width:var(--fill); background:currentColor; }
 .progress-seg[aria-current="step"]::before { background:var(--coral); }
 #controls { height:48px; display:flex; align-items:center; justify-content:center; gap:12px; padding:4px 12px; background:var(--paper); border-top:2px solid var(--ink); }
 button,#notes-link { font:700 16px 'DM Sans',sans-serif; color:var(--ink); background:var(--paper); border:2px solid var(--ink); padding:5px 12px; cursor:pointer; text-decoration:none; }
@@ -469,8 +473,8 @@ function diagram(slide, index) {
   const colors = ['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)']
   let body, description
   if (slide.layout === 'choice') {
-    description = `Two roads diverge toward ${c.labels.join(' and ')}. The paths represent a choice of futures, not measured outcomes.`
-    body = `<path class="road" d="M325 408V298Q325 223 236 198Q145 170 145 110"/><path class="road" d="M325 408V298Q325 223 414 198Q505 170 505 110"/><path class="road-center" d="M325 408V298Q325 223 236 198Q145 170 145 110"/><path class="road-center" d="M325 298Q325 223 414 198Q505 170 505 110"/>${label(c.labels[0], 145, 44, 40)}${label(c.labels[1], 505, 44, 40)}<path aria-hidden="true" d="M119 129L145 89L171 129M479 129L505 89L531 129" fill="none" stroke="var(--coral)" stroke-width="8"/>`
+    description = `Two futures to choose between: ${c.labels.join(' and ')}. They represent a choice, not measured outcomes.`
+    body = `<rect class="node" x="25" y="70" width="600" height="110" rx="24" style="fill:var(--coral)"/>${label(c.labels[0], 325, 125, 48)}<rect class="node" x="25" y="230" width="600" height="110" rx="24" style="fill:var(--sage)"/>${label(c.labels[1], 325, 285, 48)}`
   } else if (slide.layout === 'pyramid') {
     description = `Horizons of focus, from the top to the base: ${c.labels.join('; ')}. This conceptual pyramid groups strategic focus; its tier areas do not represent quantities or progress.`
     body = `<polygon class="pyramid-tier" points="380,0 60,148 700,148" fill="var(--coral)"/>${label(c.labels[0], 380, 128, 40)}`
@@ -616,7 +620,7 @@ export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.n
     const photo = slide.image ? `<img class="slide-photo" alt="${escapeHTML(slide.image.alt)}" src="${imageAsset(slide.image)}" style="object-position:${slide.image.position ?? 'center'}">` : ''
     if (slide.graphic !== undefined && !['contours', 'arcs', ...topicalGraphics].includes(slide.graphic)) throw new Error('Unsupported graphic')
     const graphic = ['contours', 'arcs'].includes(slide.graphic) ? `<img class="brand-art" alt="" aria-hidden="true" src="data:image/svg+xml;base64,${asset(`assets/sapiens-${slide.graphic}.svg`).toString('base64')}">` : ''
-    return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? '<div class="photo-overlay" aria-hidden="true"></div>' : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
+    return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? '<div class="photo-overlay" aria-hidden="true"></div>' : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}${deck.origin === 'generated' ? '<span class="generated-label">Auto-generated from the handbook text</span>' : ''}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
   }).join('\n')
   const audience = { id: deck.id, title: deck.title, slides: deck.slides.map(({ notes, ...slide }) => slide) }
   return `<!doctype html>
@@ -723,11 +727,20 @@ export function writeDeckFiles(deck, destination, notesDestination) {
 
 async function main(args) {
   const [operation, input, ...rest] = args
+  if (operation === 'generate') {
+    try {
+      const deck = generateDeck(input, { slug: rest[0] })
+      const destination = resolve(dirname(fileURLToPath(import.meta.url)), 'decks', `${deck.slug}.deck.json`)
+      writeFileSync(destination, `${JSON.stringify(deck, null, 2)}\n`)
+      console.log(`Generated ${destination} (${deck.slides.length} slides; ${deck.generation.flags.length} flagged blocks)`)
+    } catch (error) { console.error(error.message); process.exitCode = 1 }
+    return
+  }
   const output = operation === 'build' ? rest[0] : undefined
   const flags = operation === 'build' ? rest.slice(1) : rest
   const json = flags.includes('--json')
   try {
-    if (!['validate', 'build'].includes(operation) || !input || (operation === 'build' && (!output || output.startsWith('--'))) || flags.some(f => !(operation === 'validate' ? ['--json', '--strict'] : ['--strict']).includes(f))) throw new Error('Usage: node slides/slides.mjs validate DECK [--strict] [--json]\n       node slides/slides.mjs build DECK OUTPUT [--strict]')
+    if (!['validate', 'build'].includes(operation) || !input || (operation === 'build' && (!output || output.startsWith('--'))) || flags.some(f => !(operation === 'validate' ? ['--json', '--strict'] : ['--strict']).includes(f))) throw new Error('Usage: node slides/slides.mjs validate DECK [--strict] [--json]\n       node slides/slides.mjs generate PAGE.md [SLUG]\n       node slides/slides.mjs build DECK OUTPUT [--strict]')
     const deck = loadDeck(input)
     const report = validateDeck(deck)
     const ok = !report.errors.length && (!flags.includes('--strict') || report.findings.every(f => f.justified))

@@ -21,7 +21,7 @@ function fixture(t, entries = [first, second]) {
 
 test('current handbook registry matches all numbered pages', () => {
   assert.deepEqual(validateHandbookToc(), [])
-  assert.equal(getHandbookItems().length, 75)
+  assert.equal(getHandbookItems().length, 76)
 })
 
 test('navigation follows registry order and handles landing paths', () => {
@@ -125,8 +125,9 @@ test('sidebar headings link to landing pages and never repeat them', () => {
     ['3. Lead', '/leadership/'],
   ])
   assert.ok(groups.every(g => !g.items?.some(i => i.link === g.link)))
-  assert.equal(groups.at(-1).link, '/appendices/staff/')
-  assert.equal(groups.at(-1).items[0].link, '/appendices/staff/beliefs-about-staff')
+  const staff = groups.find(g => g.link === '/appendices/staff/')
+  assert.equal(staff.items[0].link, '/appendices/staff/beliefs-about-staff')
+  assert.equal(groups.at(-1).link, '/slides/')
   const glossary = groups.find(g => g.link === '/appendices/glossary')
   assert.deepEqual(glossary.items, [])
   assert.equal(glossary.collapsed, undefined)

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "id": "leadership-generated",
+  "title": "3 Lead",
+  "slug": "leadership",
+  "origin": "generated",
+  "approved": false,
+  "lastUpdated": "2026-10-09",
+  "covers": [
+    "leadership"
+  ],
+  "targetDurationSeconds": 125,
+  "source": {
+    "path": "docs/leadership/index.md",
+    "sha256": "85000ad6e41f243a56753080efe6efffcd29f530cbca36797c386b05aa02a8d6",
+    "text": "---\ntitle: \"3 Lead\"\ndescription: \"Leadership as a practice for paid and volunteer roles: culture, planning, people, and facilitation.\"\nsection: Leadership\nstatus: draft\nslides: leadership\nlast_updated: 2026-10-09\nhandbook_id: leadership\nhandbook_number: \"3\"\ncanonical: /leadership/\n---\n\n# 3 Lead\n\n## Summary\n\nLeadership is a practice, not a job title. People in paid and volunteer roles lead when they take responsibility, help others contribute, and keep work moving toward the mission. This chapter turns the shared culture into everyday habits.\n\n<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, chapter 2; maintenance/content-map.md. Chapter framing is a proposal; the organizational definition of leadership is not yet supplied. -->\n\n## Sections {#sections}\n\n- [3.1 Culture in leadership](culture-in-leadership.md) — Give feedback, handle disagreement, take ownership, and model the culture.\n- [3.2 Strategic planning](strategic-planning.md) — Connect the mission to objectives, metrics, projects, and review.\n- [3.3 People](people.md) — Hold organizer conversations, fit people to roles, and support growth.\n- [3.4 Facilitation](facilitation.md) — Run tactical and governance meetings and follow through in writing.\n\nStaff status is not a prerequisite for leadership. Current priorities and assignments live in [Atlas](https://sapiensfirst.org/atlas).\n"
+  },
+  "sourceGaps": [],
+  "sourceClassifications": [],
+  "editorialReview": [],
+  "slides": [
+    {
+      "id": "leadership-01",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "3 Lead",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 1,
+            "end": 19
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadership-02",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "Summary",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 15,
+            "end": 15
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadership-03",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "Sections",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 21,
+            "end": 21
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadership-04",
+      "layout": "steps",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Sections",
+      "content": {
+        "labels": [
+          "3.1 Culture in leadership",
+          "3.2 Strategic planning",
+          "3.3 People",
+          "3.4 Facilitation"
+        ]
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 23,
+            "end": 26
+          }
+        ]
+      }
+    },
+    {
+      "id": "leadership-05",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Sections",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 28,
+            "end": 28
+          }
+        ]
+      }
+    }
+  ],
+  "ruleExceptions": [],
+  "sourceOrder": "original",
+  "generation": {
+    "formulaVersion": 1,
+    "flags": [
+      {
+        "kind": "long-summary",
+        "start": 15,
+        "end": 19,
+        "message": "Summary has 38 words (limit 5) and stays in the notes only."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 28,
+        "end": 28,
+        "message": "A paragraph under \"Sections\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      }
+    ]
+  }
+}

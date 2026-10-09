@@ -1,6 +1,6 @@
 # DNA deck revisions
 
-The [Revision 2 implementation plan](../../maintenance/plans/2026-10-09-dna-deck-revision-2-plan.md) supersedes the October 9 revision 1 checklist. The current deck has 25 slides.
+The [Revision 2 implementation plan](../../maintenance/plans/2026-10-09-dna-deck-revision-2-plan.md) supersedes the October 9 revision 1 checklist. The current deck has 24 slides. Pathways to Action is the closing slide’s title inside Structure, not a section.
 
 - [x] Warmer renderer palette and transparent logo (revision 1).
 - [x] Opening: “Revolt for our future,” DNA badge, and `10/09/26`.

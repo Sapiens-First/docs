@@ -17,8 +17,13 @@ const base = '/docs/'
 // also lists handcrafted decks that are not yet approved.
 const deckRegistry = loadDeckRegistry()
 const published = new Set(publishedDecks(deckRegistry, { preview: process.env.SLIDES_PREVIEW === '1' }).map((deck) => deck.slug))
+const tocEntries: { id: string; title: string; path: string }[] = JSON.parse(readFileSync(join(process.cwd(), 'handbook-data/toc.json'), 'utf8'))
+const coveredPage = (id: string) => {
+  const entry = tocEntries.find((e) => e.id === id)!
+  return { title: entry.title, link: '/' + entry.path.replace(/index\.md$/, '').replace(/\.md$/, '') }
+}
 const slideDecks = deckRegistry.map(({ slug, title, origin, approved, covers, lastUpdated }) => ({
-  slug, title, origin, approved, covers, lastUpdated, published: published.has(slug)
+  slug, title, origin, approved, lastUpdated, covers: covers.map(coveredPage), published: published.has(slug)
 }))
 const siteHostname = 'https://sapiens-first.github.io/docs/'
 

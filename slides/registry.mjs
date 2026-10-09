@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -27,7 +27,8 @@ export const isPublishable = deck => deck.origin === 'generated' || deck.approve
 
 /** Every deck in `decks/` with its publication metadata, sorted by slug. */
 export function loadDeckRegistry(root = SLIDES_ROOT) {
-  return readdirSync(join(root, 'decks')).filter(name => name.endsWith('.deck.json')).map(name => {
+  const names = existsSync(join(root, 'decks')) ? readdirSync(join(root, 'decks')) : []
+  return names.filter(name => name.endsWith('.deck.json')).map(name => {
     const path = join(root, 'decks', name)
     const deck = JSON.parse(readFileSync(path, 'utf8'))
     return {

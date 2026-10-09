@@ -3,6 +3,7 @@ title: "3 Lead"
 description: "Leadership as a practice for paid and volunteer roles: culture, planning, people, and facilitation."
 section: Leadership
 status: draft
+slides: leadership
 last_updated: 2026-10-09
 handbook_id: leadership
 handbook_number: "3"

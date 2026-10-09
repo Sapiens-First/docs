@@ -13,7 +13,7 @@
     "dna-culture",
     "dna-structure"
   ],
-  "targetDurationSeconds": 1145,
+  "targetDurationSeconds": 1135,
   "source": {
     "path": "slides/sources/10-6-dna.md",
     "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
@@ -146,15 +146,14 @@
           "Story",
           "Strategy",
           "Culture",
-          "Structure",
-          "Pathways to Action"
+          "Structure"
         ]
       },
       "durationSeconds": 20,
       "notes": {
         "sourceRanges": [],
         "cues": [
-          "Orient the audience to the five sections; the footer progress strip mirrors this list."
+          "Orient the audience to the four sections; the footer progress strip mirrors this list. Pathways to Action closes Structure as its final slide rather than a section of its own."
         ]
       }
     },
@@ -991,29 +990,11 @@
       "section": "structure"
     },
     {
-      "id": "pathways-section",
-      "layout": "divider",
-      "purpose": "engage",
-      "role": "buffer",
-      "title": "Pathways to Action",
-      "content": {},
-      "durationSeconds": 10,
-      "notes": {
-        "sourceRanges": [],
-        "cues": [
-          "Section transition: introduce Pathways to Action before advancing to its content."
-        ]
-      },
-      "tone": "coral",
-      "graphic": "signpost",
-      "section": "pathways"
-    },
-    {
       "id": "next-step",
       "layout": "triad",
       "purpose": "empower",
       "role": "content",
-      "title": "Choose your next step",
+      "title": "Pathways to Action",
       "content": {
         "labels": [
           "Donate",
@@ -1030,7 +1011,8 @@
           }
         ],
         "cues": [
-          "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism."
+          "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism.",
+          "Pathways to Action is this slide’s title, not a section; it closes the Structure section."
         ]
       },
       "tone": "coral",
@@ -1043,7 +1025,7 @@
         "position": "top"
       },
       "graphic": "arcs",
-      "section": "pathways"
+      "section": "structure"
     }
   ],
   "ruleExceptions": [

@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 1,
+  "id": "strategy-deep-dive-generated",
+  "title": "2.2 Strategy deep dive",
+  "slug": "strategy-deep-dive",
+  "origin": "generated",
+  "approved": false,
+  "lastUpdated": "2026-10-09",
+  "covers": [
+    "go-deeper-strategy-deep-dive"
+  ],
+  "targetDurationSeconds": 255,
+  "source": {
+    "path": "docs/go-deeper/strategy-deep-dive.md",
+    "sha256": "b4cdc1ef60bfd5a21964acfc6284a6609af59927261d94055f6950f1c965c23c",
+    "text": "---\ntitle: \"2.2 Strategy deep dive\"\ndescription: \"A planned exploration of the S-curve, trigger moments, dilemma actions, and spectrum of allies.\"\nsection: Go deeper\nstatus: planned\nslides: strategy-deep-dive\nconstruction_note: \"Purpose and headings await Rohan's review. Detailed guidance and examples have not been written.\"\nlast_updated: 2026-10-09\nhandbook_id: go-deeper-strategy-deep-dive\nhandbook_number: \"2.2\"\ncanonical: /go-deeper/strategy-deep-dive\n---\n\n# 2.2 Strategy deep dive\n\n## Summary\n\nThis page will examine four tools for thinking about movement strategy: the S-curve, trigger moments, dilemma actions, and spectrum of allies. Each will need a clear explanation, an example, and limits on when it is useful. It will build on [1.2 Strategy](../dna/strategy.md) and connect opportunities for action to welcoming and developing participants; Rohan's review is pending.\n\n## 2.2.1 S-curve {#s-curve}\n\nPlanned; content will follow review of this outline.\n\n## 2.2.2 Trigger moments {#trigger-moments}\n\nPlanned; content will follow review of this outline.\n\n## 2.2.3 Dilemma actions {#dilemma-actions}\n\nPlanned; content will follow review of this outline.\n\n## 2.2.4 Spectrum of allies {#spectrum-of-allies}\n\nPlanned; content will follow review of this outline.\n\n## 2.2.5 Connect action to recruitment and training {#action-recruitment-and-training}\n\nPlanned; content will follow review of this outline.\n"
+  },
+  "sourceGaps": [],
+  "sourceClassifications": [],
+  "editorialReview": [],
+  "slides": [
+    {
+      "id": "go-deeper-strategy-deep-dive-01",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2 Strategy deep dive",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 1,
+            "end": 18
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-02",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "Summary",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 16,
+            "end": 16
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-03",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "2.2.1 S-curve",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 20,
+            "end": 20
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-04",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2.1 S-curve",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 22,
+            "end": 22
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-05",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "2.2.2 Trigger moments",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 24,
+            "end": 24
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-06",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2.2 Trigger moments",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 26,
+            "end": 26
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-07",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "2.2.3 Dilemma actions",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 28,
+            "end": 28
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-08",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2.3 Dilemma actions",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 30,
+            "end": 30
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-09",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "2.2.4 Spectrum of allies",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 32,
+            "end": 32
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-10",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2.4 Spectrum of allies",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 34,
+            "end": 34
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-11",
+      "layout": "divider",
+      "purpose": "explain",
+      "role": "buffer",
+      "title": "2.2.5 Connect action to recruitment and training",
+      "content": {},
+      "durationSeconds": 10,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 36,
+            "end": 36
+          }
+        ]
+      }
+    },
+    {
+      "id": "go-deeper-strategy-deep-dive-12",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "2.2.5 Connect action to recruitment and training",
+      "content": {
+        "lines": []
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 38,
+            "end": 38
+          }
+        ]
+      }
+    }
+  ],
+  "ruleExceptions": [
+    {
+      "rule": "10-20-30",
+      "text": "slide count",
+      "reason": "Generated formula: one divider per H2 plus one slide per source block; review for splitting or handcrafting."
+    }
+  ],
+  "sourceOrder": "original",
+  "generation": {
+    "formulaVersion": 1,
+    "flags": [
+      {
+        "kind": "long-summary",
+        "start": 16,
+        "end": 18,
+        "message": "Summary has 56 words (limit 5) and stays in the notes only."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 22,
+        "end": 22,
+        "message": "A paragraph under \"2.2.1 S-curve\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 26,
+        "end": 26,
+        "message": "A paragraph under \"2.2.2 Trigger moments\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 30,
+        "end": 30,
+        "message": "A paragraph under \"2.2.3 Dilemma actions\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 34,
+        "end": 34,
+        "message": "A paragraph under \"2.2.4 Spectrum of allies\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      },
+      {
+        "kind": "long-paragraph",
+        "start": 38,
+        "end": 38,
+        "message": "A paragraph under \"2.2.5 Connect action to recruitment and training\" has more than 5 words; the slide shows only its heading and the paragraph stays in the notes."
+      }
+    ]
+  }
+}

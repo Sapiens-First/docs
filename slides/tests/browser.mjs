@@ -418,12 +418,12 @@ try {
     if (error.code !== 'ENOENT') throw error
     evidence.originalSourceComparison = { status: 'unavailable', path: sourcePath }
   }
-  check('DNA acceptance deck renders all twenty-five slides', deck.slides.length === 25 && await page.locator('#stage .slide').count() === 25)
-  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'pathways-section', 'next-step']))
+  check('DNA acceptance deck renders all twenty-four slides', deck.slides.length === 24 && await page.locator('#stage .slide').count() === 24)
+  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'next-step']))
   const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'montage', 'agenda', 'tree']
   check('all fourteen current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
   const dividerIds = await page.locator('#stage .slide[data-layout="divider"]').evaluateAll(slides => slides.map(slide => slide.dataset.slideId))
-  check('five section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section', 'pathways-section']), dividerIds)
+  check('four section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section']), dividerIds)
   const threshold = await page.locator('.slide[data-slide-id="participation-threshold"] h1').evaluate(title => ({ text: title.textContent, fontSize: parseFloat(getComputedStyle(title).fontSize) }))
   check('participation threshold has a large standalone 3.5% heading', threshold.text === '3.5%' && threshold.fontSize >= 200, threshold)
   const revisions = await page.evaluate(() => {
@@ -457,7 +457,7 @@ try {
   check('opening badge and short date', revisions.openingBadge === 'Sapiens First DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 22 && revisions.badgeStyle.fill === 'rgb(237, 131, 107)' && revisions.badgeStyle.border === '2px')
   check('extinction focus lights the first danger and dims the other two', JSON.stringify(revisions.extinction) === JSON.stringify(['is-lit', 'is-dim', 'is-dim']))
   check('trigger moments pairs two photographs', revisions.triggerPhotos === 2)
-  check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested', 'signpost']))
+  check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested']))
   const assets = await page.evaluate(() => ({
     fonts: [...document.fonts].map(font => ({ family: font.family, weight: font.weight, status: font.status })),
     logos: [...document.querySelectorAll('.brand-logo')].map(image => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: image.src.startsWith('data:image/png;base64,') })),

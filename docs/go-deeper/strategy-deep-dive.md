@@ -3,6 +3,7 @@ title: "2.2 Strategy deep dive"
 description: "A planned exploration of the S-curve, trigger moments, dilemma actions, and spectrum of allies."
 section: Go deeper
 status: planned
+slides: strategy-deep-dive
 construction_note: "Purpose and headings await Rohan's review. Detailed guidance and examples have not been written."
 last_updated: 2026-10-09
 handbook_id: go-deeper-strategy-deep-dive

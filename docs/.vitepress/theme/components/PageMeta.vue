@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useData } from 'vitepress'
+import { useData, withBase } from 'vitepress'
+import SlideLabel from './SlideLabel.vue'
 
 // Eyebrow above each page title: which section you're in, how long the page
 // takes to read, when it was last updated, and (optionally, via
@@ -42,6 +43,13 @@ const status = computed(() => {
 })
 const statusLabel = computed(() => status.value && STATUS_LABELS[status.value])
 
+// `slides: <slug>` frontmatter names this module's deck. The buttons appear
+// only for decks the site publishes (docs/.vitepress/config.mts).
+const deck = computed(() => {
+  const slug = frontmatter.value.slides
+  return typeof slug === 'string' ? (theme.value.slideDecks ?? []).find((d: any) => d.slug === slug && d.published) : undefined
+})
+
 const underConstruction = computed(() => frontmatter.value.status === 'under-construction')
 const planned = computed(() => frontmatter.value.status === 'planned')
 const constructionNote = computed(() => {
@@ -71,6 +79,12 @@ const lastUpdated = computed(() => {
   </p>
   <p v-if="statusLabel" class="sf-status-line">
     <span class="sf-status-badge" :class="`sf-status-${status}`">{{ statusLabel }}</span>
+  </p>
+  <p v-if="deck" class="sf-deck-line">
+    <span>🎞 Slides for this module</span>
+    <SlideLabel :origin="deck.origin" />
+    <a class="sf-deck-button" :href="withBase(`/slides/${deck.slug}/`)" target="_blank" rel="noopener">Present</a>
+    <a class="sf-deck-button" :href="withBase(`/slides/${deck.slug}/index.notes.html`)" target="_blank" rel="noopener">Presenter notes</a>
   </p>
   <aside v-if="underConstruction || planned" class="sf-construction" role="note" aria-label="Page status">
     <svg class="sf-construction__icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">

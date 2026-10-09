@@ -67,7 +67,7 @@ test('choice and pyramid use trusted SVG and preserve escaped audience labels', 
   const choice = deck('choice', { labels: ['Crisis <today>', 'Hope & action'] }, { image: image() })
   const choiceHTML = renderDeck(choice)
   assert.match(choiceHTML, /class="diagram choice-map"/)
-  assert.match(choiceHTML, /class="road"/)
+  assert.doesNotMatch(choiceHTML, /class="road"/)
   assert.match(choiceHTML, /Crisis &lt;today&gt;/)
   const pyramid = deck('pyramid', { labels: ['Federal policy: AI treaty', 'Phase 1: California', 'New York, Florida, Texas', 'Phase 3: National movement', 'Steps to success — TBD'] }, { image: image() })
   const html = renderDeck(pyramid)
@@ -174,7 +174,7 @@ test('local crossroads SVG embeds offline and preserves source credit in notes',
 
 test('revision two deck has the complete requested sequence and exact original source', () => {
   const data = JSON.parse(readFileSync(new URL('../decks/10-6-dna.deck.json', import.meta.url)))
-  assert.deepEqual(data.slides.map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'pathways-section', 'next-step'])
+  assert.deepEqual(data.slides.map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'next-step'])
   const report = validateDeck(data)
   assert.deepEqual(report.errors, [])
   assert.deepEqual(report.coverage.uncovered, [])
