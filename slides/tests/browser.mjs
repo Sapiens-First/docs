@@ -8,10 +8,10 @@ import { chromium } from 'playwright-core'
 import { renderDeck } from '../slides.mjs'
 
 // Run from the repository root; the optional arguments are HTML and evidence directory.
-const root = fileURLToPath(new URL('../../../', import.meta.url))
-const input = resolve(process.argv[2] ?? join(root, 'experiments/slides/output/10-6-dna.html'))
+const root = fileURLToPath(new URL('../../', import.meta.url))
+const input = resolve(process.argv[2] ?? join(root, 'slides/output/10-6-dna.html'))
 const notesInput = input.replace(/\.html$/i, '') + '.notes.html'
-const output = resolve(process.argv[3] ?? join(root, 'experiments/slides/output/browser-evidence'))
+const output = resolve(process.argv[3] ?? join(root, 'slides/output/browser-evidence'))
 const executable = process.env.SLIDES_CHROMIUM ?? chromium.executablePath()
 const digest = value => createHash('sha256').update(value).digest('hex')
 const evidence = {
@@ -67,8 +67,14 @@ async function controlsVisible(page) {
 // Derive the acceptance text from the deck independently of renderer helpers.
 function authoredText(slide) {
   const content = slide.content
+  const treeLabels = []
+  function visit(node) {
+    if (content.reveal.includes(node.id)) treeLabels.push(node.label)
+    for (const child of node.children ?? []) visit(child)
+  }
+  if (slide.layout === 'tree') visit(content.tree)
   return [slide.title, slide.sectionLabel, ...(content.lines ?? content.labels ?? []),
-    content.circle, ...(content.roles ?? []), content.caption].filter(value => value !== undefined)
+    content.circle, ...(content.roles ?? []), ...treeLabels, content.caption].filter(value => value !== undefined)
     .map(value => value.trim()).sort()
 }
 
@@ -106,11 +112,11 @@ async function geometry(page) {
         lines = [...range.getClientRects()].filter(r => r.width && r.height).map(rect)
       }
       const fontSize = parseFloat(getComputedStyle(element).fontSize)
-      return { text: element.textContent.trim(), tag: element.tagName, logicalFontSize: fontSize,
+      return { text: element.textContent.trim(), secondary: element.classList.contains('statement-date'), tag: element.tagName, logicalFontSize: fontSize,
         effectiveFontSize: fontSize * scale, lineCount: new Set(lines.map(line => Math.round(line.y * 100) / 100)).size, lines }
     })
-    const shapes = [...slide.querySelectorAll('svg .node, svg .edge')].map(element => ({
-      tag: element.tagName, kind: element.classList.contains('node') ? 'node' : 'edge', bounds: rect(element.getBoundingClientRect()), svg: rect(element.ownerSVGElement.getBoundingClientRect()),
+    const shapes = [...slide.querySelectorAll('svg .node, svg .edge, .tree-node rect, .tree-edge')].map(element => ({
+      tag: element.tagName, kind: element.classList.contains('node') || element.tagName === 'rect' ? 'node' : 'edge', bounds: rect(element.getBoundingClientRect()), svg: rect(element.ownerSVGElement.getBoundingClientRect()),
     }))
     const diagramLabels = [...slide.querySelectorAll('svg text')].map(element => ({ text: element.textContent, bounds: rect(element.getBoundingClientRect()), svg: rect(element.ownerSVGElement.getBoundingClientRect()) }))
     const roleContainment = []
@@ -148,7 +154,7 @@ async function geometry(page) {
         cycleLinks.push({ from: touching(pointAt(0)), to: touching(pointAt(path.getTotalLength())) })
       }
     }
-    const photos = [...slide.querySelectorAll('.slide-photo')].map(image => rect(image.getBoundingClientRect()))
+    const photos = [...slide.querySelectorAll('.slide-photo')].map(image => ({ ...rect(image.getBoundingClientRect()), background: ['background', 'artistic'].includes(slide.dataset.imageTreatment) }))
     let circleMap
     if (slide.dataset.layout === 'circles') {
       const parent = slide.querySelector('ellipse.circle-parent')
@@ -182,7 +188,23 @@ async function geometry(page) {
         circleMap = { children: childMetrics, pips: pipMetrics }
       }
     }
-    return { slideId: slide.dataset.slideId, layout: slide.dataset.layout, stage, viewport, scale, text, shapes, diagramLabels, roleContainment, cycleLinks, photos, circleMap,
+    const progress = slide.querySelector('.section-progress')
+    const sectionProgress = progress ? { bounds: rect(progress.getBoundingClientRect()), active: progress.querySelector('[aria-current="step"]')?.dataset.section,
+      segments: [...progress.querySelectorAll('.progress-seg')].map(segment => ({ section: segment.dataset.section, fill: parseFloat(segment.style.getPropertyValue('--fill')), bounds: rect(segment.getBoundingClientRect()) })),
+      footerItems: [...slide.querySelectorAll('.slide-footer > *')].map(element => rect(element.getBoundingClientRect())) } : null
+    const footerItems = [...slide.querySelectorAll('.slide-footer > *')].map(element => rect(element.getBoundingClientRect()))
+    const tree = [...slide.querySelectorAll('.tree-node')].map(node => ({ id: node.dataset.node, current: node.dataset.current === 'true', dim: node.dataset.dim === 'true', bounds: rect(node.querySelector('rect').getBoundingClientRect()) }))
+    const treeEdges = [...slide.querySelectorAll('.tree-edge')].map(edge => {
+      const touching = (point, id) => {
+        const bounds = tree.find(node => node.id === id).bounds
+        const tolerance = 3 * scale
+        return point.x >= bounds.x - tolerance && point.x <= bounds.right + tolerance && point.y >= bounds.y - tolerance && point.y <= bounds.bottom + tolerance && Math.min(Math.abs(point.x - bounds.x), Math.abs(point.x - bounds.right), Math.abs(point.y - bounds.y), Math.abs(point.y - bounds.bottom)) <= tolerance
+      }
+      const first = edge.getPointAtLength(0).matrixTransform(edge.getScreenCTM())
+      const last = edge.getPointAtLength(edge.getTotalLength()).matrixTransform(edge.getScreenCTM())
+      return { parent: edge.dataset.parent, child: edge.dataset.child, touchesParent: touching(first, edge.dataset.parent), touchesChild: touching(last, edge.dataset.child) }
+    })
+    return { slideId: slide.dataset.slideId, layout: slide.dataset.layout, stage, viewport, scale, text, shapes, diagramLabels, roleContainment, cycleLinks, photos, circleMap, sectionProgress, footerItems, tree, treeEdges,
       renderedLineCount: text.reduce((count, item) => count + item.lineCount, 0) }
   })
 }
@@ -190,17 +212,21 @@ async function geometry(page) {
 function verifyGeometry(metric, label) {
   const inside = (r, parent) => r.x >= parent.x - 1 && r.y >= parent.y - 1 && r.right <= parent.right + 1 && r.bottom <= parent.bottom + 1
   const overlaps = (a, b) => Math.min(a.right, b.right) - Math.max(a.x, b.x) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y) > 1
-  check(`${label}: audience font minimum`, metric.text.every(item => item.logicalFontSize >= 40), metric.text.map(item => ({ text: item.text, logical: item.logicalFontSize, effective: item.effectiveFontSize })))
-  check(`${label}: at most six rendered lines`, metric.renderedLineCount <= 6, metric.renderedLineCount)
+  check(`${label}: principal audience font minimum and secondary date`, metric.text.every(item => item.logicalFontSize >= (item.secondary ? 22 : 40)), metric.text.map(item => ({ text: item.text, logical: item.logicalFontSize, effective: item.effectiveFontSize })))
+  // Tree exceptions are explicit in the deck; all visible tree labels still undergo
+  // the same font, bounds, collision and box-containment checks as other diagrams.
+  const allowedLines = { 'tree-goal': 5, 'tree-california': 8, 'tree-berkeley': 13, 'tree-full': 13, 'agenda-six': 7 }[metric.slideId] ?? 6
+  check(`${label}: rendered lines respect the slide budget`, metric.renderedLineCount <= allowedLines, { actual: metric.renderedLineCount, allowed: allowedLines })
   check(`${label}: audience text inside stage and viewport`, metric.text.every(item => item.lines.every(line => inside(line, metric.stage) && inside(line, metric.viewport))))
   const collisions = []
   for (let i = 0; i < metric.text.length; i++) for (let j = i + 1; j < metric.text.length; j++) {
     if (metric.text[i].lines.some(a => metric.text[j].lines.some(b => overlaps(a, b)))) collisions.push([metric.text[i].text, metric.text[j].text])
   }
   check(`${label}: audience text does not overlap`, collisions.length === 0, collisions)
+  check(`${label}: audience text stays clear of the footer`, metric.text.every(item => item.lines.every(line => metric.footerItems.every(footer => !overlaps(line, footer)))))
   if (metric.photos.length) {
     check(`${label}: photos remain inside stage and viewport`, metric.photos.every(photo => inside(photo, metric.stage) && inside(photo, metric.viewport)), metric.photos)
-    check(`${label}: photos do not obscure audience text`, metric.photos.every(photo => metric.text.every(item => item.lines.every(line => !overlaps(photo, line)))))
+    check(`${label}: foreground photos do not obscure audience text`, metric.photos.filter(photo => !photo.background).every(photo => metric.text.every(item => item.lines.every(line => !overlaps(photo, line)))))
   }
   check(`${label}: SVG labels do not clip`, metric.diagramLabels.every(item => inside(item.bounds, item.svg) && inside(item.bounds, metric.stage)))
   check(`${label}: SVG nodes and arrows do not clip`, metric.shapes.every(item => inside(item.bounds, item.svg) && inside(item.bounds, metric.stage)))
@@ -216,12 +242,19 @@ function verifyGeometry(metric, label) {
     .filter(box => overlaps(item.bounds, box.bounds) && !inside(item.bounds, box.bounds))
     .map(box => ({ text: item.text, textBounds: item.bounds, boxBounds: box.bounds })))
   check(`${label}: diagram labels do not cross box edges`, labelsCrossingBoxEdges.length === 0, labelsCrossingBoxEdges)
+  if (metric.sectionProgress) {
+    const p = metric.sectionProgress
+    check(`${label}: section progress and footer fit without overlap`, inside(p.bounds, metric.stage) && inside(p.bounds, metric.viewport) && p.footerItems.every((a, index) => p.footerItems.slice(index + 1).every(b => !overlaps(a, b))), p)
+  }
   if (metric.layout === 'roles') check(`${label}: role box corners fit actual enclosing ellipse`,
     metric.roleContainment.length >= 2 && metric.roleContainment.every(box => box.corners.every(corner => corner.normalizedDistance <= 1)), metric.roleContainment)
   if (metric.layout === 'circles') {
     check(`${label}: four child circles fit inside the actual parent ellipse`, metric.circleMap?.children.length === 4 && metric.circleMap.children.every(child => child.maxParentDistance <= 1), metric.circleMap)
     check(`${label}: each circle contains its own readable label`, metric.circleMap?.children.every(child => child.labels.length === 1 && child.labels.every(label => label.contained)), metric.circleMap?.children)
     check(`${label}: role markers belong inside child circles`, metric.circleMap?.pips.length > 0 && metric.circleMap.pips.every(pip => pip.contained), metric.circleMap?.pips)
+    const children = metric.circleMap?.children ?? []
+    check(`${label}: sibling circles stay distinct`, children.length === 4 && children.every((a, index) => children.slice(index + 1)
+      .every(b => Math.hypot(a.center.x - b.center.x, a.center.y - b.center.y) >= a.radius + b.radius)))
   }
 }
 
@@ -385,13 +418,51 @@ try {
     if (error.code !== 'ENOENT') throw error
     evidence.originalSourceComparison = { status: 'unavailable', path: sourcePath }
   }
-  check('DNA acceptance deck has ten slides', deck.slides.length === 10)
-  check('all six layout forms exercised', new Set(deck.slides.map(slide => slide.layout)).size === 6)
+  check('DNA acceptance deck renders all twenty-five slides', deck.slides.length === 25 && await page.locator('#stage .slide').count() === 25)
+  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'pathways-section', 'next-step']))
+  const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'montage', 'agenda', 'tree']
+  check('all fourteen current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
+  const dividerIds = await page.locator('#stage .slide[data-layout="divider"]').evaluateAll(slides => slides.map(slide => slide.dataset.slideId))
+  check('five section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section', 'pathways-section']), dividerIds)
+  const threshold = await page.locator('.slide[data-slide-id="participation-threshold"] h1').evaluate(title => ({ text: title.textContent, fontSize: parseFloat(getComputedStyle(title).fontSize) }))
+  check('participation threshold has a large standalone 3.5% heading', threshold.text === '3.5%' && threshold.fontSize >= 200, threshold)
+  const revisions = await page.evaluate(() => {
+    const opening = document.querySelector('.slide[data-slide-id="opening"]')
+    const logo = opening.querySelector('.brand-logo')
+    const canvas = document.createElement('canvas')
+    canvas.width = logo.naturalWidth; canvas.height = logo.naturalHeight
+    const context = canvas.getContext('2d'); context.drawImage(logo, 0, 0)
+    const promise = document.querySelector('.slide[data-slide-id="vision"]')
+    promise.hidden = false
+    const cards = [...promise.querySelectorAll('.triad li')].map(card => {
+      const r = card.getBoundingClientRect(); return { top: r.top, left: r.left, right: r.right }
+    })
+    promise.hidden = true
+    return {
+      transparentLogo: context.getImageData(0, 0, 1, 1).data[3] === 0 && getComputedStyle(logo).backgroundColor === 'rgba(0, 0, 0, 0)',
+      background: opening.dataset.imageTreatment === 'background' && Boolean(opening.querySelector('.photo-overlay')),
+      cards,
+      openingBadge: opening.querySelector('.statement-badge')?.textContent,
+      openingDate: opening.querySelector('.statement-date')?.textContent,
+      badgeStyle: { fill: getComputedStyle(opening.querySelector('.statement-badge')).backgroundColor, border: getComputedStyle(opening.querySelector('.statement-badge')).borderTopWidth },
+      dateSize: parseFloat(getComputedStyle(opening.querySelector('.statement-date')).fontSize),
+      extinction: [...document.querySelectorAll('.slide[data-slide-id="extinction-focus"] .triad li')].map(item => item.className),
+      triggerPhotos: document.querySelectorAll('.slide[data-slide-id="trigger-moments"] .montage-photo').length,
+      dividerMotifs: [...document.querySelectorAll('.slide[data-layout="divider"] .divider-art')].map(svg => svg.dataset.graphic),
+    }
+  })
+  check('logo preserves PNG transparency without a CSS background', revisions.transparentLogo)
+  check('opening uses the requested background photo with a contrast overlay', revisions.background)
+  check('three AI promise cards form a horizontal row', revisions.cards.length === 3 && revisions.cards.every(card => Math.abs(card.top - revisions.cards[0].top) < 1) && revisions.cards.slice(1).every((card, index) => card.left > revisions.cards[index].right), revisions.cards)
+  check('opening badge and short date', revisions.openingBadge === 'Sapiens First DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 22 && revisions.badgeStyle.fill === 'rgb(237, 131, 107)' && revisions.badgeStyle.border === '2px')
+  check('extinction focus lights the first danger and dims the other two', JSON.stringify(revisions.extinction) === JSON.stringify(['is-lit', 'is-dim', 'is-dim']))
+  check('trigger moments pairs two photographs', revisions.triggerPhotos === 2)
+  check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested', 'signpost']))
   const assets = await page.evaluate(() => ({
     fonts: [...document.fonts].map(font => ({ family: font.family, weight: font.weight, status: font.status })),
     logos: [...document.querySelectorAll('.brand-logo')].map(image => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: image.src.startsWith('data:image/png;base64,') })),
     photos: [...document.querySelectorAll('.slide-photo')].map(image => ({ slideId: image.closest('.slide').dataset.slideId,
-      alt: image.alt, complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: /^data:image\/(?:jpeg|png|webp);base64,/.test(image.src) })),
+      alt: image.alt, complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: /^data:image\/(?:jpeg|png|webp|svg\+xml);base64,/.test(image.src) })),
     artwork: [...document.querySelectorAll('.brand-art')].map(image => ({ slideId: image.closest('.slide').dataset.slideId,
       complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: image.src.startsWith('data:image/svg+xml;base64,'), decorative: image.getAttribute('aria-hidden') === 'true' })),
     diagrams: [...document.querySelectorAll('svg.diagram')].map(svg => ({ role: svg.getAttribute('role'), labels: [...svg.querySelectorAll('.audience-text')].map(element => element.textContent),
@@ -400,25 +471,29 @@ try {
   evidence.assets = assets
   check('three embedded font faces load offline', assets.fonts.length === 3 && assets.fonts.every(font => font.status === 'loaded'))
   check('all embedded logos decode with natural dimensions', assets.logos.length === deck.slides.length && assets.logos.every(logo => logo.embedded && logo.complete && logo.width > 0 && logo.height > 0))
-  const expectedPhotos = deck.slides.filter(slide => slide.image)
+  const expectedPhotos = deck.slides.flatMap(slide => (slide.images ?? (slide.image ? [slide.image] : [])).map(image => ({ slideId: slide.id, image })))
   check('all authored photos decode offline and preserve alternative text', assets.photos.length === expectedPhotos.length && assets.photos.every(photo => {
-    const slide = expectedPhotos.find(slide => slide.id === photo.slideId)
-    return slide && photo.alt === slide.image.alt && photo.embedded && photo.complete && photo.width > 0 && photo.height > 0
+    const authored = expectedPhotos.find(authored => authored.slideId === photo.slideId && authored.image.alt === photo.alt)
+    return authored && photo.embedded && photo.complete && photo.width > 0 && photo.height > 0
   }), assets.photos)
-  check('website brand artwork decodes offline as decorative artwork', assets.artwork.length === deck.slides.filter(slide => slide.graphic).length && assets.artwork.every(art => art.embedded && art.complete && art.width > 0 && art.height > 0 && art.decorative), assets.artwork)
-  for (const slide of expectedPhotos) {
-    const note = notesPage.locator('.slide-notes').filter({ has: notesPage.locator('h2', { hasText: slide.title }) })
+  check('website brand artwork decodes offline as decorative artwork', assets.artwork.length === deck.slides.filter(slide => ['arcs', 'contours'].includes(slide.graphic)).length && assets.artwork.every(art => art.embedded && art.complete && art.width > 0 && art.height > 0 && art.decorative), assets.artwork)
+  for (const {slideId, image} of expectedPhotos) {
+    const note = notesPage.locator(`.slide-notes[data-slide-id="${slideId}"]`)
     const attribution = await note.evaluate(article => ({ text: article.textContent, links: [...article.querySelectorAll('a')].map(link => link.href) }))
-    check(`${slide.id}: photograph credit and source license are available in notes`, attribution.text.includes(slide.image.credit) && attribution.links.includes(slide.image.sourceUrl) && attribution.links.includes(slide.image.licenseUrl), attribution.links)
+    check(`${slideId}: photograph credit and source license are available in notes`, attribution.text.includes(image.credit) && attribution.links.includes(image.sourceUrl) && attribution.links.includes(image.licenseUrl), attribution.links)
   }
   check('trusted SVG diagrams have accessible descriptions and real text labels', assets.diagrams.length > 0 && assets.diagrams.every(diagram => diagram.role === 'img' && diagram.description && diagram.labelledBy.every(Boolean) && diagram.labels.every(label => diagram.description.includes(label))))
-  const horizonSlide = deck.slides.find(slide => slide.content.mode === 'horizons')
-  const horizonDescription = await page.locator(`.slide[data-slide-id="${horizonSlide.id}"] svg.diagram desc`).textContent()
-  check('roadmap describes nested horizons of focus rather than a numbered timeline', /horizon/i.test(horizonDescription) && /focus|scale/i.test(horizonDescription) && horizonSlide.content.labels.every(label => horizonDescription.includes(label)), horizonDescription)
+  const treeDescription = await page.locator('.slide[data-slide-id="tree-full"] svg.diagram desc').textContent()
+  check('complete tree describes California, Berkeley and current work', ['AI treaty', 'California', 'Berkeley', 'Sacramento', 'Los Angeles', 'You are here'].every(label => treeDescription.includes(label)), treeDescription)
   const cultureSection = deck.source.text.split(/^## Part 3: Culture\s*$/m)[1]?.split(/^## /m)[0] ?? ''
   const culture = cultureSection.split('\n').filter(line => /^[-*] /.test(line))
   evidence.cultureSourceBullets = culture
-  if (deck.id === '10-6-dna') check('all four current Culture bullets remain in source notes', culture.length === 4 && culture.every(line => deck.notes.flatMap(note => note.passages).join('\n').includes(line)))
+  if (deck.id === '10-6-dna') {
+    const cultureSlide = deck.slides.find(slide => slide.id === 'culture-values')
+    const cultureNote = deck.notes.find(note => note.slideId === 'culture-values')
+    const audienceCulture = await page.locator('.slide[data-slide-id="culture-values"] .audience-text').allTextContents()
+    check('all four original Culture values have a dedicated audience slide and verbatim notes', culture.length === 4 && culture.every(line => cultureNote.passages.join('\n').includes(line) && cultureSlide.content.labels.includes(line.replace(/^[-*] /, '')) && audienceCulture.includes(line.replace(/^[-*] /, ''))))
+  }
   await notesPage.close()
   const presenter = await exerciseBehavior(page, deck)
   for (const viewport of [{ width: 1280, height: 720 }, { width: 1920, height: 1080 }, { width: 390, height: 844 }]) {
@@ -427,12 +502,35 @@ try {
     const entry = { ...viewport, slides: [], screenshots: [] }
     evidence.viewports.push(entry)
     await keyboard(page, 'Home', 0)
+    const treePositions = new Map()
     for (const [index, slide] of deck.slides.entries()) {
       if (index) await keyboard(page, 'ArrowRight', index)
       const metric = await geometry(page)
       entry.slides.push(metric)
       verifyGeometry(metric, `${name} ${slide.id}`)
       verifyAuthoredText(metric, slide, `${name} ${slide.id}`)
+      const sectionOrder = [...new Set(deck.slides.map(slide => slide.section).filter(Boolean))]
+      const members = deck.slides.filter(candidate => candidate.section === slide.section)
+      const expectedFill = Math.round((members.indexOf(slide) + 1) / members.length * 100)
+      check(`${name} ${slide.id}: progress matches authored section and position`, slide.section
+        ? metric.sectionProgress?.active === slide.section && JSON.stringify(metric.sectionProgress.segments.map(segment => segment.section)) === JSON.stringify(sectionOrder) && metric.sectionProgress.segments.find(segment => segment.section === slide.section)?.fill === expectedFill
+        : !metric.sectionProgress)
+      if (slide.layout === 'tree') {
+        check(`${name} ${slide.id}: reveal and tree connectors match`, metric.tree.length === slide.content.reveal.length && metric.tree.every(node => slide.content.reveal.includes(node.id)) && metric.treeEdges.length === metric.tree.length - 1 && metric.treeEdges.every(edge => slide.content.reveal.includes(edge.parent) && slide.content.reveal.includes(edge.child) && edge.touchesParent && edge.touchesChild), metric.treeEdges)
+        check(`${name} ${slide.id}: current Berkeley chapter marker`, metric.tree.filter(node => node.current).map(node => node.id).join() === (slide.content.reveal.includes('chapter') ? 'chapter' : ''))
+        check(`${name} ${slide.id}: tree nodes retain positions across reveals`, metric.tree.every(node => {
+          const previous = treePositions.get(node.id)
+          treePositions.set(node.id, node.bounds)
+          return !previous || ['x', 'y', 'width', 'height'].every(key => Math.abs(previous[key] - node.bounds[key]) < 1)
+        }))
+        const nodes = new Map()
+        function visit(node, focused = false) {
+          nodes.set(node.id, !slide.content.focus || focused || node.id === slide.content.focus)
+          for (const child of node.children ?? []) visit(child, focused || node.id === slide.content.focus)
+        }
+        visit(slide.content.tree)
+        check(`${name} ${slide.id}: focus lights exactly the revealed subtree`, metric.tree.every(node => node.dim === !nodes.get(node.id)))
+      }
       assert.equal(await page.getByRole('heading', { level: 1 }).count(), 1)
       const screenshot = `${name}-${String(index + 1).padStart(2, '0')}-${slide.id}.png`
       await page.screenshot({ path: join(output, screenshot) })
@@ -440,8 +538,9 @@ try {
     }
     entry.controls = await controlsVisible(page)
     await keyboard(page, 'Home', 0)
-    for (let i = 1; i < 5; i++) await keyboard(page, 'ArrowRight', i)
-    await notesMatch(presenter, deck, 4)
+    const longNotesIndex = deck.slides.findIndex(slide => slide.id === 'tree-goal')
+    for (let i = 1; i <= longNotesIndex; i++) await keyboard(page, 'ArrowRight', i)
+    await notesMatch(presenter, deck, longNotesIndex)
     await presenter.setViewportSize(viewport)
     const noteScroll = await presenter.evaluate(() => {
       const panel = document.scrollingElement
@@ -453,7 +552,7 @@ try {
     await presenter.screenshot({ path: join(output, entry.notesScreenshot) })
     entry.notesControls = await controlsVisible(presenter)
     await page.locator('#next').click()
-    await notesMatch(presenter, deck, 5)
+    await notesMatch(presenter, deck, longNotesIndex + 1)
 
   }
   await presenter.close()
@@ -473,6 +572,20 @@ try {
   verifyGeometry(genericMetric, '1280x720 generic three-role fixture')
   verifyAuthoredText(genericMetric, generic.slides[genericRoleIndex], '1280x720 generic three-role fixture')
   await page.screenshot({ path: join(output, '1280x720-generic-three-roles.png') })
+  const agendaFixture = structuredClone(deck)
+  const agendaIndex = agendaFixture.slides.findIndex(slide => slide.layout === 'agenda')
+  const agenda = agendaFixture.slides[agendaIndex]
+  agenda.id = 'agenda-six'
+  agenda.content.labels.push('Discussion')
+  const agendaPath = join(isolated, 'six-section-agenda.html')
+  await writeFile(agendaPath, renderDeck(agendaFixture))
+  await open(agendaPath)
+  await keyboard(page, 'ArrowRight', agendaIndex)
+  const agendaMetric = await geometry(page)
+  evidence.sixSectionAgendaFixture = agendaMetric
+  verifyGeometry(agendaMetric, '1280x720 six-section agenda fixture')
+  verifyAuthoredText(agendaMetric, agenda, '1280x720 six-section agenda fixture')
+  await page.screenshot({ path: join(output, '1280x720-six-section-agenda.png') })
   check('offline copied file makes no external requests', evidence.externalRequests.length === 0, evidence.externalRequests)
   check('browser reports no JavaScript or resource errors', evidence.browserErrors.length === 0, evidence.browserErrors)
   await context.close()

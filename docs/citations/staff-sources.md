@@ -16,7 +16,7 @@ canonical: /citations/staff-sources
 
 Sources behind [E Staff](../appendices/staff/index.md). Citation identifiers stay stable when staff guidance moves to the appendices.
 
-<!-- Source provenance: docs/staff/expectations.md; 10-2 content additions/10-2.txt "Main references"; docs/staff/professional-development.md; maintenance/HANDBOOK-OUTLINE.md, C.3. -->
+<!-- Source provenance: docs/staff/expectations.md; archive/sources/2026-10-02/10-2.txt "Main references"; docs/staff/professional-development.md; maintenance/HANDBOOK-OUTLINE.md, C.3. -->
 
 ## C.3.0 Staff philosophy (E.0) {#staff-philosophy}
 

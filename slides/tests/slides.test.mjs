@@ -30,8 +30,9 @@ test('DNA deck passes strict coverage and rule validation', t => {
   assert.equal(result.status, 0, result.stdout + result.stderr)
   assert.equal(result.report.errors.length, 0)
   assert.equal(result.report.coverage.uncovered.length, 0)
-  assert.equal(result.report.durationSeconds, 1020)
-  assert.equal(result.report.slideCount, 19)
+  assert.equal(result.report.durationSeconds, 1145)
+  assert.equal(result.report.slideCount, 25)
+  assert.equal(result.report.coverage.duplicated.length, 0)
 })
 
 test('invalid JSON and unsupported deck structures have useful errors', t => {
@@ -93,12 +94,13 @@ test('presentation findings identify point words, slide count, content run and t
 })
 
 test('titles, section labels, captions and diagram labels count; long cues do not', t => {
-  const data = deck(); byId(data, 'roadmap').sectionLabel = 'Roadmap'
-  byId(data, 'roadmap').title = 'one two three four five six seven'
-  byId(data, 'roadmap').content.caption = 'one two three four five six seven'
-  byId(data, 'roadmap').notes.cues.push('cue '.repeat(200))
+  const data = deck(); byId(data, 'roles').sectionLabel = 'Roadmap'
+  byId(data, 'roles').title = 'one two three four five six seven'
+  byId(data, 'roles').content.caption = 'one two three four five six seven'
+  byId(data, 'roles').notes.cues.push('cue '.repeat(200))
+  byId(data, 'roles').content.roles.push('Another role')
   const result = check(t, data)
-  assert.ok(result.report.findings.some(f => f.slideId === byId(data, 'roadmap').id && /lines/.test(f.message)))
+  assert.ok(result.report.findings.some(f => f.slideId === byId(data, 'roles').id && /lines/.test(f.message)))
   assert.ok(result.report.findings.some(f => /title.*words/.test(f.message)))
   assert.ok(result.report.findings.some(f => /caption.*words/.test(f.message)))
   assert.ok(!result.report.findings.some(f => /cue/.test(f.message)))
@@ -142,7 +144,7 @@ test('private presenter cues are absent from audience HTML and preserved in sepa
   assert.equal(embeddedDeck(presenter).source.text, data.source.text)
 })
 
-test('build produces nineteen slides, all eleven layouts and deterministic self-contained resources', t => {
+test('build produces twenty-five slides and deterministic self-contained resources', t => {
   const fixture = build(t, deck(), ['--strict'])
   const first = fixture.run()
   assert.equal(first.status, 0, first.stdout + first.stderr)
@@ -155,8 +157,8 @@ test('build produces nineteen slides, all eleven layouts and deterministic self-
   assert.ok(audience.slides.every(slide => slide.notes === undefined))
   assert.doesNotMatch(html, /class="(?:source-passage|editorial-cues|slide-notes)"|id="notes-panel"/)
   const sections = html.match(/<section\b[^>]*>/g) ?? []
-  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 19)
-  for (const layout of ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles']) assert.ok(html.includes(`data-layout="${layout}"`))
+  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 25)
+  for (const layout of ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'montage', 'agenda', 'tree']) assert.ok(html.includes(`data-layout="${layout}"`))
   assert.match(html, /data:image\/png;base64,/)
   assert.equal((html.match(/data:font\/ttf;base64,/g) ?? []).length, 3)
   assert.match(html, /SIL OPEN FONT LICENSE/)
@@ -275,9 +277,10 @@ test('image signatures reject mislabeled nonimage bytes before replacing output'
   assert.equal(readFileSync(fixture.notesOutput, 'utf8'), 'existing usable notes')
 })
 
-test('horizons are a deliberate four-level focus mode; unknown modes fail', t => {
-  const data = deck(), slide = data.slides.find(slide => slide.content.mode === 'horizons')
-  assert.ok(slide, 'roadmap is a horizons diagram')
+test('reusable steps horizons retain their four-level focus mode; unknown modes fail', t => {
+  const data = deck(), slide = byId(data, 'tree-goal')
+  slide.layout = 'steps'
+  slide.content = { mode: 'horizons', labels: ['Seed cities', 'California', 'Red and blue states', 'Federal policy change'] }
   assert.equal(slide.content.labels.length, 4)
   const valid = check(t, data, '--strict')
   assert.equal(valid.status, 0, valid.stdout + valid.stderr)
@@ -308,6 +311,21 @@ test('five section dividers, the participation threshold and Culture have dedica
   assert.equal(byId(data, 'ownership-principles').layout, 'pair')
 })
 
+test('revision two preserves the revised narrative and source fidelity', () => {
+  const data = deck()
+  assert.equal(byId(data, 'opening').title, 'Revolt for our future')
+  assert.deepEqual(byId(data, 'opening').content.lines, ['Sapiens First DNA', '10/09/26'])
+  assert.equal(byId(data, 'technology').title, 'Humanity faces a choice')
+  assert.deepEqual(byId(data, 'crisis').content.labels, ['Human extinction', 'Threats to democracy', 'Vast inequality'])
+  assert.equal(byId(data, 'vision').content.direction, 'horizontal')
+  assert.equal(byId(data, 'extinction-focus').content.highlight, 0)
+  assert.deepEqual(data.slides.slice(7, 15).map(slide => slide.id), ['strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold'])
+  assert.equal(byId(data, 'tree-goal').content.tree.label, 'AI treaty')
+  assert.equal(byId(data, 'trigger-moments').images.length, 2)
+  assert.equal(byId(data, 'momentum').title, 'A cycle of engagement')
+  assert.equal(data.sourceOrder, 'presentation')
+})
+
 test('new layout contracts reject unsupported content and invalid label counts', t => {
   for (const [id, content] of [
     ['story-section', { labels: ['Unexpected'] }],
@@ -323,7 +341,7 @@ test('new layout contracts reject unsupported content and invalid label counts',
   }
 })
 
-test('nineteen slides require an explicit exception that cannot waive the twenty-minute limit', t => {
+test('twenty-five slides require an explicit exception that cannot waive the twenty-minute limit', t => {
   const data = deck(), accepted = check(t, data, '--strict')
   assert.ok(accepted.report.findings.some(finding => /slide count/.test(finding.message) && finding.justified))
   delete data.ruleExceptions

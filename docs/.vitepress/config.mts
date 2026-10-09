@@ -9,8 +9,17 @@ import { getHandbookChapters, getSidebarGroups, PAGE_STATUSES, validateHandbookT
 import { resolveReferences } from '../../scripts/handbook-references.mjs'
 import { loadRedirects, writeRedirects } from '../../scripts/handbook-redirects.mjs'
 import { VERSION } from './version.mjs'
+import { loadDeckRegistry, publishedDecks } from '../../slides/registry.mjs'
 
 const base = '/docs/'
+
+// Decks the site publishes (see scripts/build-slides.mjs); SLIDES_PREVIEW=1
+// also lists handcrafted decks that are not yet approved.
+const deckRegistry = loadDeckRegistry()
+const published = new Set(publishedDecks(deckRegistry, { preview: process.env.SLIDES_PREVIEW === '1' }).map((deck) => deck.slug))
+const slideDecks = deckRegistry.map(({ slug, title, origin, approved, covers, lastUpdated }) => ({
+  slug, title, origin, approved, covers, lastUpdated, published: published.has(slug)
+}))
 const siteHostname = 'https://sapiens-first.github.io/docs/'
 
 // One ordered registry supplies navigation and checks authored numbering.
@@ -116,6 +125,7 @@ export default withMermaid(defineConfig({
   ],
 
   themeConfig: {
+    slideDecks,
     logo: '/logo.png',
     siteTitle: 'Sapiens First',
 

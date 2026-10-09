@@ -20,6 +20,8 @@
  *   - frontmatter title text differs from the page's H1 text
  *   - more than one H1
  *   - relative .md links or #fragments that don't resolve
+ *   - `slides:` that names no deck in slides/decks/, or disagrees with that
+ *     deck's `covers` list; malformed deck origin/approved/covers metadata
  *   - handbook-data/redirects.json entries whose source page still exists,
  *     whose target is missing, or that chain or duplicate
  *
@@ -37,6 +39,7 @@ import { fileURLToPath } from 'node:url'
 import { CHAPTER_LABELS, PAGE_STATUSES, validateHandbookToc } from './handbook-toc.mjs'
 import { loadRedirects, validateRedirects } from './handbook-redirects.mjs'
 import { resolveReferences } from './handbook-references.mjs'
+import { loadDeckRegistry, validateSlideMapping } from '../slides/registry.mjs'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DOCS = join(ROOT, 'docs')
@@ -45,7 +48,7 @@ const warnOnly = process.argv.includes('--warn-only')
 const ALLOWED_STATUS = Object.keys(PAGE_STATUSES)
 const ALLOWED_SECTIONS = ['For Supporters', 'For Members', 'For Organizers']
 const HANDBOOK_SECTIONS = Object.keys(CHAPTER_LABELS)
-const HANDBOOK_NUMBER = /^(?:\d+|[A-E])(?:\.\d+)*$/
+const HANDBOOK_NUMBER = /^(?:\d+|[A-F])(?:\.\d+)*$/
 
 function isCalendarDate(value) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
@@ -184,6 +187,7 @@ function main() {
   const handbookIds = new Map()
   const handbookNumbers = new Map()
   const anchorCache = new Map()
+  const slidePages = []
 
   for (const file of files) {
     const relPath = relative(ROOT, file)
@@ -236,6 +240,7 @@ function main() {
         owners.get(data[key]).push(relPath)
       }
     }
+    if (data.handbook_id) slidePages.push({ path: relPath, id: data.handbook_id, slides: data.slides })
     if (h1s.length > 1) errors.push(`${relPath}: more than one H1 (${h1s.length})`)
     if (data.title && h1s.length >= 1 && data.title.trim() !== h1s[0].text.trim()) {
       errors.push(`${relPath}: frontmatter title "${data.title}" does not match the H1 "${h1s[0].text}"`)
@@ -270,6 +275,8 @@ function main() {
       if (owners.length > 1) errors.push(`Duplicate ${key} "${value}" used by: ${owners.join(', ')}`)
     }
   }
+
+  errors.push(...validateSlideMapping(slidePages, loadDeckRegistry()))
 
   for (const w of warnings) console.log('WARN ', w)
   for (const e of errors) console.log(warnOnly ? 'WARN* ' : 'ERROR', e)

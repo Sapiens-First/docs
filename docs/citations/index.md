@@ -17,7 +17,7 @@ Sources that informed the handbook, whether or not we recommend reading them. En
 
 Citation identifiers retain their existing numbers: C.2 supports [3 Lead](../leadership/index.md), and C.3 supports [E Staff](../appendices/staff/index.md). Planned chapters [2 Go deeper](../go-deeper/index.md) and [4 Train others](../train-others/index.md) have no new citation entries yet.
 
-<!-- Source provenance: Existing handbook pages (staff/expectations.md, staff/professional-development.md, appendices/reference IC/DRI/PC pages, dna/structure.md), 10-2 content additions/10-2.txt "Main references", and maintenance/HANDBOOK-OUTLINE.md Appendix C. No sources were added beyond those named; none verified online. -->
+<!-- Source provenance: Existing handbook pages (staff/expectations.md, staff/professional-development.md, appendices/reference IC/DRI/PC pages, dna/structure.md), archive/sources/2026-10-02/10-2.txt "Main references", and maintenance/HANDBOOK-OUTLINE.md Appendix C. No sources were added beyond those named; none verified online. -->
 
 - [C.0 Introduction sources](introduction-sources.md)
 - [C.1 DNA sources](dna-sources.md)

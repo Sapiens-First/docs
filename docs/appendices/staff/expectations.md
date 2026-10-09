@@ -15,7 +15,7 @@ canonical: /appendices/staff/expectations
 
 Make expectations explicit before evaluating performance. Evaluate outcomes and observable behavior, discuss performance continuously, and treat a rating of 3 as successfully meeting expectations. Assess people against the roles they actually hold: Individual Contributor, Directly Responsible Individual, and Player-Coach can overlap. This framework is a draft: it hasn't been adopted, and the assessment process is not yet agreed.
 
-<!-- Source provenance: repository-local 10-2 content additions/10-2.txt, supplied October 2, 2026. Source recommendations and bibliographic leads are draft inputs, not adopted policy or independently verified research claims. The appendix pages maintain the score tables. -->
+<!-- Source provenance: repository-local archive/sources/2026-10-02/10-2.txt, supplied October 2, 2026. Source recommendations and bibliographic leads are draft inputs, not adopted policy or independently verified research claims. The appendix pages maintain the score tables. -->
 
 ## E.1.1 Individual Contributor {#individual-contributor}
 

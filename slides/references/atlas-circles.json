@@ -1,0 +1,45 @@
+{
+  "name": "Sapiens First Atlas circle reference",
+  "inspectedOn": "2026-10-06",
+  "pageUrl": "https://sapiensfirst.org/atlas",
+  "dataUrl": "https://sapiensfirst.org/data/atlas/governance.csv",
+  "visualReferenceUrl": "https://sapiensfirst.org/atlas-circles.js",
+  "records": [
+    {
+      "id": "G-001",
+      "label": "Sapiens First Global",
+      "type": "Circle",
+      "parentId": null,
+      "status": "Active"
+    },
+    {
+      "id": "G-004",
+      "label": "Media",
+      "type": "Circle",
+      "parentId": "G-001",
+      "status": "Active"
+    },
+    {
+      "id": "G-007",
+      "label": "Advocacy",
+      "type": "Circle",
+      "parentId": "G-001",
+      "status": "Active"
+    },
+    {
+      "id": "G-010",
+      "label": "Community",
+      "type": "Circle",
+      "parentId": "G-001",
+      "status": "Active"
+    },
+    {
+      "id": "G-036",
+      "label": "Tech",
+      "type": "Circle",
+      "parentId": "G-001",
+      "status": "Active"
+    }
+  ],
+  "scope": "Selected current Global sub-circles, not a complete roster. Role dots are schematic; circle size is not staffing or importance. The speech\u2019s Media Circle role examples remain separate from this Atlas snapshot."
+}

@@ -1,6 +1,6 @@
 # Generated slides: deterministic formula
 
-Last updated: 2026-10-09. This is the D1 contract for the future generator. `slides.mjs generate <page.md>`, generated deck metadata and the visible generated footer are not implemented by this document; they remain TODO D2–D5. The current renderer is under `experiments/slides/` while another agent edits the DNA deck; the intended final location is `slides/` after C1.
+Last updated: 2026-10-09. This is the D1 contract for the future generator. `slides.mjs generate <page.md>`, generated deck metadata and the visible generated footer are not implemented by this document; they remain TODO D2–D5. The current renderer is under `slides/` while another agent edits the DNA deck; the intended final location is `slides/` after C1.
 
 ## Input and output
 

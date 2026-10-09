@@ -16,7 +16,7 @@ canonical: /appendices/staff/compensation
 
 This page names the factors that may shape staff compensation: location, role, and performance. No pay policy, benchmark, role band, formula, or amount has been adopted, and nothing here is a promise of pay. One principle is settled: performance is assessed against the roles a person actually holds, using [E.1 Expectations](expectations.md). How scores relate to pay is undecided.
 
-<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md section 3.2 and the A.1.5 entry (compensation policy, not yet written); the earlier docs/organizers/compensation.md was a placeholder with no policy; 10-2 content additions/10-2.txt supplies rubric weighting only and states no pay material. This page is an unresolved-policy draft. Nothing here is adopted policy. -->
+<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md section 3.2 and the A.1.5 entry (compensation policy, not yet written); the earlier docs/organizers/compensation.md was a placeholder with no policy; archive/sources/2026-10-02/10-2.txt supplies rubric weighting only and states no pay material. This page is an unresolved-policy draft. Nothing here is adopted policy. -->
 
 ## E.2.1 Location {#location}
 

@@ -91,7 +91,7 @@ Store canonical diagram assets in `docs/public/diagrams/` with descriptive, lowe
 
 Mermaid may be used as an authoring tool. Export a reviewed SVG before publishing a new diagram; if retaining the Mermaid source, put it under `maintenance/diagram-sources/` and document the regeneration command beside it. The SVG is the published output, not a separately edited competing diagram. Existing Mermaid blocks remain supported and migrate incrementally when their pages are rewritten.
 
-The imported `company-brain.svg` and `movement-flywheel.svg` come from `10-2 content additions/`. Originals stay intact as source inputs; published copies live in the asset directory. They illustrate a proposed systems model, not proof of exponential growth or approval of autonomous AI decisions.
+The imported `company-brain.svg` and `movement-flywheel.svg` come from `archive/sources/2026-10-02/`. Originals stay intact as archived source inputs; published copies live in the asset directory. They illustrate a proposed systems model, not proof of exponential growth or approval of autonomous AI decisions.
 
 Run `npm run diagrams:check` to validate the published SVG conventions, then inspect the diagram in the built page. Automated validation does not establish visual legibility or the accuracy of the model.
 

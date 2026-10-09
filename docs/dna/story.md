@@ -3,6 +3,7 @@ title: "1.1 Story"
 description: "The AI Crisis as Sapiens First sees it, the future we want, and why we organize."
 section: DNA
 status: under-construction
+slides: dna
 construction_note: "The founding story and the section on tech oligarchs and concentrated power (1.1.2) are still to be written, and the evidence behind the AI Crisis concerns has not yet been selected."
 last_updated: 2026-10-02
 handbook_id: dna-story

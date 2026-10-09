@@ -130,6 +130,7 @@ export const CHAPTER_LABELS = {
   'Further Reading': { label: 'Further reading', blurb: 'Books and resources to go deeper.' },
   Citations: { label: 'Citations', blurb: 'Sources behind each chapter.' },
   Glossary: { label: 'Glossary', blurb: 'Terms used across the handbook.' },
+  Slides: { label: 'Slides', blurb: 'Every training deck, who made it, and which handbook pages it teaches.' },
 }
 
 /**

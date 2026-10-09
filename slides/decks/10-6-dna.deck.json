@@ -2,9 +2,20 @@
   "schemaVersion": 1,
   "id": "10-6-dna",
   "title": "Sapiens First DNA",
-  "targetDurationSeconds": 1020,
+  "slug": "dna",
+  "origin": "handcrafted",
+  "approved": false,
+  "lastUpdated": "2026-10-09",
+  "covers": [
+    "dna",
+    "dna-story",
+    "dna-strategy",
+    "dna-culture",
+    "dna-structure"
+  ],
+  "targetDurationSeconds": 1145,
   "source": {
-    "path": "10-2 content additions/10-6-dna",
+    "path": "slides/sources/10-6-dna.md",
     "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
     "text": "## Introduction\n\nSince the dawn of humanity, people have used technology to build a more beautiful world.\n\nTechnology can be a remedy or a poison. It all depends on how it is used. The agricultural revolution, for example, meant less people had to labor on the fields, but also led to an increasingly feudal society. The industrial revolution increased human productivity, but also led to greater inequality. Technological innovation must be accompanied by political reformation.\n\nThis presentation aims to answer the following questions:\n1. Story. Who are we as a movement? What is our story?\n2. Strategy. What's our approach to creating change? What's our roadmap?\n3. Culture. What culture and values do we have as a movement?\n4. Structure. How are we structured, and how can you get involved?\n\n## Part 1: Story\n\n**Crisis**\n\nIn the digital age, we've seen many nefarious impacts of technology. Social media have allowed people to be more connected then ever, but also led to a teenage mental health crisis. Platform economies like Uber make life more inequality, but also lead to economic displacement.\n\nToday, we are facing a great technological shift: artificial intelligence. Artificial intelligence itself is not bad or good -- it is shaped by us, its human-makers. But right now, AI is being shaped by power-hungry tech companies. \n\nPeople are worried about artificial intelligence, and rightly so. It is likely that left unchecked, AI will lead to:\n- Rampant inequality. In Silicon Valley, people often refer to the \"economic underclass\" that will developed as AI automates vast portions of white collar work. While new jobs may eventually be created, in the meantime, vast numbers of people will be unemployed, while inequality increases.\n- Threats to democracy. The power of AI is unprecedented. Money generated from the AI boom has already corrupted our political institutions. If governments and corporations use AI effectively, we could end up living in a permanent surveillance state.\n- Omnicide. For decades, scientists have worried about \"loss of control\" of AI systems. AI itself is amoral, and often tasked with completing objectives -- even when humans are in the way. Recently, we've seen AI models use superhuman abilities to break out of sandboxes and commit real crimes. Furthermore, bad actors could easily direct AI to create deadly pandemics or take down the cyber grid.\n\n**Vision**\n\nBut not to fear! We have faced disruptive technologies before. As a movement, Sapiens First focuses on three things:\n- Life. We fight to ensure humanity survives the development of superintelligence. This means a global treaty on AI development, and international coordination to ensure advanced AI is aligned with human interests.\n- Liberty. We demand a reformation to our democracy. We believe in a government for the people, by the people -- not tech oligarchs. We also believe that technology can enhance democracy by increasing civic participation, eg. by experimenting with new democratic institutions like Citizens Assemblies and liquid democracy.\n- Happiness. We believe that technology should uplift humanity, not just the rich few. In practice, this means that the wealth of the AI boom should be distributed. We also believe in the reformation of governmental institutions, so that technology accelerates the development of science, public health, and economic development.\n\n## Part 2: Strategy\n\nCentral to our DNA is a cohesive strategy & roadmap. With a clear strategy, Sapiens First chapters can be both autonomous and unified under a common goal.\n\n**Strategy**\n\nPeople typically see advocacy as falling into one of two camps:\n- Structure-based organizing (eg. labor unions, typical political campaigns) use lots of one-on-one conversations and trainings to build a base.\n- Mass protests get lots of people out on the streets at critical periods (eg. Black Lives Matter; Occupy Wall Street)\n\nSuccessful social movements use a best-of-both-worlds approach: momentum-driven organizing. This means having solid structures & leadership development for your base, while also using \"trigger events\" to spur mass mobilization, and then absorbing those people into the movement.\n\nThis can be summarized in a simple diagram:\n- Act. Anything from a potluck to a protest.\n- Recruit. Getting connecting with participants.\n- Train. Empowering recruits to self-organize new actions.\n\nScholars have found that successful movements win -- doing things as serious as toppling dictators -- when they get 3.5% of the population engaged in a sustain, organized manner. \n\n**Roadmap**\n\nGiven the fact that AI may kill us all, we focus on this as our initial primary objective. \n\nMission: Federal legislation for an AI treaty\n  - Phase 1: Seed cities\n    - Campaigns\n      - Tactics\n  - Phase 2: California state\n  - Phase 3: Red & blue states\n  - Phase 4: 3.5%, Federal policy change\n\nWithin each Phase 1, local chapters have the freedom to organize any campaign that relates to AI safety, democracy, and abundance. We also hope chapters will experiment with tactics and share successful techniques through our shared tools.\n\n## Part 3: Culture\n\n- Strategic non-violence\n- Regenerative culture\n- Essentialism\n- Abundant leadership\n\n## Part 4: Structure\n\nTo scale to the size we need, we rely on volunteers to fuel our work.\n\nWe have a Cycle of Engagement, which follows from our strategy:\n- Act -> new Supporters (on the email list)\n- Recruit -> new Members (pay dues + on the Discord)\n- Train -> new Organizers (have an active role)\n\nBut what do Organizers do? How do we allow everyone to have a meaningful role while we scale to hundreds of thousands of people?\n\nSapiens First uses a system of Holacracy to allow self-organization. \n\nEssentially, we want people to be autonomous but also unified in our movement. This means an organizational structure that is less like a militaristic hierarchy, and more like organs in your body, or people in a city. \n\nThis boils down to two principles:\n- Rules of the road (enforceable rules)\n- Clear ownership (property rights)\n\nIn Sapiens First, when you become an Organizer, you are given one or more roles. Each Role has full authority over their areas of responsibility. Roles make up Circles -- for example, the Media Circle may include a Social Media Manager, an Email Sender, and so on. \n\n## Pathways to Action\n\nWe all have a choice: will we continue to be trodden on by corporate elites, or will we fight for a brighter future?\n\nWe believe we can achieve revolutionary social change around technology in this decade -- and we need your help.\n- Donate. $1000 funds an action.\n- Join. Our members host events and are part of an online community. Recommend $10 or $20 dollars. We also have a solidarity dues program.\n- Organize. Connect people in your area and develop as a leader."
   },
@@ -14,7 +25,7 @@
       "start": 1,
       "end": 1,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 7,
@@ -26,68 +37,67 @@
       "start": 13,
       "end": 13,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 15,
       "end": 15,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 26,
       "end": 26,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 33,
       "end": 33,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 37,
       "end": 37,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 52,
       "end": 52,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 66,
       "end": 66,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 73,
       "end": 73,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     },
     {
       "start": 94,
       "end": 94,
       "kind": "heading",
-      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in original order."
+      "reason": "Source heading represented by its section or associated content slide; substantive passages are mapped separately in the explicitly revised presentation order."
     }
   ],
   "editorialReview": [
-    "User-directed revision: the deck expands from ten to nineteen slides with section headers for Story, Strategy, Culture, Structure, and Pathways to Action. The explicit deck-level slide-count exception preserves the 10-20-30 finding while allowing this authorized structure. Planned timing is 1020 seconds (17 minutes); live rehearsal remains pending.",
     "Culture is now audience content: all four source values appear verbatim on culture-values and in its source notes. No definitions, handbook policy, or missing teaching have been invented.",
-    "The complete original source snapshot and digest remain unchanged. All substantive passages are mapped in original order without duplicated ranges; original headings and the agenda are classified separately.",
     "3.5% is a dedicated visual downbeat with the original paragraph in its notes. It remains the draft’s empirical benchmark rather than a new guarantee of success; empirical publication review is pending.",
     "The Atlas is an additional visual reference authorized by the user. Its nested circles and four selected current Global sub-circles guide the circles overview. The excerpt is not a full roster; role dots are schematic and sizes do not measure staffing or importance. Media Circle roles on the following example slide remain the speech’s illustrations, not a substituted current roster.",
-    "The roadmap keeps its four source phases as expanding strategic horizons, inspired by Getting Things Done; these are neither literal geographical boundaries nor dated completion gates.",
     "Audience headlines and some labels are editorial paraphrases. Full wording, punctuation, whitespace, and line breaks remain in source.text and exact mapped speaker passages. Human extinction paraphrases Omnicide; original conditional framing remains in notes.",
     "Illustrative stock photographs retain separate source, photographer, and license credits. None is represented as a Sapiens First event. First-party vector artwork remains credited separately.",
     "Unverified source claims and operational details remain unchanged in notes, including AI examples, the 3.5% benchmark, roadmap phases, donation amounts, recommended dues, solidarity dues, and Discord. No donation link, QR code, or new financial promise is added.",
-    "Audience slides and speaker notes remain separate offline HTML files, with a linked synchronized presenter window. Browser verification must cover the expanded deck, all layout types, and actual text/circle geometry."
+    "Audience slides and speaker notes remain separate offline HTML files, with a linked synchronized presenter window. Browser verification must cover the expanded deck, all layout types, and actual text/circle geometry.",
+    "Website hero rights and permission for the user-supplied AP photographs remain unverified. See image provenance and each slide’s notes before public redistribution.",
+    "Revision 2 follows the October 9 plan: Revolt for our future, deck-wide agenda, promise before dangers, extinction focus, topical dividers, California/Berkeley strategy tree, cycle before trigger moments and participation threshold, and section progress. The removed Declaration slide’s notes remain on extinction-focus. Original source bytes and coverage are unchanged."
   ],
   "slides": [
     {
@@ -95,9 +105,12 @@
       "layout": "statement",
       "purpose": "engage",
       "role": "content",
-      "title": "Fight for a brighter future",
+      "title": "Revolt for our future",
       "content": {
-        "lines": []
+        "lines": [
+          "Sapiens First DNA",
+          "10/09/26"
+        ]
       },
       "durationSeconds": 45,
       "notes": {
@@ -108,18 +121,42 @@
           }
         ],
         "cues": [
-          "Introduce the movement and its reason for gathering. The four-part source agenda is classified as navigation in the coverage report."
+          "Introduce the movement and its reason for gathering. The four-part source agenda is classified as navigation in the coverage report.",
+          "Opening wording is decided: Revolt for our future. The badge names the training; the short date is October 9, 2026."
         ]
       },
       "image": {
-        "path": "assets/civic-park.jpg",
-        "alt": "People sharing a public playground on London’s South Bank; illustrative stock photograph.",
-        "credit": "Jamie Street / Unsplash — illustrative public-space photograph, not a Sapiens First event.",
-        "sourceUrl": "https://unsplash.com/photos/people-in-park-JPyRvvUnQjU",
-        "licenseUrl": "https://unsplash.com/license",
-        "position": "center"
+        "path": "assets/homepage-hero-photo.jpg",
+        "alt": "A crowd at a peaceful demonstration, from the Sapiens First homepage.",
+        "credit": "Sapiens First website hero photograph, reused at the user’s request; underlying photographer and license have not been independently verified.",
+        "sourceUrl": "https://sapiensfirst.org/",
+        "licenseUrl": "https://sapiensfirst.org/",
+        "position": "center",
+        "treatment": "background"
+      }
+    },
+    {
+      "id": "agenda",
+      "layout": "agenda",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "What we'll cover",
+      "content": {
+        "labels": [
+          "Story",
+          "Strategy",
+          "Culture",
+          "Structure",
+          "Pathways to Action"
+        ]
       },
-      "graphic": "contours"
+      "durationSeconds": 20,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Orient the audience to the five sections; the footer progress strip mirrors this list."
+        ]
+      }
     },
     {
       "id": "story-section",
@@ -136,18 +173,19 @@
         ]
       },
       "tone": "dark",
-      "graphic": "contours"
+      "graphic": "book",
+      "section": "story"
     },
     {
       "id": "technology",
-      "layout": "statement",
+      "layout": "choice",
       "purpose": "explain",
       "role": "content",
-      "title": "Technology needs political change",
+      "title": "Humanity faces a choice",
       "content": {
-        "lines": [
-          "A remedy",
-          "A poison"
+        "labels": [
+          "AI dangers",
+          "AI promise"
         ]
       },
       "durationSeconds": 75,
@@ -163,29 +201,59 @@
           }
         ],
         "cues": [
-          "Connect agriculture and industry to the digital-age examples. Explain the source’s tension between technological benefits and political consequences."
+          "Connect agriculture and industry to the digital-age examples. Explain the source’s tension between technological benefits and political consequences.",
+          "The two roads contrast the promise and risks of AI. Their labels are editorial framing; preserve the original technology examples in notes. The park photo illustrates an optimistic shared future."
         ]
       },
       "image": {
-        "path": "assets/city-night.jpg",
-        "alt": "Downtown Los Angeles at night, photographed from City Hall; illustrative stock photograph.",
-        "credit": "Nicolao Negrello / Unsplash — illustrative Los Angeles cityscape.",
-        "sourceUrl": "https://unsplash.com/photos/aerial-view-of-cityscape-during-night-time-vQy71wPTvgM",
-        "licenseUrl": "https://unsplash.com/license",
-        "position": "bottom"
-      }
+        "path": "assets/crossroads.svg",
+        "alt": "One road splits toward dark storm clouds and a sunrise, illustrating two possible futures.",
+        "credit": "Original Sapiens First deck illustration, October 9, 2026.",
+        "sourceUrl": "https://github.com/Sapiens-First/docs",
+        "licenseUrl": "https://github.com/Sapiens-First/docs",
+        "position": "center"
+      },
+      "section": "story"
+    },
+    {
+      "id": "vision",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "The promise of AI",
+      "content": {
+        "labels": [
+          "Human survival",
+          "Democratic power",
+          "Shared prosperity"
+        ],
+        "direction": "horizontal"
+      },
+      "durationSeconds": 90,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 28,
+            "end": 31
+          }
+        ],
+        "cues": [
+          "Explain the treaty, democracy, and distribution proposals in the original notes. The three values serve one shared vision."
+        ]
+      },
+      "section": "story"
     },
     {
       "id": "crisis",
       "layout": "triad",
       "purpose": "explain",
       "role": "content",
-      "title": "Unchecked AI threatens our future",
+      "title": "Dangers of AI",
       "content": {
         "labels": [
-          "Inequality",
+          "Human extinction",
           "Threats to democracy",
-          "Human extinction"
+          "Vast inequality"
         ]
       },
       "durationSeconds": 90,
@@ -200,33 +268,33 @@
           "Keep the source’s conditional framing and attribution to the draft. Explain the three risks without turning them into stronger empirical claims."
         ]
       },
-      "tone": "dark"
+      "tone": "dark",
+      "section": "story"
     },
     {
-      "id": "vision",
+      "id": "extinction-focus",
       "layout": "triad",
       "purpose": "explain",
       "role": "content",
-      "title": "Life. Liberty. Happiness.",
+      "title": "Our focus: human extinction",
+      "tone": "dark",
       "content": {
         "labels": [
-          "Human survival",
-          "Democratic power",
-          "Shared prosperity"
+          "Human extinction",
+          "Threats to democracy",
+          "Vast inequality"
+        ],
+        "highlight": 0
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Life, Liberty, and the Pursuit of Happiness in the age of AI. This is an editorial bridge requested on October 9, linking the source’s three values to the Declaration of Independence; it adds no policy commitment.",
+          "This is the risk the strategy that follows addresses first."
         ]
       },
-      "durationSeconds": 90,
-      "notes": {
-        "sourceRanges": [
-          {
-            "start": 28,
-            "end": 31
-          }
-        ],
-        "cues": [
-          "Explain the treaty, democracy, and distribution proposals in the original notes. The three values serve one shared vision."
-        ]
-      }
+      "section": "story"
     },
     {
       "id": "strategy-section",
@@ -237,20 +305,403 @@
       "content": {},
       "durationSeconds": 10,
       "notes": {
-        "sourceRanges": [],
+        "sourceRanges": [
+          {
+            "start": 35,
+            "end": 35
+          }
+        ],
         "cues": [
           "Section transition: introduce Strategy before advancing to its content."
         ]
       },
-      "tone": "coral",
-      "graphic": "arcs"
+      "tone": "dark",
+      "graphic": "route",
+      "section": "strategy"
+    },
+    {
+      "id": "tree-goal",
+      "layout": "tree",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Political change for humanity",
+      "content": {
+        "tree": {
+          "id": "treaty",
+          "label": "AI treaty",
+          "children": [
+            {
+              "id": "ca",
+              "label": "State action in California",
+              "children": [
+                {
+                  "id": "berkeley",
+                  "label": "Berkeley",
+                  "children": [
+                    {
+                      "id": "chapter",
+                      "label": "Berkeley chapter",
+                      "current": true
+                    },
+                    {
+                      "id": "cal",
+                      "label": "Campaign in Cal"
+                    },
+                    {
+                      "id": "freeze",
+                      "label": "Freeze AI in California"
+                    },
+                    {
+                      "id": "policy",
+                      "label": "Policy creation"
+                    },
+                    {
+                      "id": "protest",
+                      "label": "Protest planning"
+                    }
+                  ]
+                },
+                {
+                  "id": "sac",
+                  "label": "Sacramento"
+                },
+                {
+                  "id": "la",
+                  "label": "Los Angeles"
+                }
+              ]
+            },
+            {
+              "id": "states",
+              "label": "New York, Florida, Texas"
+            },
+            {
+              "id": "national",
+              "label": "National movement"
+            }
+          ]
+        },
+        "reveal": [
+          "treaty",
+          "ca",
+          "states",
+          "national"
+        ]
+      },
+      "durationSeconds": 40,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 54,
+            "end": 64
+          }
+        ],
+        "cues": [
+          "The October 9 revision moves the roadmap to the first content slide of Strategy. The original source’s four phases are preserved verbatim below; the audience tree presents the user’s revised three phases and federal goal.",
+          "Phase 1: action in California. Phase 2: expansion to New York, Florida, Texas. Phase 3: national movement. The March on Washington photograph illustrates mass mobilization, not a Sapiens First event or a scheduled march.",
+          "The revised tree names the specified Berkeley work. Sacramento, Los Angeles, and the national movement remain leaf nodes; no completion dates or unspecified commitments are invented.",
+          "The tree shows the revised strategy; the original roadmap phases remain verbatim in source notes. AI treaty is the goal, with California, other states, and a national movement beneath it."
+        ]
+      },
+      "section": "strategy"
+    },
+    {
+      "id": "tree-california",
+      "layout": "tree",
+      "purpose": "explain",
+      "role": "content",
+      "title": "It starts in California",
+      "content": {
+        "tree": {
+          "id": "treaty",
+          "label": "AI treaty",
+          "children": [
+            {
+              "id": "ca",
+              "label": "State action in California",
+              "children": [
+                {
+                  "id": "berkeley",
+                  "label": "Berkeley",
+                  "children": [
+                    {
+                      "id": "chapter",
+                      "label": "Berkeley chapter",
+                      "current": true
+                    },
+                    {
+                      "id": "cal",
+                      "label": "Campaign in Cal"
+                    },
+                    {
+                      "id": "freeze",
+                      "label": "Freeze AI in California"
+                    },
+                    {
+                      "id": "policy",
+                      "label": "Policy creation"
+                    },
+                    {
+                      "id": "protest",
+                      "label": "Protest planning"
+                    }
+                  ]
+                },
+                {
+                  "id": "sac",
+                  "label": "Sacramento"
+                },
+                {
+                  "id": "la",
+                  "label": "Los Angeles"
+                }
+              ]
+            },
+            {
+              "id": "states",
+              "label": "New York, Florida, Texas"
+            },
+            {
+              "id": "national",
+              "label": "National movement"
+            }
+          ]
+        },
+        "reveal": [
+          "treaty",
+          "ca",
+          "states",
+          "national",
+          "berkeley",
+          "sac",
+          "la"
+        ],
+        "focus": "ca"
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Expand California into Berkeley, Sacramento, and Los Angeles; only Berkeley has specified next steps."
+        ]
+      },
+      "ruleExceptions": [
+        {
+          "rule": "1-6-6",
+          "text": "It starts in California",
+          "reason": "The requested progressive strategy tree shows related nodes with large type and elbow connectors; its complete relationships require more than six audience labels."
+        },
+        {
+          "rule": "5-5-5",
+          "text": "It starts in California",
+          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
+        }
+      ],
+      "section": "strategy"
+    },
+    {
+      "id": "tree-berkeley",
+      "layout": "tree",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Where we are now: Berkeley",
+      "content": {
+        "tree": {
+          "id": "treaty",
+          "label": "AI treaty",
+          "children": [
+            {
+              "id": "ca",
+              "label": "State action in California",
+              "children": [
+                {
+                  "id": "berkeley",
+                  "label": "Berkeley",
+                  "children": [
+                    {
+                      "id": "chapter",
+                      "label": "Berkeley chapter",
+                      "current": true
+                    },
+                    {
+                      "id": "cal",
+                      "label": "Campaign in Cal"
+                    },
+                    {
+                      "id": "freeze",
+                      "label": "Freeze AI in California"
+                    },
+                    {
+                      "id": "policy",
+                      "label": "Policy creation"
+                    },
+                    {
+                      "id": "protest",
+                      "label": "Protest planning"
+                    }
+                  ]
+                },
+                {
+                  "id": "sac",
+                  "label": "Sacramento"
+                },
+                {
+                  "id": "la",
+                  "label": "Los Angeles"
+                }
+              ]
+            },
+            {
+              "id": "states",
+              "label": "New York, Florida, Texas"
+            },
+            {
+              "id": "national",
+              "label": "National movement"
+            }
+          ]
+        },
+        "reveal": [
+          "treaty",
+          "ca",
+          "states",
+          "national",
+          "berkeley",
+          "sac",
+          "la",
+          "chapter",
+          "cal",
+          "freeze",
+          "policy",
+          "protest"
+        ],
+        "focus": "berkeley"
+      },
+      "durationSeconds": 35,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Focus on Berkeley: chapter, Cal campaign, Freeze AI in California, policy creation, and protest planning. These branches are the requested revision, not new source passages."
+        ]
+      },
+      "ruleExceptions": [
+        {
+          "rule": "1-6-6",
+          "text": "Where we are now: Berkeley",
+          "reason": "The requested progressive strategy tree shows related nodes with large type and elbow connectors; its complete relationships require more than six audience labels."
+        },
+        {
+          "rule": "5-5-5",
+          "text": "Where we are now: Berkeley",
+          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
+        }
+      ],
+      "section": "strategy"
+    },
+    {
+      "id": "tree-full",
+      "layout": "tree",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "One chapter at a time",
+      "content": {
+        "tree": {
+          "id": "treaty",
+          "label": "AI treaty",
+          "children": [
+            {
+              "id": "ca",
+              "label": "State action in California",
+              "children": [
+                {
+                  "id": "berkeley",
+                  "label": "Berkeley",
+                  "children": [
+                    {
+                      "id": "chapter",
+                      "label": "Berkeley chapter",
+                      "current": true
+                    },
+                    {
+                      "id": "cal",
+                      "label": "Campaign in Cal"
+                    },
+                    {
+                      "id": "freeze",
+                      "label": "Freeze AI in California"
+                    },
+                    {
+                      "id": "policy",
+                      "label": "Policy creation"
+                    },
+                    {
+                      "id": "protest",
+                      "label": "Protest planning"
+                    }
+                  ]
+                },
+                {
+                  "id": "sac",
+                  "label": "Sacramento"
+                },
+                {
+                  "id": "la",
+                  "label": "Los Angeles"
+                }
+              ]
+            },
+            {
+              "id": "states",
+              "label": "New York, Florida, Texas"
+            },
+            {
+              "id": "national",
+              "label": "National movement"
+            }
+          ]
+        },
+        "reveal": [
+          "treaty",
+          "ca",
+          "states",
+          "national",
+          "berkeley",
+          "sac",
+          "la",
+          "chapter",
+          "cal",
+          "freeze",
+          "policy",
+          "protest"
+        ]
+      },
+      "durationSeconds": 20,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Step back to the whole tree. You are here marks the Berkeley chapter as the current focus."
+        ]
+      },
+      "ruleExceptions": [
+        {
+          "rule": "1-6-6",
+          "text": "One chapter at a time",
+          "reason": "The requested progressive strategy tree shows related nodes with large type and elbow connectors; its complete relationships require more than six audience labels."
+        },
+        {
+          "rule": "5-5-5",
+          "text": "One chapter at a time",
+          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
+        }
+      ],
+      "section": "strategy"
     },
     {
       "id": "momentum",
       "layout": "cycle",
       "purpose": "explain",
       "role": "content",
-      "title": "Build momentum together",
+      "title": "A cycle of engagement",
       "content": {
         "labels": [
           "Act",
@@ -262,18 +713,56 @@
       "notes": {
         "sourceRanges": [
           {
-            "start": 35,
-            "end": 35
-          },
-          {
-            "start": 39,
+            "start": 45,
             "end": 48
           }
         ],
         "cues": [
-          "Follow the cycle from action to recruitment to training and back to new actions. Retain both organizing approaches and the trigger-event explanation."
+          "Follow Act → Recruit → Train → Act. Connect this cycle to the strategy tree, then introduce trigger moments on the following slide. The notes preserve the original action definitions."
         ]
-      }
+      },
+      "section": "strategy"
+    },
+    {
+      "id": "trigger-moments",
+      "layout": "montage",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Trigger moments",
+      "content": {},
+      "durationSeconds": 55,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 39,
+            "end": 43
+          }
+        ],
+        "cues": [
+          "Growth can be nonlinear: trigger events can spur mass mobilization, followed by absorbing people into the movement. These historical photographs illustrate the source’s organizing concept; they do not establish a causal or quantitative claim about either movement.",
+          "The Birmingham photograph (1963) and The Terror of War (1972) were supplied by the user for this local draft. Both are copyrighted Associated Press imagery, and the Birmingham scan bears an RR Auction watermark. Permission for redistribution/publication has not been verified; preserve these credits and do not remove the watermark.",
+          "Connect the preceding Act / Recruit / Train cycle to sudden mobilization; the participation threshold follows."
+        ]
+      },
+      "images": [
+        {
+          "path": "assets/birmingham-dogs.png",
+          "alt": "A police dog lunges at a young Black man in Birmingham in May 1963; the supplied scan bears an RR Auction watermark.",
+          "credit": "Bill Hudson / Associated Press, Birmingham, May 3, 1963. User-supplied RR Auction scan; copyrighted, reuse permission not verified.",
+          "sourceUrl": "https://high.org/collection/police-dog-attack-birmingham-alabama/",
+          "licenseUrl": "https://www.ap.org/content/licensing/",
+          "position": "center"
+        },
+        {
+          "path": "assets/napalm-girl.png",
+          "alt": "Children fleeing a napalm attack near Trang Bang, Vietnam, June 8, 1972, in the photograph known as The Terror of War.",
+          "credit": "The Terror of War / Associated Press, June 8, 1972. AP credits Nick Ut; attribution is disputed. User-supplied image; copyrighted, reuse permission not verified.",
+          "sourceUrl": "https://www.ap.org/about/ap-report-terror-of-war/",
+          "licenseUrl": "https://www.ap.org/content/licensing/",
+          "position": "center"
+        }
+      ],
+      "section": "strategy"
     },
     {
       "id": "participation-threshold",
@@ -293,57 +782,37 @@
           }
         ],
         "cues": [
-          "Pause on the percentage before explaining the source’s statement. Present 3.5% as the draft’s cited organizing benchmark, not a guarantee that any movement crossing it wins. Retain the emphasis on sustained, organized engagement; empirical publication review is still pending."
+          "Pause on the percentage before explaining the source’s statement. Present 3.5% as the draft’s cited organizing benchmark, not a guarantee that any movement crossing it wins. Retain the emphasis on sustained, organized engagement; empirical publication review is still pending.",
+          "The March on Washington image is historical context for mass participation; it does not prove the 3.5% claim or represent 3.5% of a population."
         ]
       },
-      "tone": "dark"
+      "tone": "dark",
+      "image": {
+        "path": "assets/march-on-washington.jpg",
+        "alt": "A wide-angle view of marchers along the National Mall, Reflecting Pool, and Washington Monument during the March on Washington, August 28, 1963.",
+        "credit": "U.S. Information Agency / National Archives, NAID 542045. Public domain.",
+        "sourceUrl": "https://docsteach.org/document/civil-rights-march-washington-dc/",
+        "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+        "position": "center"
+      },
+      "section": "strategy"
     },
     {
       "id": "chapter-question",
       "layout": "question",
       "purpose": "engage",
       "role": "buffer",
-      "title": "What could your chapter do?",
+      "title": "Pause for questions",
       "content": {},
       "durationSeconds": 60,
       "notes": {
         "sourceRanges": [],
         "cues": [
-          "Facilitator prompt: pause for participants to name a possible local action. Relate their choices to sustained organizing and the upcoming horizons of focus."
+          "Open the floor. Relate questions to the strategy tree, cycle of engagement, trigger moments, and participation threshold."
         ]
       },
-      "graphic": "arcs"
-    },
-    {
-      "id": "roadmap",
-      "layout": "steps",
-      "purpose": "explain",
-      "role": "content",
-      "title": "Build toward federal action",
-      "content": {
-        "labels": [
-          "Seed cities",
-          "California",
-          "Red and blue states",
-          "Federal policy change"
-        ],
-        "caption": "Federal legislation: an AI treaty",
-        "mode": "horizons"
-      },
-      "durationSeconds": 105,
-      "notes": {
-        "sourceRanges": [
-          {
-            "start": 54,
-            "end": 64
-          }
-        ],
-        "cues": [
-          "Walk through all four phases. Retain local campaign freedom, the nested campaigns/tactics relationship, experimentation, and sharing successful techniques in notes.",
-          "Present these four source phases as expanding horizons of focus: seed-city actions and campaigns connect to California, cross-state organizing, and federal policy. This is a visual adaptation inspired by Getting Things Done’s Horizons of Focus, not its literal six-level taxonomy or a dated delivery schedule. Keep all horizons in view while choosing local work.",
-          "The nested graphic represents strategic scope, not geographic boundaries: seed-city work is not confined to California. Broader horizons guide local choices; no horizon needs to be completed before attention can move to another."
-        ]
-      }
+      "graphic": "arcs",
+      "section": "strategy"
     },
     {
       "id": "culture-section",
@@ -360,7 +829,8 @@
         ]
       },
       "tone": "yellow",
-      "graphic": "contours"
+      "graphic": "hands",
+      "section": "culture"
     },
     {
       "id": "culture-values",
@@ -387,7 +857,8 @@
         "cues": [
           "Read all four source values in their original order. Invite participants to reflect on which value they would bring to their local work. The source gives no definitions, so do not supply new policy or invented commitments."
         ]
-      }
+      },
+      "section": "culture"
     },
     {
       "id": "structure-section",
@@ -404,7 +875,8 @@
         ]
       },
       "tone": "paper",
-      "graphic": "arcs"
+      "graphic": "nested",
+      "section": "structure"
     },
     {
       "id": "participation",
@@ -431,7 +903,8 @@
         "cues": [
           "Explain the source’s volunteer participation, email-list, dues/Discord, and active-role stages. Culture has already been introduced in its own section."
         ]
-      }
+      },
+      "section": "structure"
     },
     {
       "id": "circles",
@@ -460,7 +933,8 @@
           "Explain self-organization and autonomy within a shared purpose. The diagram adapts the public Atlas’s nested-circle visualization: https://sapiensfirst.org/atlas . Media, Advocacy, Community, and Tech are four current sub-circles of Sapiens First Global as inspected on October 6, 2026. This is a selected excerpt, not the complete organizational roster.",
           "Small dashed dots represent roles inside a circle; their number and sizes are schematic, not staffing or importance measures. Retired Atlas circles are excluded. Berkeley Chapter is a separate root in the Atlas and is not drawn as a child of Global."
         ]
-      }
+      },
+      "section": "structure"
     },
     {
       "id": "ownership-principles",
@@ -485,7 +959,8 @@
         "cues": [
           "Use the source’s two principles together: enforceable shared rules and clear areas of authority. This pair connects the nested-circle overview to the named role example that follows."
         ]
-      }
+      },
+      "section": "structure"
     },
     {
       "id": "roles",
@@ -512,7 +987,8 @@
         "cues": [
           "Zoom from the Atlas-inspired overview into the draft’s Media Circle example. Social Media Manager and Email Sender illustrate role ownership as named in the speech; this is not a claim that these two roles are the complete current Atlas roster. Each role owns its areas of responsibility."
         ]
-      }
+      },
+      "section": "structure"
     },
     {
       "id": "pathways-section",
@@ -529,7 +1005,8 @@
         ]
       },
       "tone": "coral",
-      "graphic": "contours"
+      "graphic": "signpost",
+      "section": "pathways"
     },
     {
       "id": "next-step",
@@ -565,14 +1042,16 @@
         "licenseUrl": "https://unsplash.com/license",
         "position": "top"
       },
-      "graphic": "arcs"
+      "graphic": "arcs",
+      "section": "pathways"
     }
   ],
   "ruleExceptions": [
     {
       "rule": "10-20-30",
-      "text": "deck",
-      "reason": "The user explicitly requested five section header slides, a separate 3.5% downbeat, dedicated Culture content, and a more descriptive holacracy sequence. Nineteen slides support that structure while the planned talk remains seventeen minutes."
+      "text": "slide count",
+      "reason": "The user requested five section dividers, an agenda, extinction focus, four strategy-tree views, Culture and holacracy content, and Trigger moments. Twenty-five slides total 1145 planned seconds, within twenty minutes."
     }
-  ]
+  ],
+  "sourceOrder": "presentation"
 }

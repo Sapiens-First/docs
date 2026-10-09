@@ -1,8 +1,8 @@
 # Handbook restructuring TODO
 
-Started 2026-10-09. Slide-specific revisions to the DNA deck live separately in `experiments/slides/TODO.md` (they move to `slides/` in step C1).
+Started 2026-10-09. Slide-specific revisions to the DNA deck live separately in `slides/TODO.md`.
 
-Implementation note (2026-10-09): the checked items below are verified locally. Slide moves, metadata, publishing and generation remain pending while the DNA slide agent edits `experiments/slides/`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/layout-review.md).
+Implementation note (2026-10-09): the checked items below are verified locally. Slide moves, metadata, publishing and generation remain pending while the DNA slide agent edits `slides/`. The chapter source comparison is recorded, but E5 still needs Rohan's review before content is filled in. See [implementation progress](maintenance/implementation-progress.md) and the [layout review](maintenance/layout-review.md).
 
 ## Decisions so far
 
@@ -32,7 +32,7 @@ Implementation note (2026-10-09): the checked items below are verified locally. 
 
 ## C. Slides inside the handbook
 
-- [ ] C1. Move `experiments/slides/` to top-level `slides/`. Update `README.md`, `.gitignore`, test paths and the plan doc references.
+- [x] C1. Move `slides/` to top-level `slides/`. Update `README.md`, `.gitignore`, test paths and the plan doc references.
 - [ ] C2. Deck metadata gains `origin` (`handcrafted` | `generated`), `approved` (boolean) and `covers` (the handbook page IDs it teaches).
 - [ ] C3. Add `slides:` frontmatter to module pages. The validator checks that the deck exists, that it covers the page, and that the two agree.
 - [ ] C4. The site build copies publishable decks and their notes pages into the output (for example `/slides/dna/`). Publishable means handcrafted and approved, or generated.

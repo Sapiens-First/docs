@@ -523,5 +523,12 @@
     "title": "E.4 Department-specific guidance",
     "path": "appendices/staff/department-specific-guidance.md",
     "section": "Staff"
+  },
+  {
+    "id": "slides",
+    "number": "F",
+    "title": "F Slides",
+    "path": "slides/index.md",
+    "section": "Slides"
   }
 ]

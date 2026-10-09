@@ -10,7 +10,7 @@ The highest-leverage increment is A + B + E: establish the chapter order, stable
 
 The current chapter contract is **0 Start here, 1 DNA, 2 Go deeper, 3 Lead, 4 Train others, 5 Supplemental**, followed by the appendices. Staff becomes an appendix; existing Reference, Further reading and Citations remain. Preserve stable page IDs when numbering changes. Add redirects for retired routes and anchors, and rewrite internal links to their new canonical destinations.
 
-Another agent is actively editing the DNA presentation under `experiments/slides/`. Keep that directory, its JSON, assets and renderer available in place until that work is coordinated. C1/C2 and changes to the renderer or generation CLI depend on that coordination. Independent handbook work and formula documentation can proceed.
+Another agent is actively editing the DNA presentation under `slides/`. Keep that directory, its JSON, assets and renderer available in place until that work is coordinated. C1/C2 and changes to the renderer or generation CLI depend on that coordination. Independent handbook work and formula documentation can proceed.
 
 ## Execution sequence
 

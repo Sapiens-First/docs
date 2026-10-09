@@ -3,6 +3,7 @@ title: "1.2 Strategy"
 description: "How acting, recruiting, and training can build the movement's capacity for political change."
 section: DNA
 status: draft
+slides: dna
 last_updated: 2026-10-09
 handbook_id: dna-strategy
 handbook_number: "1.2"
@@ -15,7 +16,7 @@ canonical: /dna/strategy
 
 We believe public participation and organizing capacity can help shape AI toward democratic renewal, common prosperity, and a secure future. Our approach is a repeating cycle: act, recruit, train. Each turn should help more people participate and lead the next turn. Growth and political progress are strategic aims; they are not guaranteed results of running activities.
 
-<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, 1.2; docs/strategy/index.md; docs/practices/index.md; docs/learning/strategic-hypotheses.md; 10-2 content additions/Tech Team Notes.md and supplied movement-flywheel.svg. docs/strategy/index.md cycle diagram, worked example, three kinds of work, theory-of-change paragraph and Stop 1984 background carried in (2026-09-29). Rewritten 2026-10-02. Organizational beliefs and source ambitions are presented as such; this draft does not adopt new targets, tooling, or review procedures. -->
+<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, 1.2; docs/strategy/index.md; docs/practices/index.md; docs/learning/strategic-hypotheses.md; archive/sources/2026-10-02/Tech Team Notes.md and supplied movement-flywheel.svg. docs/strategy/index.md cycle diagram, worked example, three kinds of work, theory-of-change paragraph and Stop 1984 background carried in (2026-09-29). Rewritten 2026-10-02. Organizational beliefs and source ambitions are presented as such; this draft does not adopt new targets, tooling, or review procedures. -->
 
 ## 1.2.1 Our theory of change {#theory-of-change}
 

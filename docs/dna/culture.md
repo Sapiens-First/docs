@@ -3,6 +3,7 @@ title: "1.3 Culture"
 description: "Shared values, operating principles, and the standards for acting in Sapiens First's name."
 section: DNA
 status: draft
+slides: dna
 last_updated: 2026-10-09
 handbook_id: dna-culture
 handbook_number: "1.3"

@@ -15,7 +15,7 @@ canonical: /appendices/staff/department-specific-guidance
 
 The tech team builds systems that help people become supporters, members, and organizers. The team favors scalable systems, information that AI can work with, and learning through frequent prototypes, and it works in two-week sprints.
 
-<!-- Source provenance: repository-local 10-2 content additions/Tech Team Notes.md and accompanying company-brain.svg and movement-flywheel.svg, supplied October 2, 2026. These inputs are helpful editorial material, not evidence that this page is adopted policy. The companion 10-2.txt supplies role/performance material for Staff expectations. 3.4.2 summarizes the two-week sprint cycle from Tech Team Notes(1).md (supplied 2026-10-02); A.2.5 holds the steps. -->
+<!-- Source provenance: repository-local archive/sources/2026-10-02/Tech Team Notes.md and accompanying company-brain.svg and movement-flywheel.svg, supplied October 2, 2026. These inputs are helpful editorial material, not evidence that this page is adopted policy. The companion 10-2.txt supplies role/performance material for Staff expectations. 3.4.2 summarizes the two-week sprint cycle from Tech Team Notes(1).md (supplied 2026-10-02); A.2.5 holds the steps. -->
 
 ## E.4.1 Tech team: strategy primer {#tech-team-strategy}
 

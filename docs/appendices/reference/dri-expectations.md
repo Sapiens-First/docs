@@ -15,7 +15,7 @@ canonical: /appendices/reference/dri-expectations
 
 A **Directly Responsible Individual (DRI)** owns an outcome, especially one that crosses functions, systems, or contributors. This draft assesses **Outcome, Ownership, and Judgment**. A rating of **3 means fully meeting expectations**: successful performance in the role. The rubric preserves the complete criteria supplied on October 2 and has not yet been adopted as policy.
 
-<!-- Source provenance: repository-local 10-2 content additions/10-2.txt, Performance Framework, Directly Responsible Individual section, supplied October 2, 2026. The complete table below is preserved verbatim. Attribution claims in the source remain pending citation verification. -->
+<!-- Source provenance: repository-local archive/sources/2026-10-02/10-2.txt, Performance Framework, Directly Responsible Individual section, supplied October 2, 2026. The complete table below is preserved verbatim. Attribution claims in the source remain pending citation verification. -->
 
 ## Role and scope {#role-and-scope}
 

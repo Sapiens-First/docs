@@ -16,7 +16,7 @@ canonical: /appendices/staff/beliefs-about-staff
 
 This page explains what staff are for and how we approach having them. One point is settled: being on staff is separate from someone's participation level, governance role, and performance role. The rest of the page is still being written.
 
-<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, 3.0 and "Structural decisions" (staff terminology); maintenance/content-map.md ("Unresolved inputs", 3.0; leads.md and participation.md rows); docs/dna/structure.md#participation-responsibility-employment linked, not copied; 10-2 content additions/10-2.txt (guiding beliefs) informs 3.1, not repeated here. No source text exists for 3.0.1-3.0.4. The Effective Executive is named in the outline only as a lead; no claim from it is made here. Framing written 2026-10-02. -->
+<!-- Source provenance: maintenance/HANDBOOK-OUTLINE.md, 3.0 and "Structural decisions" (staff terminology); maintenance/content-map.md ("Unresolved inputs", 3.0; leads.md and participation.md rows); docs/dna/structure.md#participation-responsibility-employment linked, not copied; archive/sources/2026-10-02/10-2.txt (guiding beliefs) informs 3.1, not repeated here. No source text exists for 3.0.1-3.0.4. The Effective Executive is named in the outline only as a lead; no claim from it is made here. Framing written 2026-10-02. -->
 
 ## E.0.1 Why pay staff in a volunteer movement? {#why-pay-staff}
 

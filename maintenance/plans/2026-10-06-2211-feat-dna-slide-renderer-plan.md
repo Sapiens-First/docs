@@ -13,7 +13,7 @@ execution: code
 
 - **Objective:** Give a speaker a clear, recognizably Sapiens First presentation of the DNA draft, while retaining the words needed to deliver it.
 - **Means:** An editorial conversion from speech to versioned JSON, followed by a small deterministic Node renderer with inline CSS, JavaScript, and Sapiens First assets.
-- **First experiment:** One isolated, ten-slide presentation sourced exclusively from `10-2 content additions/10-6-dna`.
+- **First experiment:** One isolated, ten-slide presentation sourced exclusively from `slides/sources/10-6-dna.md`.
 - **Authority:** This document plans the work. Claude can execute its six stages when given the implementation handoff; publishing and handbook integration are subsequent work.
 - **Finished result:** Editable deck JSON, a reusable rendering command, one self-contained HTML file, toggleable speaker notes, and evidence from presenting the DNA deck. Double-click the HTML to present; share that file alone. No installation, server, or internet is required.
 
@@ -39,7 +39,7 @@ The repository already supplies the visual vocabulary and Node tooling. Its publ
 
 | ID | Requirement | Origin |
 | --- | --- | --- |
-| R1 | Use `10-2 content additions/10-6-dna` as the first deck's sole speech source. Preserve its original file. | User |
+| R1 | Use `slides/sources/10-6-dna.md` as the first deck's sole speech source. Preserve its original file. | User |
 | R2 | Make source-to-slide conversion explicit and reviewable in a structured, editable format before rendering. | User |
 | R3 | Provide a reusable tool that renders that format to HTML; deck content must not be hardcoded in the renderer. | User |
 | R4 | Match the design vocabulary of the current docs and `sapiensfirst.org`. | User |
@@ -114,7 +114,7 @@ Use the loud brand elements for opening, crisis, and closing slides. Use calmer 
 - KTD4. **Retain source text and reference notes by line range.** Store the full source snapshot and its SHA-256 digest in the deck. Each slide identifies the original, inclusive, one-based line ranges it speaks to. Derive notes from those ranges; keep additional cues separate and labelled. This prevents summaries from masquerading as the original speaker's words.
 - KTD5. **Use six layouts with bounded content.** Start with `statement`, `triad`, `cycle`, `question`, `steps`, and `roles`. They all have a title and may have one optional section label. Only the layouts actually needed by this DNA deck are implemented. Closing actions reuse `triad`; the roadmap and engagement path reuse `steps`.
 - KTD6. **Validate structure, fidelity, and slide rules separately.** Structural failures stop generation. Presentation-rule failures return actionable findings and fail the strict check used for the DNA acceptance deck. The renderer never silently truncates content, shrinks fonts, rewrites words, or inserts slides.
-- KTD7. **Keep the experiment small and outside handbook publishing.** Authoring/tool files live in `experiments/slides/`; generated `output/10-6-dna.html` is ignored. Use a direct Node command rather than changing package dependencies, sidebar, or deployment.
+- KTD7. **Keep the experiment small and outside handbook publishing.** Authoring/tool files live in `slides/`; generated `output/10-6-dna.html` is ignored. Use a direct Node command rather than changing package dependencies, sidebar, or deployment.
 
 ### High-Level Technical Design
 
@@ -131,7 +131,7 @@ flowchart TB
   H --> J[Toggleable notes panel]
 ```
 
-The CLI has two operations: validate an input deck and build it to a specified HTML path. The convenience build uses the DNA deck. There is no preview server: double-click the output. The authoring tool should stay compact; consolidate validation/rendering/CLI in `experiments/slides/slides.mjs` unless an actual readability need justifies splitting.
+The CLI has two operations: validate an input deck and build it to a specified HTML path. The convenience build uses the DNA deck. There is no preview server: double-click the output. The authoring tool should stay compact; consolidate validation/rendering/CLI in `slides/slides.mjs` unless an actual readability need justifies splitting.
 
 Notes start hidden, update with slide navigation, and scroll in a panel without obscuring controls. Showing them displays them in the same window; a private presenter screen is deferred. Notes remain in HTML, so visibility is not confidentiality. Keyboard shortcuts respect editable controls and browser modifiers; buttons have visible focus and state labels.
 
@@ -230,7 +230,7 @@ Total: 840 seconds / 14 minutes. Slide 7 uses all six authored lines (title, fou
 ### Output Structure
 
 ```text
-experiments/slides/
+slides/
   README.md
   slides.mjs               validation, notes, CLI, layouts, inline CSS/JS
   decks/
@@ -257,7 +257,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R1, R2, R5, R6, R8; AE4. **Dependencies:** None.
 
-**Owned files:** `experiments/slides/decks/10-6-dna.deck.json`, format/editorial portions of `experiments/slides/README.md`.
+**Owned files:** `slides/decks/10-6-dna.deck.json`, format/editorial portions of `slides/README.md`.
 
 **Approach:** Apply KTD1, KTD4, and the storyboard. Produce the complete source snapshot, real digest, precise ranges, timings, purposes, and audience text for all ten slides. Record gaps, paraphrases, any duplicated ranges, and passages kept only in notes. Verify the diagram relationships against the speech. Keep the Culture gap and claim-review needs explicit.
 
@@ -273,7 +273,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R2, R3, R5, R6, R8; AE3, AE4. **Dependencies:** U1.
 
-**Owned files:** validation/notes portions of `experiments/slides/slides.mjs`, `experiments/slides/tests/slides.test.mjs`, validation portions of `experiments/slides/README.md`.
+**Owned files:** validation/notes portions of `slides/slides.mjs`, `slides/tests/slides.test.mjs`, validation portions of `slides/README.md`.
 
 **Approach:** Validate the documented version and layout fields without a general-purpose schema framework. Resolve source ranges from the snapshot, label cues separately, and report coverage. Apply KTD6 with slide IDs in diagnostics. Distinguish a registered source gap from missing substantive text. Validate the original-source digest when that file is available in the authoring workspace; the generated HTML never depends on that path.
 
@@ -295,7 +295,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R3, R5, R7, R9; AE1, AE2, AE3, AE5. **Dependencies:** U2.
 
-**Owned files:** Rendering/runtime/CLI portions of `experiments/slides/slides.mjs`, generation tests in `experiments/slides/tests/slides.test.mjs`, `.gitignore` entry for output.
+**Owned files:** Rendering/runtime/CLI portions of `slides/slides.mjs`, generation tests in `slides/tests/slides.test.mjs`, `.gitignore` entry for output.
 
 **Approach:** Apply KTD2, KTD3, KTD5, and KTD7. Implement six trusted templates, original notes and labelled cues, inline styles/scripts, validate/build operations, and defined controls. No runtime reads or network calls. The HTML must open directly. Styling and embedded font/logo inputs are completed in U4.
 
@@ -319,7 +319,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R4, R6, R9; AE1, AE5. **Dependencies:** U3.
 
-**Owned files:** Inline theme/layout portions of `experiments/slides/slides.mjs`, `experiments/slides/fonts/`, presentation examples in the README.
+**Owned files:** Inline theme/layout portions of `slides/slides.mjs`, `slides/fonts/`, presentation examples in the README.
 
 **Approach:** Use the verified tokens and compositions above. Embed font bytes/license notices and the existing logo in the HTML, and size all meaningful audience text to the presentation minimum. Keep all diagram text real and accessible; no screenshots of text. Use restrained or no transitions and respect reduced-motion preferences.
 
@@ -333,7 +333,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R3–R7, R9; AE1–AE5. **Dependencies:** U3, U4.
 
-**Owned files:** `experiments/slides/tests/browser.mjs`, verification portions of `experiments/slides/README.md`, fixes in the experiment files as demonstrated by checks.
+**Owned files:** `slides/tests/browser.mjs`, verification portions of `slides/README.md`, fixes in the experiment files as demonstrated by checks.
 
 **Approach:** Use the existing `playwright-core` installation with a documented Chromium executable. Open the output directly over file:// without a server. Copy only that file to a fresh directory and disable networking. Inspect actual rendered geometry after embedded fonts resolve. Capture screenshots for human review; automated geometry does not establish brand fit or persuasion. Rehearse the source notes with transitions and the question pause. Record observed duration; shorten cues or reduce pauses if needed without deleting the original source.
 
@@ -355,7 +355,7 @@ Execute sequentially for the first test. Each stage has explicit file ownership 
 
 **Requirements:** R2, R3, R7, R9. **Dependencies:** U5.
 
-**Owned files:** Final `experiments/slides/README.md`, a short root-README reference if useful.
+**Owned files:** Final `slides/README.md`, a short root-README reference if useful.
 
 **Approach:** Document the source → deck → validate → render → double-click HTML workflow, the six layouts, notes preservation, and presentation heuristics. Include the actual tested commands chosen in U3. Explain that another deck is authored in JSON and passed to the same tool. Include the Culture gap, same-window notes behavior, embedded license notices, and distinction between a logical font size and scaled viewing size.
 
@@ -411,9 +411,9 @@ Review U1's narrative before spending heavily on visual refinement. Once the for
 
 ### Sources
 
-- Speech: `10-2 content additions/10-6-dna`.
+- Speech: `slides/sources/10-6-dna.md`.
 - Local design: `docs/.vitepress/theme/style.css`, `docs/.vitepress/theme/home.css`, `docs/.vitepress/config.mts`, `STYLE-GUIDE.md`.
-- Tooling and project context: `package.json`, `scripts/build-book.mjs`, `scripts/handbook-integration.test.mjs`, `README.md`, `10-2 content additions/Tech Team Notes.md`, `10-2 content additions/Tech Team Notes(1).md`.
+- Tooling and project context: `package.json`, `scripts/build-book.mjs`, `scripts/handbook-integration.test.mjs`, `README.md`, `archive/sources/2026-10-02/Tech Team Notes.md`, `archive/sources/2026-10-02/Tech Team Notes(1).md`.
 - Public brand: [Sapiens First](https://sapiensfirst.org/) and [shared stylesheet](https://sapiensfirst.org/shared.css), inspected October 6, 2026.
 - Presentation heuristics: [Smallppt article supplied by the user](https://smallppt.com/blog/basics/detailed-presentation-guidance:-the-different-presentation-rules).
 - Single-file delivery and simple controls: the user's clarification in this session.

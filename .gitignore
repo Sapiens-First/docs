@@ -10,4 +10,7 @@ docs/.vitepress/.temp/
 .codex/
 
 # Generated standalone slide presentations
-experiments/slides/output/
+slides/output/
+
+# Built from slides/decks/ by npm run slides:build
+docs/public/slides/

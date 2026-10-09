@@ -40,8 +40,8 @@ Top-level directories:
 - `maintenance/`: the [current implementation plan](maintenance/HANDBOOK-IMPLEMENTATION-PLAN.md), [generated-slide formula](maintenance/generated-slides.md), decisions, the content map, and implementation progress. Earlier audit and migration paths point to the current plan and archived originals.
 - `maintenance/history/`: superseded plans and reviews kept for provenance, unchanged.
 - `archive/`: unchanged original input documents (`archive/sources/`, including the original movement guide and Fellowship handbook with embedded images and dated material). See [the content map](archive/README.md) for where material moved and what still needs clarification.
-- `10-2 content additions/`: October 2 input notes, rubrics and source diagrams, kept until reconciled with the handbook; published diagram copies live in `docs/public/diagrams/`.
-- `experiments/slides/`: DNA presentation source, renderer, notes, assets and tests. It stays here during concurrent editing; moving it to `slides/` is pending.
+- `archive/sources/2026-10-02/`: October 2 input notes, rubrics and original diagrams, archived after reconciliation (see [maintenance/10-2-reconciliation.md](maintenance/10-2-reconciliation.md)); published diagram copies live in `docs/public/diagrams/`. `slides/sources/` holds deck speech sources.
+- `slides/`: slide decks (source JSON, renderer, notes, assets and tests). The DNA deck is the first handcrafted sample.
 
 ## Local development
 

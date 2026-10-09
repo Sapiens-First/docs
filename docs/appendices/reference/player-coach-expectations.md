@@ -15,7 +15,7 @@ canonical: /appendices/reference/player-coach-expectations
 
 A **Player-Coach (PC)** combines craft with developing other people. They continue doing substantive work while investing in the skills, judgment, and effectiveness of people around them. This draft assesses **Direction, Enablement, and Systems**. A rating of **3 means fully meeting expectations**: successful performance in the role. The rubric preserves the complete criteria supplied on October 2 and has not yet been adopted as policy.
 
-<!-- Source provenance: repository-local 10-2 content additions/10-2.txt, Performance Framework, Player-Coach section, supplied October 2, 2026. The complete table below is preserved verbatim. Attribution claims in the source remain pending citation verification. -->
+<!-- Source provenance: repository-local archive/sources/2026-10-02/10-2.txt, Performance Framework, Player-Coach section, supplied October 2, 2026. The complete table below is preserved verbatim. Attribution claims in the source remain pending citation verification. -->
 
 ## Role and scope {#role-and-scope}
 

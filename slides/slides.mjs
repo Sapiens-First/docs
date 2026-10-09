@@ -3,31 +3,39 @@ import { readFileSync, mkdirSync, writeFileSync, renameSync, rmSync, realpathSyn
 import { resolve, dirname, basename, extname, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles']
+const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree']
+const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure', pathways: 'Pathways to Action' }
+const topicalGraphics = ['book', 'route', 'hands', 'nested', 'signpost']
 const purposes = ['explain', 'engage', 'empower']
 const words = text => text.trim().split(/\s+/).filter(Boolean).length
 const hash = text => createHash('sha256').update(text).digest('hex')
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value)
 const text = value => typeof value === 'string' && value.trim().length > 0
 const validExceptions = entries => Array.isArray(entries) && entries.every(e => object(e) && ['1-6-6', '5-5-5', '10-20-30'].includes(e.rule) && text(e.reason) && text(e.text))
-const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const assetsRoot = resolve(dirname(fileURLToPath(import.meta.url)), 'assets')
 const httpsURL = value => { try { return text(value) && new URL(value).protocol === 'https:' } catch { return false } }
 
 function imageAsset(image) {
-  if (!object(image) || !text(image.path) || !/^assets\/[\w./-]+\.(jpg|jpeg|png|webp)$/i.test(image.path) || image.path.split('/').includes('..')) throw new Error('image path must name a local JPEG, PNG or WebP in assets/')
+  if (!object(image) || !text(image.path) || !/^assets\/[\w./-]+\.(jpg|jpeg|png|webp|svg)$/i.test(image.path) || image.path.split('/').includes('..')) throw new Error('image path must name a local JPEG, PNG, WebP or SVG in assets/')
   for (const key of ['alt', 'credit']) if (!text(image[key])) throw new Error(`image ${key} must be nonempty text`)
   for (const key of ['sourceUrl', 'licenseUrl']) if (!httpsURL(image[key])) throw new Error(`image ${key} must be an HTTPS URL`)
   if (image.position !== undefined && !['center', 'top', 'bottom'].includes(image.position)) throw new Error('image position must be center, top or bottom')
+  if (image.treatment !== undefined && !['background', 'artistic'].includes(image.treatment)) throw new Error('image treatment must be background or artistic')
   const path = realpathSync(resolve(assetsRoot, image.path.slice(7)))
   if (!path.startsWith(realpathSync(assetsRoot) + sep)) throw new Error('image must remain inside assets/')
   const bytes = readFileSync(path), extension = extname(path).toLowerCase()
   const jpeg = bytes.length > 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255
   const png = bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))
   const webp = bytes.length >= 12 && bytes.toString('ascii', 0, 4) === 'RIFF' && bytes.toString('ascii', 8, 12) === 'WEBP'
-  const type = ['.jpg', '.jpeg'].includes(extension) && jpeg ? 'jpeg' : extension === '.png' && png ? 'png' : extension === '.webp' && webp ? 'webp' : null
-  if (!type) throw new Error('image bytes do not match its JPEG, PNG or WebP extension')
+  const svg = extension === '.svg' && /^\s*(?:<\?xml[^>]*>\s*)?<svg\b[^>]*xmlns="http:\/\/www\.w3\.org\/2000\/svg"[\s\S]*<\/svg>\s*$/.test(bytes.toString('utf8'))
+  const type = ['.jpg', '.jpeg'].includes(extension) && jpeg ? 'jpeg' : extension === '.png' && png ? 'png' : extension === '.webp' && webp ? 'webp' : extension === '.svg' && svg ? 'svg+xml' : null
+  if (!type) throw new Error('image bytes do not match its JPEG, PNG, WebP or SVG extension')
   return `data:image/${type};base64,${bytes.toString('base64')}`
+}
+
+function treeNodes(root, parent = null, depth = 0) {
+  return [{ ...root, parent, depth }, ...(root.children ?? []).flatMap(child => treeNodes(child, root.id, depth + 1))]
 }
 
 // These are the authored audience lines; notes and presentation chrome are excluded.
@@ -36,6 +44,9 @@ export function audienceLines(slide) {
   if (slide.sectionLabel) result.push({ kind: 'sectionLabel', text: slide.sectionLabel })
   const content = slide.content
   for (const value of content.lines ?? content.labels ?? []) result.push({ kind: 'point', text: value })
+  if (slide.layout === 'tree') for (const node of treeNodes(content.tree)) {
+    if (content.reveal.includes(node.id)) result.push({ kind: 'point', text: node.label })
+  }
   if (content.circle) result.push({ kind: 'point', text: content.circle })
   for (const value of content.roles ?? []) result.push({ kind: 'point', text: value })
   if (content.caption) result.push({ kind: 'caption', text: content.caption })
@@ -56,6 +67,7 @@ export function validateDeck(deck) {
   const fail = message => report.errors.push(message)
   if (!object(deck)) { fail('Deck must be an object'); return report }
   if (deck.schemaVersion !== 1) fail('Unsupported schema version; expected schemaVersion 1')
+  if (deck.sourceOrder !== undefined && !['original', 'presentation'].includes(deck.sourceOrder)) fail('sourceOrder must be original or presentation')
   for (const key of ['id', 'title']) if (!text(deck[key])) fail(`Deck ${key} must be nonempty text`)
   if (!Number.isInteger(deck.targetDurationSeconds) || deck.targetDurationSeconds <= 0) fail('targetDurationSeconds must be a positive integer')
   if (deck.ruleExceptions !== undefined && !validExceptions(deck.ruleExceptions)) fail('Deck ruleExceptions require rule, reason and affected text')
@@ -113,9 +125,22 @@ export function validateDeck(deck) {
     if (!['content', 'buffer'].includes(slide.role)) fail(`${owner}: role must be content or buffer`)
     if (!text(slide.title)) fail(`${owner}: title required`)
     if (slide.sectionLabel !== undefined && !text(slide.sectionLabel)) fail(`${owner}: sectionLabel must be text`)
+    if (slide.section !== undefined && (!text(slide.section) || !Object.hasOwn(sections, slide.section))) fail(`${owner}: unsupported section`)
     if (slide.tone !== undefined && !['paper', 'dark', 'coral', 'yellow'].includes(slide.tone)) fail(`${owner}: unsupported tone`)
     if (slide.image !== undefined) { try { imageAsset(slide.image) } catch (error) { fail(`${owner}: ${error.message}`) } }
-    if (slide.graphic !== undefined && !['contours', 'arcs'].includes(slide.graphic)) fail(`${owner}: unsupported graphic`)
+    if (slide.image?.treatment !== undefined && slide.layout !== 'statement') fail(`${owner}: image treatment is supported only for statement slides`)
+    if (slide.images !== undefined) {
+      if (slide.layout !== 'montage') fail(`${owner}: images are supported only for montage slides`)
+      if (!Array.isArray(slide.images) || slide.images.length !== 2) fail(`${owner}: images requires exactly two images`)
+      else for (const image of slide.images) {
+        try { imageAsset(image) } catch (error) { fail(`${owner}: ${error.message}`) }
+        if (image?.treatment !== undefined) fail(`${owner}: montage images do not support treatment`)
+      }
+    }
+    if (slide.layout === 'montage' && slide.images === undefined) fail(`${owner}: montage requires two images`)
+    if (slide.layout === 'montage' && slide.image !== undefined) fail(`${owner}: montage uses images, not image`)
+    if (slide.graphic !== undefined && !['contours', 'arcs', ...topicalGraphics].includes(slide.graphic)) fail(`${owner}: unsupported graphic`)
+    if (topicalGraphics.includes(slide.graphic) && slide.layout !== 'divider') fail(`${owner}: topical graphics require a divider`)
     if (!Number.isInteger(slide.durationSeconds) || slide.durationSeconds <= 0) fail(`${owner}: durationSeconds must be a positive integer`)
     else report.durationSeconds += slide.durationSeconds
     if (!object(slide.content)) { fail(`${owner}: content must be an object`); continue }
@@ -123,12 +148,42 @@ export function validateDeck(deck) {
     const labelArray = (key, min, max) => {
       if (!Array.isArray(c[key]) || c[key].length < min || c[key].length > max || !c[key].every(text)) fail(`${owner}: ${key} requires ${min}–${max} nonempty strings`)
     }
-    const allowedContent = { statement: ['lines'], triad: ['labels'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels'], pair: ['labels'], circles: ['circle', 'labels'] }[slide.layout]
+    const allowedContent = { statement: ['lines'], triad: ['labels', 'direction', 'highlight'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels'], pair: ['labels'], circles: ['circle', 'labels'], choice: ['labels'], pyramid: ['labels', 'caption'], montage: [], agenda: ['labels'], tree: ['tree', 'reveal', 'focus'] }[slide.layout]
     if (allowedContent) for (const key of Object.keys(c)) if (!allowedContent.includes(key)) fail(`${owner}: unsupported content field ${key}`)
     if (slide.layout === 'statement') labelArray('lines', 0, 2)
     if (['triad', 'cycle'].includes(slide.layout)) labelArray('labels', 3, 3)
+    if (slide.layout === 'triad' && c.direction !== undefined && c.direction !== 'horizontal') fail(`${owner}: unsupported triad direction`)
+    if (slide.layout === 'triad' && c.highlight !== undefined && (!Number.isInteger(c.highlight) || c.highlight < 0 || c.highlight >= (c.labels?.length ?? 0))) fail(`${owner}: highlight must index a triad label`)
+    if (slide.layout === 'agenda') labelArray('labels', 3, 6)
+    if (slide.layout === 'tree') {
+      const nodes = new Map()
+      let currentCount = 0
+      const visit = (node, parent = null) => {
+        if (!object(node) || !text(node.id) || !text(node.label)) { fail(`${owner}: tree nodes require id and label`); return }
+        if (nodes.has(node.id)) { fail(`${owner}: duplicate tree node id ${node.id}`); return }
+        nodes.set(node.id, { node, parent })
+        for (const key of Object.keys(node)) if (!['id', 'label', 'children', 'current'].includes(key)) fail(`${owner}: unsupported tree node field ${key}`)
+        if (node.current !== undefined && typeof node.current !== 'boolean') fail(`${owner}: current must be boolean`)
+        if (node.current === true) currentCount++
+        if (node.children !== undefined && !Array.isArray(node.children)) fail(`${owner}: tree children must be an array`)
+        else for (const child of node.children ?? []) visit(child, node.id)
+      }
+      visit(c.tree)
+      if (currentCount > 1) fail(`${owner}: tree allows only one current node`)
+      if (!Array.isArray(c.reveal) || !c.reveal.length || !c.reveal.every(text)) fail(`${owner}: reveal must list node ids`)
+      else {
+        const revealed = new Set(c.reveal)
+        if (revealed.size !== c.reveal.length) fail(`${owner}: reveal node ids must be unique`)
+        for (const id of revealed) {
+          if (!nodes.has(id)) fail(`${owner}: unknown reveal node ${id}`)
+          else if (nodes.get(id).parent && !revealed.has(nodes.get(id).parent)) fail(`${owner}: revealed node ${id} requires its parent`)
+        }
+        if (c.focus !== undefined && (!text(c.focus) || !revealed.has(c.focus) || !nodes.has(c.focus))) fail(`${owner}: focus must name a revealed node`)
+      }
+    }
     if (['values', 'circles'].includes(slide.layout)) labelArray('labels', 4, 4)
-    if (slide.layout === 'pair') labelArray('labels', 2, 2)
+    if (['pair', 'choice'].includes(slide.layout)) labelArray('labels', 2, 2)
+    if (slide.layout === 'pyramid') labelArray('labels', 5, 5)
     if (slide.layout === 'circles' && !text(c.circle)) fail(`${owner}: circle label required`)
     if (slide.layout === 'steps') labelArray('labels', 3, 4)
     if (slide.layout === 'steps' && c.mode !== undefined && !['horizons', 'progression'].includes(c.mode)) fail(`${owner}: unsupported steps mode`)
@@ -141,7 +196,7 @@ export function validateDeck(deck) {
     for (const range of slide.notes.sourceRanges) {
       if (!validRange(range, owner)) { rangesValid = false; continue }
       // Overlaps are reported rather than forbidden; new passages must follow source order.
-      if (range.start < lastSourceLine && !coverage[range.start - 1].length) fail(`${owner}: source ranges must follow original order`)
+      if (deck.sourceOrder !== 'presentation' && range.start < lastSourceLine && !coverage[range.start - 1].length) fail(`${owner}: source ranges must follow original order`)
       lastSourceLine = Math.max(lastSourceLine, range.end)
       for (let n = range.start; n <= range.end; n++) coverage[n - 1].push(owner)
     }
@@ -161,7 +216,7 @@ export function validateDeck(deck) {
     const exception = (slide ? slide.ruleExceptions : deck.ruleExceptions)?.find(e => e.rule === rule && e.text === affected)
     report.findings.push({ rule, slideId: slide?.id ?? null, message, text: affected, justified: !!exception, ...(exception ? { reason: exception.reason } : {}) })
   }
-  if (deck.slides.length > 10) finding('10-20-30', `slide count ${deck.slides.length} exceeds ten`, null, 'deck')
+  if (deck.slides.length > 10) finding('10-20-30', `slide count ${deck.slides.length} exceeds ten`, null, 'slide count')
   if (report.durationSeconds > 1200 || deck.targetDurationSeconds > 1200) finding('10-20-30', `duration ${report.durationSeconds}s exceeds twenty minutes`, null, 'deck')
   if (report.durationSeconds !== deck.targetDurationSeconds) finding('10-20-30', 'slide duration sum differs from targetDurationSeconds', null, 'deck')
   let run = 0
@@ -191,7 +246,7 @@ const embeddedJSON = value => JSON.stringify(value).replace(/[<>&\u2028\u2029]/g
 
 // Layouts use a logical presentation canvas, scaled only to fit the viewport.
 const THEME_CSS = `
-:root { color-scheme: light; --paper:#f8f3eb; --ink:#111; --coral:#ff7870; --yellow:#ffd60a; --sky:#bcd8ff; }
+:root { color-scheme: light; --paper:#fbf1df; --ink:#241d18; --coral:#ed836b; --yellow:#efb94c; --sage:#b9c596; }
 * { box-sizing:border-box; }
 [hidden] { display:none !important; }
 html,body { margin:0; width:100%; height:100%; }
@@ -212,10 +267,18 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .slide[data-layout="statement"]:has(.statement-lines:empty) h1::after { content:''; position:absolute; left:0; bottom:-12px; width:44%; height:24px; background:var(--coral); transform:rotate(-1deg); clip-path:polygon(0 24%,8% 12%,26% 19%,48% 3%,72% 12%,100% 0,98% 66%,91% 83%,73% 74%,51% 100%,28% 83%,9% 94%,1% 73%); z-index:-1; }
 .slide[data-layout="question"] { background:var(--yellow); display:flex; align-items:center; }
 .slide[data-layout="divider"] { display:flex; align-items:center; }
-.slide[data-layout="divider"] h1 { font-size:200px; line-height:.95; max-width:1136px; margin:0; }
-.slide[data-layout="divider"] h1::after { content:''; display:block; width:180px; height:14px; margin-top:36px; background:currentColor; }
+.slide[data-layout="divider"] h1 { font-size:184px; line-height:.95; max-width:1020px; margin:0; }
+.slide[data-layout="divider"] h1::after { content:''; display:block; width:300px; height:18px; margin-top:36px; background:var(--yellow); transform:rotate(-2deg); }
+.divider-art { position:absolute; inset:0; width:1280px; height:720px; color:var(--coral); opacity:.45; }
+.slide[data-tone="coral"] .divider-art { color:var(--paper); opacity:.65; }
+.slide[data-tone="yellow"] .divider-art { color:var(--coral); }
+.slide[data-purpose="empower"] .divider-art:not([data-graphic]) { transform:rotate(180deg); }
+.divider-art[data-graphic] { opacity:.95; }
+.slide[data-layout="divider"]:has(.divider-art[data-graphic]) h1 { max-width:720px; font-size:164px; }
+.slide[data-layout="divider"][data-tone="dark"] .divider-art { color:var(--sage); }
+.slide[data-layout="cycle"] h1,.slide[data-layout="pyramid"] h1,.slide[data-layout="montage"] h1 { border-bottom:8px solid var(--coral); padding-bottom:10px; margin-bottom:22px; }
 .slide[data-layout="impact"] { display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; }
-.slide[data-layout="impact"] h1 { font-size:300px; line-height:.95; margin:0 0 32px; }
+.slide[data-layout="impact"] h1 { font-size:300px; line-height:1.15; margin:0 0 48px; }
 .slide[data-layout="impact"] .caption { margin:0; max-width:1060px; }
 .statement-lines,.triad { display:flex; gap:26px; margin:52px 0 0; padding:0; list-style:none; }
 .statement-lines li,.triad li { flex:1; padding:30px 24px; border:2px solid var(--ink); box-shadow:4px 4px 0 var(--ink); font-size:44px; line-height:1.18; background:var(--coral); }
@@ -224,45 +287,103 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .slide[data-tone="dark"] .triad li { background:transparent; color:var(--paper); border-color:#5f5a54; box-shadow:none; }
 .slide[data-tone="coral"] .triad li:first-child { background:var(--paper); }
 .statement-lines li:nth-child(2),.triad li:nth-child(2) { background:var(--yellow); }
-.triad li:nth-child(3) { background:var(--sky); }
+.triad li:nth-child(3) { background:var(--sage); }
 .triad li { display:flex; align-items:center; gap:26px; }
 .point-icon { flex:none; width:54px; height:54px; stroke:currentColor; stroke-width:2; fill:none; }
 .slide[data-tone="dark"] .point-icon { color:var(--coral); }
 .slide[data-tone="paper"] .triad li { border-radius:20px; padding:20px 28px; box-shadow:3px 3px 0 var(--ink); }
 .slide[data-tone="coral"] .triad li { border-radius:38px; }
+.triad.horizontal { grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin-top:62px; }
+.slide .triad.horizontal li { flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:44px; min-height:320px; padding:34px 18px; font-size:44px; }
+.triad.horizontal .point-icon { width:80px; height:80px; }
+.triad li.is-dim { opacity:.35; }
+.slide[data-tone="dark"] .triad li.is-lit { border-color:var(--coral); box-shadow:0 0 24px #ed836b55; background:#ed836b18; }
+.triad li.is-lit .point-icon { width:66px; height:66px; }
 .brand-art { position:absolute; pointer-events:none; inset:0; width:100%; height:100%; object-fit:cover; opacity:.45; }
 .slide h1,.section-label,.statement-lines,.triad,.diagram,.caption { position:relative; z-index:1; }
 .slide-photo { position:absolute; object-fit:cover; border:2px solid var(--ink); }
-.slide[data-layout="statement"].with-photo:has(.statement-lines:empty) { display:block; }
-.slide[data-layout="statement"].with-photo:has(.statement-lines:empty) h1 { margin-top:95px; max-width:720px; font-size:116px; }
-.slide[data-layout="statement"].with-photo:has(.statement-lines:empty) .slide-photo { right:0; top:0; width:460px; height:720px; border-width:0 0 0 2px; }
-.slide[data-layout="statement"].with-photo:not(:has(.statement-lines:empty)) h1 { font-size:96px; max-width:1136px; }
-.slide[data-layout="statement"].with-photo:not(:has(.statement-lines:empty)) .statement-lines { width:640px; display:grid; gap:24px; margin-top:32px; }
-.slide[data-layout="statement"].with-photo:not(:has(.statement-lines:empty)) .statement-lines li { padding:28px; }
-.slide[data-layout="statement"].with-photo:not(:has(.statement-lines:empty)) .slide-photo { right:72px; top:302px; width:444px; height:306px; border-radius:20px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):has(.statement-lines:empty) { display:block; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):has(.statement-lines:empty) h1 { margin-top:95px; max-width:720px; font-size:116px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):has(.statement-lines:empty) .slide-photo { right:0; top:0; width:460px; height:720px; border-width:0 0 0 2px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):not(:has(.statement-lines:empty)) h1 { font-size:96px; max-width:1136px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):not(:has(.statement-lines:empty)) .statement-lines { width:640px; display:grid; gap:24px; margin-top:32px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):not(:has(.statement-lines:empty)) .statement-lines li { padding:28px; }
+.slide[data-layout="statement"].with-photo:not([data-image-treatment]):not(:has(.statement-lines:empty)) .slide-photo { right:72px; top:302px; width:444px; height:306px; border-radius:20px; }
 .slide[data-layout="triad"].with-photo .triad { width:640px; gap:22px; }
 .slide[data-layout="triad"].with-photo .slide-photo { right:72px; top:228px; width:420px; height:354px; border-radius:24px; }
+.slide[data-layout="statement"][data-image-treatment="background"] { color:var(--paper); }
+.slide[data-layout="statement"][data-image-treatment="background"] .slide-photo { inset:0; width:1280px; height:720px; border:0; border-radius:0; }
+.photo-overlay { position:absolute; inset:0; background:linear-gradient(90deg,rgba(36,29,24,.92),rgba(36,29,24,.84) 55%,rgba(36,29,24,.25)); }
+.slide[data-layout="statement"][data-image-treatment="background"] h1 { margin-top:96px; font-size:120px; max-width:950px; }
+.slide[data-layout="statement"].with-photo .statement-meta { display:block; width:auto; margin-top:34px; }
+.slide[data-layout="statement"].with-photo .statement-meta li { display:block; border:0; box-shadow:none; border-radius:0; background:transparent; padding:0; font-size:44px; line-height:1.25; }
+.slide[data-layout="statement"].with-photo .statement-meta li + li { margin-top:18px; font-size:40px; }
+.slide .statement-lines:has(.statement-badge) { display:block; }
+.slide[data-layout="statement"] .statement-lines:has(.statement-badge) .statement-badge { display:inline-block; flex:none; padding:12px 24px; background:var(--coral); color:var(--ink); border:2px solid var(--ink); border-radius:50px; box-shadow:4px 4px 0 var(--ink); font-size:40px; line-height:1.25; letter-spacing:2px; text-transform:uppercase; transform:rotate(-2deg); }
+.slide[data-layout="statement"] .statement-lines:has(.statement-date) .statement-date { position:absolute; top:140px; padding:0; background:transparent; border:0; box-shadow:none; font-size:22px; opacity:.8; }
+.agenda { position:relative; z-index:1; list-style:none; counter-reset:agenda; margin:22px 0 0; padding:0; display:grid; gap:8px; }
+.agenda li { counter-increment:agenda; display:flex; align-items:center; gap:24px; height:68px; font-size:44px; border-bottom:2px solid #241d1822; }
+.agenda li::before { content:counter(agenda,decimal-leading-zero); display:grid; place-items:center; width:72px; height:60px; flex:none; border:2px solid var(--ink); border-radius:14px; background:var(--coral); font:800 44px 'Barlow Condensed',sans-serif; }
+.agenda li:nth-child(2)::before { background:var(--sage); }
+.agenda li:nth-child(3)::before { background:var(--yellow); }
+.agenda li:nth-child(4)::before { background:var(--paper); }
+.agenda li:nth-child(5)::before { background:var(--coral); }
+.slide[data-layout="tree"] { padding-top:40px; }
+.slide[data-layout="tree"] h1 { font-size:64px; margin-bottom:10px; }
+.diagram.tree-map { height:536px; }
+.tree-node rect { stroke:var(--ink); stroke-width:2; }
+.tree-map .tree-node text { font:800 40px 'Barlow Condensed',sans-serif; fill:var(--ink); }
+.tree-node[data-dim="true"],.tree-edge[data-dim="true"] { opacity:.3; }
+.tree-node[data-current="true"] rect { stroke:var(--coral); stroke-width:4; }
+.tree-map .tree-node .current-tag { font:700 20px 'DM Sans',sans-serif; fill:var(--ink); }
+.tree-edge { fill:none; stroke:var(--ink); stroke-width:3; }
+.slide[data-layout="statement"][data-image-treatment="artistic"] .slide-photo { inset:0 0 0 auto; width:690px; height:720px; border:0; border-radius:0; opacity:.45; filter:sepia(1) contrast(.82); mix-blend-mode:multiply; object-fit:cover; }
+.slide[data-layout="statement"][data-image-treatment="artistic"] h1 { margin-top:100px; max-width:1050px; font-size:102px; line-height:1.04; }
+.slide[data-layout="statement"][data-image-treatment="artistic"]:has(.statement-lines:empty) { display:block; }
+.slide[data-layout="statement"][data-image-treatment="artistic"]:has(.statement-lines:empty) h1::after { content:''; position:static; display:block; width:280px; height:14px; margin-top:36px; background:var(--coral); transform:none; clip-path:none; }
+.slide[data-layout="impact"].with-photo { align-items:flex-start; text-align:left; }
+.slide[data-layout="impact"].with-photo h1 { font-size:276px; line-height:1; margin-bottom:30px; }
+.slide[data-layout="impact"].with-photo .caption { width:540px; }
+.slide[data-layout="impact"].with-photo .slide-photo { right:0; top:0; width:590px; height:720px; border:0; border-radius:0; }
+.slide[data-layout="choice"] .choice-map { width:650px; height:420px; }
+.slide[data-layout="choice"] .slide-photo { right:72px; top:256px; width:420px; height:340px; border-radius:32px 32px 100px 32px; }
+.choice-map .road { fill:none; stroke:var(--ink); stroke-width:56; }
+.choice-map .road-center { fill:none; stroke:var(--paper); stroke-width:3; stroke-dasharray:13 13; }
+.slide[data-layout="pyramid"] h1 { font-size:76px; }
+.slide[data-layout="pyramid"] .pyramid-map { width:760px; height:404px; }
+.slide[data-layout="pyramid"] .slide-photo { right:72px; top:246px; width:344px; height:366px; border-radius:24px; }
+.pyramid-map .pyramid-tier { stroke:var(--ink); stroke-width:2; }
+.slide[data-layout="pyramid"] .caption { max-width:760px; }
+.montage-photos { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:34px; }
+.slide[data-layout="montage"] .montage-photo { position:static; width:100%; height:410px; border-radius:20px; }
 .values,.pair { position:relative; z-index:1; display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:32px 0 0; padding:0; list-style:none; }
-.values li { display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:188px; padding:26px 28px; border:2px solid var(--ink); border-radius:20px; background:var(--paper); font-size:44px; line-height:1.15; }
-.values li:nth-child(2) { background:var(--sky); }
+.values li { display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:188px; padding:26px 28px; border:2px solid var(--ink); border-radius:20px; color:var(--ink); background:var(--paper); font-size:44px; line-height:1.15; }
+.values li:nth-child(2) { background:var(--sage); }
 .values li:nth-child(3) { background:var(--yellow); }
 .values li:nth-child(4) { background:var(--coral); }
 .pair { gap:40px; margin-top:50px; }
-.pair li { display:flex; flex-direction:column; justify-content:center; gap:48px; padding:40px; min-height:330px; border:2px solid var(--ink); font-size:44px; line-height:1.15; background:var(--sky); }
+.pair li { display:flex; flex-direction:column; justify-content:center; gap:48px; padding:40px; min-height:330px; border:2px solid var(--ink); color:var(--ink); font-size:44px; line-height:1.15; background:var(--sage); }
 .pair li:first-child { background:var(--yellow); border-radius:24px 24px 6px 6px; }
-.pair li:last-child { background:var(--sky); border-radius:50px; }
+.pair li:last-child { background:var(--sage); border-radius:50px; }
 .pair .point-icon { width:90px; height:90px; }
 .diagram { display:block; width:1136px; height:390px; overflow:visible; }
 .diagram.circle-map { height:480px; }
 .circle-map .subcircle { stroke:var(--ink); stroke-width:2; }
-.circle-map .role-pip { fill:var(--paper); stroke:var(--ink); stroke-width:2; }
+.circle-map .role-pip { fill:var(--paper); stroke:var(--ink); stroke-width:2; stroke-dasharray:4 3; }
 .diagram text { font-family:'DM Sans',sans-serif; font-size:44px; fill:var(--ink); }
 .diagram .node { stroke:var(--ink); stroke-width:2; fill:var(--coral); }
 .diagram .edge { stroke:var(--ink); stroke-width:4; fill:none; }
 .caption { font-size:40px; line-height:1.2; margin:14px 0 0; }
 .slide-footer { position:absolute; bottom:24px; left:72px; right:72px; display:flex; justify-content:space-between; align-items:center; font-size:20px; }
-.brand-logo { width:42px; height:42px; padding:4px; object-fit:contain; background:var(--paper); border-radius:6px; }
-.slide.with-photo .slide-footer span { background:var(--paper); color:var(--ink); padding:3px 9px; border-radius:5px; }
+.brand-logo { width:42px; height:42px; object-fit:contain; }
+.slide.with-photo .slide-footer > span { background:var(--paper); color:var(--ink); padding:3px 9px; border-radius:5px; }
+/* Default progress-strip design; section data is independent of its styling. */
+.section-progress { display:flex; gap:14px; align-items:center; width:760px; padding:6px 12px; border-radius:10px; background:var(--paper); color:var(--ink); }
+.progress-label { width:180px; flex:none; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+.progress-track { flex:1; display:flex; gap:8px; }
+.progress-seg { flex:1; height:8px; border-radius:4px; background:#241d181c; overflow:hidden; }
+.progress-seg::before { content:''; display:block; width:var(--fill); height:100%; background:var(--sage); }
+.progress-seg[aria-current="step"]::before { background:var(--coral); }
 #controls { height:48px; display:flex; align-items:center; justify-content:center; gap:12px; padding:4px 12px; background:var(--paper); border-top:2px solid var(--ink); }
 button,#notes-link { font:700 16px 'DM Sans',sans-serif; color:var(--ink); background:var(--paper); border:2px solid var(--ink); padding:5px 12px; cursor:pointer; text-decoration:none; }
 button:disabled { opacity:.45; cursor:default; }
@@ -345,9 +466,19 @@ function pairIcon(index) {
 function diagram(slide, index) {
   const c = slide.content, marker = `arrow-${index}`
   const label = (value, x, y, size = 44) => `<text class="audience-text" x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" style="font-size:${size}px">${escapeHTML(value)}</text>`
-  const colors = ['var(--coral)', 'var(--yellow)', 'var(--sky)', 'var(--paper)']
+  const colors = ['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)']
   let body, description
-  if (slide.layout === 'circles') {
+  if (slide.layout === 'choice') {
+    description = `Two roads diverge toward ${c.labels.join(' and ')}. The paths represent a choice of futures, not measured outcomes.`
+    body = `<path class="road" d="M325 408V298Q325 223 236 198Q145 170 145 110"/><path class="road" d="M325 408V298Q325 223 414 198Q505 170 505 110"/><path class="road-center" d="M325 408V298Q325 223 236 198Q145 170 145 110"/><path class="road-center" d="M325 298Q325 223 414 198Q505 170 505 110"/>${label(c.labels[0], 145, 44, 40)}${label(c.labels[1], 505, 44, 40)}<path aria-hidden="true" d="M119 129L145 89L171 129M479 129L505 89L531 129" fill="none" stroke="var(--coral)" stroke-width="8"/>`
+  } else if (slide.layout === 'pyramid') {
+    description = `Horizons of focus, from the top to the base: ${c.labels.join('; ')}. This conceptual pyramid groups strategic focus; its tier areas do not represent quantities or progress.`
+    body = `<polygon class="pyramid-tier" points="380,0 60,148 700,148" fill="var(--coral)"/>${label(c.labels[0], 380, 128, 40)}`
+    body += c.labels.slice(1).map((value, i) => {
+      const y = 148 + i * 64, left = 60 - i * 15, right = 700 + i * 15
+      return `<polygon class="pyramid-tier" points="${left},${y} ${right},${y} ${right + 15},${y + 64} ${left - 15},${y + 64}" fill="${['var(--yellow)', 'var(--paper)', 'var(--sage)', 'var(--yellow)'][i]}"/>${label(value, 380, y + 34, 40)}`
+    }).join('')
+  } else if (slide.layout === 'circles') {
     description = `${c.circle} contains the circles ${c.labels.join(', ')}. Nested circles show scopes of shared purpose and contain roles, without reporting arrows. This is an excerpt inspired by Sapiens First Atlas, not the complete roster. Small role dots are illustrative, not headcounts or organizational metrics.`
     const fills = ['#efe5d4', '#f4c9ad', '#d5e1bd', '#f4df9a']
     body = `<ellipse class="circle-parent" cx="568" cy="240" rx="550" ry="230" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>${label(c.circle, 568, 65)}`
@@ -376,13 +507,83 @@ function diagram(slide, index) {
     }).join('')
   } else {
     description = `${c.circle} contains the roles ${c.roles.join(' and ')}. Roles have ownership within their circle.`
-    body = `<ellipse class="node" cx="568" cy="195" rx="515" ry="185" style="fill:var(--sky)"/>${label(c.circle, 568, 55)}`
+    body = `<ellipse class="node" cx="568" cy="195" rx="515" ry="185" style="fill:var(--sage)"/>${label(c.circle, 568, 55)}`
     for (const [i, value] of c.roles.entries()) {
       const y = (c.roles.length === 3 ? 120 : 150) + i * 82
       body += `<rect class="node" x="200" y="${y - 36}" width="736" height="72" rx="16" style="fill:${colors[i]}"/>${label(value, 568, y)}`
     }
   }
-  return `<svg class="diagram${slide.layout === 'circles' ? ' circle-map' : ''}" viewBox="0 0 1136 ${slide.layout === 'circles' ? 480 : 390}" role="img" aria-labelledby="diagram-title-${index} diagram-desc-${index}"><title id="diagram-title-${index}">${escapeHTML(slide.title)}</title><desc id="diagram-desc-${index}">${escapeHTML(description)}</desc><defs><marker id="${marker}" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="currentColor"/></marker></defs>${body}</svg>`
+  const dimensions = { circles: [1136, 480, 'circle-map'], choice: [650, 420, 'choice-map'], pyramid: [760, 404, 'pyramid-map'] }[slide.layout] ?? [1136, 390, '']
+  return `<svg class="diagram${dimensions[2] ? ` ${dimensions[2]}` : ''}" viewBox="0 0 ${dimensions[0]} ${dimensions[1]}" role="img" aria-labelledby="diagram-title-${index} diagram-desc-${index}"><title id="diagram-title-${index}">${escapeHTML(slide.title)}</title><desc id="diagram-desc-${index}">${escapeHTML(description)}</desc><defs><marker id="${marker}" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="currentColor"/></marker></defs>${body}</svg>`
+}
+
+function renderTree(content, index) {
+  const all = treeNodes(content.tree), revealed = new Set(content.reveal)
+  // Size against the complete authored tree so every reveal retains its coordinates.
+  const byId = new Map(all.map(node => [node.id, node]))
+  const children = node => (node.children ?? []).map(child => byId.get(child.id))
+  const stacked = node => children(node).length >= 4 && children(node).every(child => !child.children?.length)
+  const weight = node => stacked(node) || !children(node).length ? 1 : children(node).reduce((sum, child) => sum + weight(child), 0)
+  const positions = new Map()
+  function place(node, left, width) {
+    const x = left + width / 2, height = node.depth === 1 ? 104 : 60
+    const y = [34, 122, 228][node.depth] ?? 288 + (node.depth - 3) * 60
+    positions.set(node.id, { x, y, width: Math.min(width - 12, node.depth === 0 ? 460 : 550), height })
+    if (stacked(node)) {
+      children(node).forEach((child, i) => positions.set(child.id, { x: Math.max(238, x), y: 288 + i * 54, width: 440, height: 52, stacked: true }))
+    } else {
+      const branchWeight = child => node.depth === 0 ? Math.max(1.5, weight(child) * (child.children?.length ? 1.2 : 1)) : weight(child)
+      const total = children(node).reduce((sum, child) => sum + branchWeight(child), 0)
+      let offset = left
+      for (const child of children(node)) {
+        // Leaf branches receive enough width for two lines of large condensed type.
+        const childWidth = width * branchWeight(child) / total
+        place(child, offset, childWidth)
+        offset += childWidth
+      }
+    }
+  }
+  place(all[0], 16, 1104)
+  const focused = node => !content.focus || node.id === content.focus || (node.parent && focused(byId.get(node.parent)))
+  const visible = all.filter(node => revealed.has(node.id))
+  const connectors = visible.filter(node => node.parent).map(node => {
+    const p = positions.get(node.parent), n = positions.get(node.id)
+    const path = n.stacked
+      ? `M${p.x} ${p.y + p.height / 2}V${p.y + p.height / 2 + 12}H8V${n.y}H${n.x - n.width / 2}`
+      : `M${p.x} ${p.y + p.height / 2}V${(p.y + p.height / 2 + n.y - n.height / 2) / 2}H${n.x}V${n.y - n.height / 2}`
+    return `<path class="tree-edge" data-parent="${escapeHTML(node.parent)}" data-child="${escapeHTML(node.id)}"${!focused(node) ? ' data-dim="true"' : ''} d="${path}"/>`
+  }).join('')
+  const nodes = visible.map(node => {
+    const p = positions.get(node.id), maxChars = Math.floor((p.width - 24) / 14)
+    const lines = []
+    for (const word of node.label.split(/\s+/)) {
+      if (lines.length && `${lines.at(-1)} ${word}`.length <= maxChars) lines[lines.length - 1] += ` ${word}`
+      else lines.push(word)
+    }
+    const label = lines.map((line, i) => `<tspan x="${p.x}" dy="${i ? 42 : 0}">${escapeHTML(line)}${i < lines.length - 1 ? ' ' : ''}</tspan>`).join('')
+    return `<g class="tree-node" data-node="${escapeHTML(node.id)}"${node.current ? ' data-current="true"' : ''}${!focused(node) ? ' data-dim="true"' : ''}><rect x="${p.x - p.width / 2}" y="${p.y - p.height / 2}" width="${p.width}" height="${p.height}" rx="12" fill="${['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)'][Math.min(node.depth, 3)]}"/><text class="audience-text" x="${p.x}" y="${p.y + 6 - (lines.length - 1) * 21}" text-anchor="middle" dominant-baseline="middle">${label}</text>${node.current ? `<text class="current-tag" x="${p.x + p.width / 2 + 18}" y="${p.y}" dominant-baseline="middle">← You are here</text>` : ''}</g>`
+  }).join('')
+  const description = visible.map(node => `${node.label}${node.parent ? ` under ${byId.get(node.parent).label}` : ''}${node.current ? ' (You are here)' : ''}`).join('; ')
+  return `<svg class="diagram tree-map" viewBox="0 0 1136 536" role="img" aria-labelledby="tree-title-${index} tree-desc-${index}"><title id="tree-title-${index}">Strategy tree</title><desc id="tree-desc-${index}">${escapeHTML(description)}</desc>${connectors}${nodes}</svg>`
+}
+
+function dividerArt(index, graphic) {
+  const topical = {
+    book: '<path d="M830 285Q930 255 1040 305Q1150 255 1250 285V510Q1150 480 1040 530Q930 480 830 510Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="6"/><path d="M1040 305V530M855 240Q965 225 1040 285Q1120 220 1225 240M875 195Q970 205 1040 265Q1110 200 1200 195" fill="none" stroke="currentColor" stroke-width="14"/><path d="M865 335Q940 320 1005 350M865 390Q940 375 1005 405M1080 350Q1150 320 1215 335M1080 405Q1150 375 1215 390" fill="none" stroke="var(--ink)" stroke-width="5"/>',
+    route: '<path d="M850 580C1120 580 1210 445 1010 405S850 205 1160 205" fill="none" stroke="currentColor" stroke-width="60"/><path d="M850 580C1120 580 1210 445 1010 405S850 205 1160 205" fill="none" stroke="var(--ink)" stroke-dasharray="12 18" stroke-width="4"/><path d="M1155 210V90L1255 120L1155 155" fill="var(--yellow)" stroke="var(--paper)" stroke-width="6"/>',
+    hands: '<path d="M1040 485S840 370 860 265C880 175 1000 175 1040 265C1080 175 1200 175 1220 265Q1240 370 1040 485Z" fill="var(--coral)" stroke="var(--ink)" stroke-width="6"/><path d="M830 500L940 410L1000 440L1080 400L1140 430L1250 505M940 410L970 370L1050 390L1080 400" fill="none" stroke="var(--paper)" stroke-linecap="round" stroke-linejoin="round" stroke-width="30"/>',
+    nested: '<circle cx="1060" cy="360" r="205" fill="var(--sage)" stroke="var(--ink)" stroke-width="6"/><circle cx="1000" cy="330" r="100" fill="var(--yellow)" stroke="var(--ink)" stroke-width="5"/><circle cx="1150" cy="420" r="70" fill="var(--coral)" stroke="var(--ink)" stroke-width="5"/><circle cx="980" cy="315" r="38" fill="var(--paper)" stroke="var(--ink)" stroke-width="4"/>',
+    signpost: '<path d="M1050 185V590" stroke="var(--ink)" stroke-width="22"/><path d="M855 205H1170L1250 265L1170 325H855Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="5"/><path d="M1210 350H900L825 405L900 460H1210Z" fill="var(--yellow)" stroke="var(--ink)" stroke-width="5"/><path d="M925 485H1180L1250 535L1180 585H925Z" fill="var(--sage)" stroke="var(--ink)" stroke-width="5"/>',
+  }
+  if (topical[graphic]) return `<svg class="divider-art" data-graphic="${graphic}" viewBox="0 0 1280 720" aria-hidden="true">${topical[graphic]}</svg>`
+  const motifs = [
+    '<circle cx="1130" cy="190" r="255" fill="none" stroke="currentColor" stroke-width="50"/><circle cx="1130" cy="190" r="145" fill="currentColor"/>',
+    '<path d="M840 590L1080 120L1320 590Z" fill="currentColor"/><path d="M930 590L1080 295L1230 590" fill="none" stroke="var(--paper)" stroke-width="18"/>',
+    '<path d="M910 90Q1330 190 1000 480Q820 655 1280 680" fill="none" stroke="currentColor" stroke-width="90"/>',
+    '<rect x="1000" y="100" width="240" height="240" rx="55" fill="currentColor" transform="rotate(20 1120 220)"/><circle cx="1060" cy="520" r="155" fill="none" stroke="currentColor" stroke-width="45"/>',
+    '<path d="M840 700Q820 400 1200 180M960 740Q940 430 1280 280" fill="none" stroke="currentColor" stroke-width="72"/>',
+  ]
+  return `<svg class="divider-art" viewBox="0 0 1280 720" aria-hidden="true">${motifs[index % motifs.length]}</svg>`
 }
 
 const asset = path => readFileSync(new URL(path, import.meta.url))
@@ -394,18 +595,28 @@ const fontLicenses = () => ['Barlow-Condensed-OFL.txt', 'DM-Sans-OFL.txt'].map(f
 
 export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.notes.html` } = {}) {
   if (!text(notesHref) || /[\\/]/.test(notesHref) || /^[a-z][a-z\d+.-]*:/i.test(notesHref)) throw new Error('Notes link must be a sibling filename')
-  const logo = asset('../../docs/public/logo.png').toString('base64')
+  const logo = asset('../docs/public/logo.png').toString('base64')
+  const sectionOrder = [...new Set(deck.slides.map(slide => slide.section).filter(Boolean))]
+  function progressStrip(slide, index) {
+    if (!slide.section) return ''
+    const members = deck.slides.filter(candidate => candidate.section === slide.section)
+    const fill = Math.round((members.indexOf(slide) + 1) / members.length * 100)
+    return `<div class="section-progress" role="group" aria-label="Section progress"><span class="progress-label">${sections[slide.section]}</span><div class="progress-track">${sectionOrder.map(section => `<div class="progress-seg" data-section="${section}"${section === slide.section ? ' aria-current="step"' : ''} style="--fill:${section === slide.section ? fill : deck.slides.findIndex(candidate => candidate.section === section) < index ? 100 : 0}%" aria-label="${sections[section]}${section === slide.section ? `, ${fill}%` : ''}"></div>`).join('')}</div></div>`
+  }
   const slides = deck.slides.map((slide, index) => {
     let content = ''
-    if (slide.layout === 'statement') content = `<ul class="statement-lines">${slide.content.lines.map(value => `<li class="audience-text">${escapeHTML(value)}</li>`).join('')}</ul>`
-    if (slide.layout === 'triad') content = `<ul class="triad">${slide.content.labels.map((value, i) => `<li>${pointIcon(i, slide.tone !== 'dark')}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
+    if (slide.layout === 'statement') content = `<ul class="statement-lines${slide.image?.treatment ? ' statement-meta' : ''}">${slide.content.lines.map((value, i) => `<li class="audience-text${slide.id === 'opening' && slide.content.lines.length === 2 ? ` statement-${i ? 'date' : 'badge'}` : ''}">${escapeHTML(value)}</li>`).join('')}</ul>`
+    if (slide.layout === 'agenda') content = `<ol class="agenda">${slide.content.labels.map(value => `<li><span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ol>`
+    if (slide.layout === 'tree') content = renderTree(slide.content, index)
+    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${pointIcon(i, slide.tone !== 'dark')}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
     if (slide.layout === 'values') content = `<ul class="values">${slide.content.labels.map((value, i) => `<li>${valueIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
     if (slide.layout === 'pair') content = `<ul class="pair">${slide.content.labels.map((value, i) => `<li>${pairIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
-    if (['cycle', 'steps', 'roles', 'circles'].includes(slide.layout)) content = diagram(slide, index)
+    if (['cycle', 'steps', 'roles', 'circles', 'choice', 'pyramid'].includes(slide.layout)) content = diagram(slide, index)
+    if (slide.layout === 'montage') content = `<div class="montage-photos">${slide.images.map(image => `<img class="slide-photo montage-photo" alt="${escapeHTML(image.alt)}" src="${imageAsset(image)}" style="object-position:${image.position ?? 'center'}">`).join('')}</div>`
     const photo = slide.image ? `<img class="slide-photo" alt="${escapeHTML(slide.image.alt)}" src="${imageAsset(slide.image)}" style="object-position:${slide.image.position ?? 'center'}">` : ''
-    if (slide.graphic !== undefined && !['contours', 'arcs'].includes(slide.graphic)) throw new Error('Unsupported graphic')
-    const graphic = slide.graphic ? `<img class="brand-art" alt="" aria-hidden="true" src="data:image/svg+xml;base64,${asset(`assets/sapiens-${slide.graphic}.svg`).toString('base64')}">` : ''
-    return `<section class="slide${slide.image ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}" aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${photo}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}"><span>${index + 1} / ${deck.slides.length}</span></footer></section>`
+    if (slide.graphic !== undefined && !['contours', 'arcs', ...topicalGraphics].includes(slide.graphic)) throw new Error('Unsupported graphic')
+    const graphic = ['contours', 'arcs'].includes(slide.graphic) ? `<img class="brand-art" alt="" aria-hidden="true" src="data:image/svg+xml;base64,${asset(`assets/sapiens-${slide.graphic}.svg`).toString('base64')}">` : ''
+    return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? '<div class="photo-overlay" aria-hidden="true"></div>' : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
   }).join('\n')
   const audience = { id: deck.id, title: deck.title, slides: deck.slides.map(({ notes, ...slide }) => slide) }
   return `<!doctype html>
@@ -486,8 +697,8 @@ const NOTES_RUNTIME_JS = `
 export function renderNotes(deck) {
   const notes = deck.slides.map(slide => assembleNotes(deck, slide))
   const notesHTML = notes.map((note, index) => {
-    const slide = deck.slides[index], image = slide.image
-    const credits = `${image ? `<p class="asset-credit">${escapeHTML(image.credit)} · <a href="${escapeHTML(image.sourceUrl)}">Photo source</a> · <a href="${escapeHTML(image.licenseUrl)}">License</a></p>` : ''}${slide.graphic ? `<p class="asset-credit">Sapiens First brand artwork · <a href="https://sapiensfirst.org/assets/homepage-${slide.graphic === 'contours' ? 'strategy-contours' : 'involved-arcs'}.svg">Artwork source</a></p>` : ''}`
+    const slide = deck.slides[index], images = slide.image ? [slide.image] : slide.images ?? []
+    const credits = `${images.map(image => `<p class="asset-credit">${escapeHTML(image.credit)} · <a href="${escapeHTML(image.sourceUrl)}">Photo source</a> · <a href="${escapeHTML(image.licenseUrl)}">License</a></p>`).join('')}${slide.graphic ? `<p class="asset-credit">Sapiens First brand artwork · <a href="https://sapiensfirst.org/assets/homepage-${slide.graphic === 'contours' ? 'strategy-contours' : 'involved-arcs'}.svg">Artwork source</a></p>` : ''}`
     return `<article class="slide-notes" data-slide-id="${escapeHTML(note.slideId)}"${index ? ' hidden' : ''}><h2>${escapeHTML(slide.title)}</h2><h3>Original source passages</h3>${note.passages.map(passage => `<pre class="source-passage"><span>${escapeHTML(passage)}</span></pre>`).join('')}${note.cues.length ? `<h3>Editorial cues (added prompts)</h3><ul class="editorial-cues">${note.cues.map(cue => `<li>${escapeHTML(cue)}</li>`).join('')}</ul>` : ''}${credits ? `<h3>Image and artwork credits</h3>${credits}` : ''}</article>`
   }).join('\n')
   return `<!doctype html>
@@ -497,13 +708,26 @@ export function renderNotes(deck) {
 <main aria-label="Speaker notes">${notesHTML}</main><script id="deck-data" type="application/json">${embeddedJSON({ ...deck, notes })}</script><pre id="font-licenses" hidden>${escapeHTML(fontLicenses())}</pre><script>${NOTES_RUNTIME_JS}</script></body></html>\n`
 }
 
+/** Writes the audience slides and presenter notes together, replacing both files only if both render. */
+export function writeDeckFiles(deck, destination, notesDestination) {
+  const html = renderDeck(deck, { notesHref: encodeURIComponent(basename(notesDestination)) })
+  const notesHTML = renderNotes(deck)
+  const files = [[destination, html], [notesDestination, notesHTML]]
+  const temporary = files.map(([path]) => `${path}.tmp-${process.pid}`)
+  mkdirSync(dirname(destination), { recursive: true })
+  try {
+    files.forEach(([, contents], index) => writeFileSync(temporary[index], contents))
+    files.forEach(([path], index) => renameSync(temporary[index], path))
+  } finally { temporary.forEach(path => rmSync(path, { force: true })) }
+}
+
 async function main(args) {
   const [operation, input, ...rest] = args
   const output = operation === 'build' ? rest[0] : undefined
   const flags = operation === 'build' ? rest.slice(1) : rest
   const json = flags.includes('--json')
   try {
-    if (!['validate', 'build'].includes(operation) || !input || (operation === 'build' && (!output || output.startsWith('--'))) || flags.some(f => !(operation === 'validate' ? ['--json', '--strict'] : ['--strict']).includes(f))) throw new Error('Usage: node experiments/slides/slides.mjs validate DECK [--strict] [--json]\n       node experiments/slides/slides.mjs build DECK OUTPUT [--strict]')
+    if (!['validate', 'build'].includes(operation) || !input || (operation === 'build' && (!output || output.startsWith('--'))) || flags.some(f => !(operation === 'validate' ? ['--json', '--strict'] : ['--strict']).includes(f))) throw new Error('Usage: node slides/slides.mjs validate DECK [--strict] [--json]\n       node slides/slides.mjs build DECK OUTPUT [--strict]')
     const deck = loadDeck(input)
     const report = validateDeck(deck)
     const ok = !report.errors.length && (!flags.includes('--strict') || report.findings.every(f => f.justified))
@@ -518,15 +742,7 @@ async function main(args) {
       const destination = resolve(output)
       const extension = extname(destination)
       const notesDestination = `${destination.slice(0, extension ? -extension.length : undefined)}.notes.html`
-      const html = renderDeck(deck, { notesHref: encodeURIComponent(basename(notesDestination)) })
-      const notesHTML = renderNotes(deck)
-      const files = [[destination, html], [notesDestination, notesHTML]]
-      const temporary = files.map(([path]) => `${path}.tmp-${process.pid}`)
-      mkdirSync(dirname(destination), { recursive: true })
-      try {
-        files.forEach(([, contents], index) => writeFileSync(temporary[index], contents))
-        files.forEach(([path], index) => renameSync(temporary[index], path))
-      } finally { temporary.forEach(path => rmSync(path, { force: true })) }
+      writeDeckFiles(deck, destination, notesDestination)
       console.log(`Built ${output}`)
       console.log(`Built ${notesDestination}`)
     }

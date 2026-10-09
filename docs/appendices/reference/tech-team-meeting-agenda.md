@@ -15,7 +15,7 @@ canonical: /appendices/reference/tech-team-meeting-agenda
 
 The tech team works in two-week sprints, so it can ship and learn every two weeks. Each sprint has six meetings: it opens with sprint planning, checks progress midway, and closes with a demo of everything shipped. Governance, one-to-one feedback, and an all-hands update keep roles, people, and priorities in step.
 
-<!-- Source provenance: repository-local "10-2 content additions/Tech Team Notes(1).md", "Week 1" and "Week 2" meeting formats (supplied 2026-10-02). Steps reproduced in order and numbering, worded in house style. The two-week rhythm matches "Prototype over perfection. We iterate and deploy every 2 weeks" in the same notes. Replaces an earlier generic agenda drafted before these formats were supplied. -->
+<!-- Source provenance: repository-local "archive/sources/2026-10-02/Tech Team Notes(1).md", "Week 1" and "Week 2" meeting formats (supplied 2026-10-02). Steps reproduced in order and numbering, worded in house style. The two-week rhythm matches "Prototype over perfection. We iterate and deploy every 2 weeks" in the same notes. Replaces an earlier generic agenda drafted before these formats were supplied. -->
 
 ## The two-week cycle at a glance {#cycle-at-a-glance}
 

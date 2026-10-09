@@ -1,15 +1,15 @@
 # DNA slide experiment
 
-This experiment turns the DNA speech into ten audience slides and preserves its original passages in a separate presenter notes page. The editable deck lives in `decks/10-6-dna.deck.json`. Building produces two self-contained HTML files; authoring files are needed only to rebuild them.
+This experiment turns the DNA speech into twenty-five audience slides and preserves its original passages in a separate presenter notes page. An agenda, five topical section dividers, an extinction focus, four strategy-tree views, historical trigger moments, a 3.5% impact slide, Culture, and holacracy vary the pacing. The footer shows the current section and progress within it. The editable deck lives in `decks/10-6-dna.deck.json`. Building produces two self-contained HTML files; authoring files are needed only to rebuild them.
 
 ## Build and present
 
 Run these commands from the repository root with its existing Node installation:
 
 ```sh
-node experiments/slides/slides.mjs validate experiments/slides/decks/10-6-dna.deck.json --strict
-node experiments/slides/slides.mjs build experiments/slides/decks/10-6-dna.deck.json experiments/slides/output/10-6-dna.html --strict
-node --test experiments/slides/tests/slides.test.mjs
+node slides/slides.mjs validate slides/decks/10-6-dna.deck.json --strict
+node slides/slides.mjs build slides/decks/10-6-dna.deck.json slides/output/10-6-dna.html --strict
+node --test slides/tests/*.test.mjs
 ```
 
 Double-click `output/10-6-dna.html` to open the audience slides. The same build creates `output/10-6-dna.notes.html`. Keep both files in the same folder when presenting, so the Presenter notes link works. Fonts, photographs, artwork, diagrams, styles, and navigation are embedded; neither page needs installation, internet, or a server. Generated output and browser evidence are ignored by Git and can be rebuilt.
@@ -29,9 +29,9 @@ The renderer uses the existing `docs/public/logo.png` and local fonts in `fonts/
 - [Barlow Condensed upstream license](https://github.com/google/fonts/blob/main/ofl/barlowcondensed/OFL.txt)
 - [DM Sans upstream license](https://github.com/google/fonts/blob/main/ofl/dmsans/OFL.txt)
 
-Stock photographs show a shared London playground (Jamie Street) and Los Angeles at night (Nicolao Negrello), both from Unsplash. The deck also uses the public Sapiens First site's contour and arc artwork. [Image sources](assets/README.md) and `assets/sources.json` record provenance, usage, and file digests. Photo and artwork credits appear separately in speaker notes. The photographs are illustrative, and are not attributed to Sapiens First events. All image files are local build inputs.
+The deck includes the website hero photo, a verified public-domain March on Washington photograph, and two user-supplied AP photographs. The AP images and website hero have unverified reuse rights; see the asset provenance and presenter credits before redistribution. Stock photographs show a shared London playground (Jamie Street) and Los Angeles at night (Nicolao Negrello), both from Unsplash. An original crossroads SVG illustrates two possible futures. The deck also uses the public Sapiens First site's contour and arc artwork and trusted inline SVG section motifs. [Image sources](assets/README.md) and `assets/sources.json` record provenance, usage, and file digests. Photo and artwork credits appear separately in speaker notes. The photographs are illustrative, and are not attributed to Sapiens First events. All image files are local build inputs.
 
-The theme follows the handbook and [public site](https://sapiensfirst.org/): paper `#f8f3eb`, ink `#111111`, coral `#ff7870`, yellow `#ffd60a`, sky `#bcd8ff`, condensed uppercase headlines, rectangular panels, ink borders, and hard shadows. The design uses a 1280 × 720 logical canvas. Principal audience text is at least 40 CSS px (30pt) before scaling. The canvas scales to fit the browser around usable controls; smaller viewports display proportionally smaller text. Use a large screen for a live presentation.
+The theme follows the handbook and [public site](https://sapiensfirst.org/): warm paper `#fbf1df`, ink `#241d18`, coral `#ed836b`, amber `#efb94c`, sage `#b9c596`, condensed uppercase headlines, rectangular panels, ink borders, and hard shadows. The design uses a 1280 × 720 logical canvas. Principal audience text is at least 40 CSS px (30pt) before scaling. The opening date is secondary text at 22px; footer progress labels and the current-work tag are presentation chrome. The canvas scales to fit the browser around usable controls; smaller viewports display proportionally smaller text. Use a large screen for a live presentation.
 
 ## Authoring format
 
@@ -39,55 +39,86 @@ The JSON boundary is `schemaVersion: 1`. A deck contains `id`, `title`, `targetD
 
 `source` contains the repository-relative `path`, the lowercase SHA-256 `sha256` of its UTF-8 bytes, and the complete original `text`. Preserve every character, including whitespace. A changed original requires an editorial refresh of the snapshot, digest, and line mapping together.
 
-Each slide contains a stable unique `id`, `layout`, `purpose` (`explain`, `engage`, or `empower`), `role` (`content` or `buffer`), audience-facing `title`, layout-specific `content`, positive integer `durationSeconds`, and `notes`. An optional `sectionLabel` is audience text too. Optional `tone` selects `paper` (default), `dark`, `coral`, or `yellow` without changing the layout.
+Each slide contains a stable unique `id`, `layout`, `purpose` (`explain`, `engage`, or `empower`), `role` (`content` or `buffer`), audience-facing `title`, layout-specific `content`, positive integer `durationSeconds`, and `notes`. An optional `sectionLabel` is audience text too. Optional `section` selects `story`, `strategy`, `culture`, `structure`, or `pathways`. The progress strip derives section order from first appearance, counts all slides in the section, and fills proportionally to the current slide. Slides without `section` omit the strip. Optional `tone` selects `paper` (default), `dark`, `coral`, or `yellow` without changing the layout.
 
-Optional `image` contains `path`, `alt`, `credit`, `sourceUrl`, `licenseUrl`, and optional `position` (`center`, `top`, or `bottom`). Paths must identify local JPEG, PNG, or WebP files under `experiments/slides/assets/`; external paths, traversal, escaping symlinks, missing files, and invalid signatures fail validation. Attribution URLs must use HTTPS. Optional `graphic` selects the renderer's trusted `contours` or `arcs` brand artwork. Image alt text and attribution are separate from audience copy.
+Optional `image` contains `path`, `alt`, `credit`, `sourceUrl`, `licenseUrl`, and optional `position` (`center`, `top`, or `bottom`). Paths must identify local JPEG, PNG, WebP, or SVG files under `slides/assets/`; external paths, traversal, escaping symlinks, missing files, and invalid signatures fail validation. Attribution URLs must use HTTPS. Statement images may use `treatment: "background"` for full-slide photography with a dark contrast overlay, or `"artistic"` for a sepia parchment treatment behind text. A `montage` supplies `images` with exactly two image metadata objects instead of `image`; each keeps its own alt text and credits. Optional `graphic` selects trusted `contours` or `arcs` brand artwork, or divider-only inline motifs: `book`, `route`, `hands`, `nested`, and `signpost`. Image alt text and attribution are separate from audience copy.
 
 | Layout | Content fields |
 | --- | --- |
 | `statement` | `lines`: zero to two supporting strings |
-| `triad` | `labels`: exactly three strings |
+| `triad` | `labels`: exactly three strings; optional `direction: "horizontal"`; optional integer `highlight` (0–2) lights one label and dims the others |
 | `cycle` | `labels`: exactly three strings in repeating order |
 | `question` | Empty object; the title is the question |
 | `steps` | `labels`: three or four strings; optional `caption` and `mode` (`horizons` or `progression`); horizons requires four labels |
 | `roles` | `circle`: one string; `roles`: two or three strings inside that circle; optional `caption` |
+| `divider` | Empty object; the title names a section |
+| `impact` | Optional `caption`; the title is the oversized focal statement |
+| `values` | `labels`: exactly four strings, arranged in a two-by-two grid |
+| `pair` | `labels`: exactly two strings, shown as a pair of principles |
+| `circles` | `circle`: one enclosing circle name; `labels`: exactly four sub-circle names |
+| `choice` | `labels`: exactly two short road labels |
+| `pyramid` | `labels`: exactly five strings, from apex to base; optional `caption` |
+| `montage` | Empty object; two photographs in slide `images` |
+| `agenda` | `labels`: three to six section names, rendered as a numbered list |
+| `tree` | `tree`: root node; `reveal`: visible node ids; optional `focus`: revealed subtree id |
+
+`tree` nodes contain unique nonempty `id` and `label`, optional `children` arrays, and optional boolean `current`. At most one node may be current. `reveal` must be nonempty, unique, and include every visible node’s ancestors; `focus` must be revealed. Focus lights its visible descendants and dims the rest. Coordinates use the complete authored tree, so progressive reveals stay aligned; wide leaf groups stack vertically. Revealed labels count toward audience budgets, and the current node receives a “You are here” tag.
 
 Content is plain text. It cannot supply HTML, SVG, executable expressions, or remote image resources. The renderer owns the diagram shapes and relationships. Image metadata supplies local asset paths and separately rendered credit links.
 
 `notes.sourceRanges` is an ordered array of `{ "start": 19, "end": 24 }` objects. These are inclusive, one-based line numbers in `source.text`, not a rewritten summary. Notes assembly takes each range exactly from the snapshot, retaining its line breaks. `notes.cues` is a separate array of editorial prompts and must be labelled as additions when displayed.
 
-`sourceClassifications` lists `{ start, end, kind, reason }`, where `kind` is `heading` or `agenda`. Use it only for source headings or literal navigation that is not assigned to notes. Every substantive nonblank source line belongs in notes, in source order. Prefer nonoverlapping ranges and document intentional duplication in `editorialReview`. Blank lines require no separate coverage entry; the full snapshot still retains them.
+`sourceClassifications` lists `{ start, end, kind, reason }`, where `kind` is `heading` or `agenda`. Use it only for source headings or literal navigation that is not assigned to notes. Every substantive nonblank source line belongs in notes. Optional deck `sourceOrder` defaults to `"original"`, which requires source order. `"presentation"` allows an explicit editorial reorder while still requiring complete coverage. The October 9 deck uses presentation order because the requested promise/dangers order and Strategy sequence rearrange passages. Prefer nonoverlapping ranges and document intentional duplication in `editorialReview`. Blank lines require no separate coverage entry; the full snapshot still retains them.
 
 `sourceGaps` records genuinely empty source sections as `{ heading, explanation, start, end }`. The current DNA source has none, so its array is empty. `editorialReview` contains author-visible strings recording source drift, paraphrases, fidelity decisions, and review needs. These are not audience slide content.
 
-Optional slide `ruleExceptions` entries contain `{ rule, reason, text }`; an exception must identify its affected text and specific justification. The current DNA deck needs no content-rule exceptions.
+Optional slide `ruleExceptions` entries contain `{ rule, reason, text }`; an exception must identify its affected text and specific justification. Optional deck `ruleExceptions` uses the same shape for deck-wide findings. The current DNA deck declares a `10-20-30` slide-count exception for the requested twenty-five slides. California and the two complete tree views declare `1-6-6` and `5-5-5` exceptions for their connected strategy labels. These exceptions remain visible and do not excuse duration mismatches, unreadable text, or clipping.
 
 ## Editorial conversion and source coverage
 
-The narrative follows the speech: technology and political change, AI concerns, the movement's vision, organizing strategy, roadmap, participation, organizational roles, and an invitation to act. The question after slide 5 gives participants a pause and interrupts the content run. Ten slides total 840 planned seconds, or 14 minutes.
+Revision 2 implements the [October 9 plan](../../maintenance/plans/2026-10-09-dna-deck-revision-2-plan.md). It opens with “Revolt for our future,” a Sapiens First DNA badge, and `10/09/26`. A deck-wide agenda introduces Story, Strategy, Culture, Structure, and Pathways to Action. Story uses a crossroads illustration, centers the promise of AI before its dangers, then lights human extinction as the initial focus. The Declaration bridge slide is removed; its editorial cue remains in extinction-focus notes.
 
-At the user's request, the four source roadmap phases are shown as expanding horizons of focus, inspired by [Getting Things Done](https://gettingthingsdone.com/insights/horizons-of-focus/). Seed cities occupy the closest horizon; California, cross-state organizing, and federal policy broaden the focus. This is an adaptation of the perspective idea, not GTD's literal six-level taxonomy. The graphic represents strategic scope rather than geographic containment or completion gates. Original phase names and mission remain in the speaker notes; no dates, completion claims, or added milestones enter the talk.
+Strategy begins with “Political change for humanity.” Four progressively revealed views share the same tree: AI treaty; California / New York–Florida–Texas / national movement; Berkeley / Sacramento / Los Angeles; and Berkeley’s chapter, Cal campaign, Freeze AI in California, policy creation, and protest planning. The Berkeley chapter is marked as current work. Sacramento, Los Angeles, and the national movement remain leaf nodes because no children were specified. The original roadmap stays verbatim in `tree-goal` notes.
 
-Two red teams prioritized clearer relationships before decoration: close the organizing cycle, distinguish roadmap horizons from participation progression, and keep sibling roles inside their circle. Photography adds human context to the opening and closing and civic context to technology. Crisis and vision use distinct icon treatments; the question keeps its pause. Culture remains verbatim in notes within the ten-slide budget.
+“A cycle of engagement” precedes Trigger moments, then the 3.5% benchmark and “Pause for questions.” Tree-full and the participation threshold are buffers that separate the longer organizing sequence. Remaining Culture, Structure, and Pathways content is retained. Planned timing is 1145 seconds (19 minutes 5 seconds); this is not an observed rehearsal duration.
 
-The source changed after the plan was written: Culture now has four bullets at lines 68–71. They remain verbatim in slide 8 notes before the Structure passage. There is no empty Culture gap to preserve. No definitions or additional Culture teaching have been invented.
+The generic `pyramid` and `steps`/`horizons` layouts remain available for other decks. The National Archives March on Washington photograph appears only on the participation-threshold slide and supplies historical context, not evidence for the 3.5% claim.
 
-| Slide | Source lines | Preserved passages | Seconds |
-| --- | --- | --- | --- |
-| 1 `opening` | 3 | Opening technology sentence | 45 |
-| 2 `technology` | 5; 17 | Agriculture, industry, and digital-age examples | 75 |
-| 3 `crisis` | 19–24 | AI/power introduction and all three risk explanations | 90 |
-| 4 `vision` | 28–31 | Complete Life, Liberty, Happiness vision | 90 |
-| 5 `momentum` | 35; 39–48 | Cohesive strategy, two organizing approaches, momentum and Act–Recruit–Train | 90 |
-| 6 `chapter-question` | 50 | Original 3.5% claim; facilitator prompt remains a separate cue | 60 |
-| 7 `roadmap` | 54–64 | Objective, treaty mission, four phases, campaigns/tactics, local freedom and experimentation | 105 |
-| 8 `participation` | 68–80 | Four Culture bullets, Structure heading, volunteers, full engagement path | 75 |
-| 9 `roles` | 82–92 | Holacracy, autonomy/unity, rules/ownership, roles and circles | 120 |
-| 10 `next-step` | 96–101 | Full invitation and Donate, Join, Organize details | 90 |
+The source changed after the original plan was written: Culture has four bullets at lines 68–71. All four now appear verbatim on their own audience slide and in that slide's notes. The Culture divider introduces them before Structure. No definitions or additional policies have been invented.
 
-Unspoken headings at lines 1, 13, 15, 26, 33, 37, 52, 66, and 94 are explicitly classified. Lines 7–11 are classified as the literal four-part navigation agenda. This avoids moving the agenda ahead of the preceding technology paragraph in notes. The Structure heading at line 73 remains within slide 8's continuous range. There are no duplicated ranges or uncovered substantive passages.
+The [public Atlas](https://sapiensfirst.org/atlas) is an additional visual reference explicitly requested by the user. Its [circle renderer](https://sapiensfirst.org/atlas-circles.js) and [governance data](https://sapiensfirst.org/data/atlas/governance.csv) were inspected on October 6, 2026, along with the rendered page. `references/atlas-circles.json` records the five selected records and their parent relationships. Media, Advocacy, Community, and Tech appear inside Sapiens First Global; this excerpt is not a complete roster. Small dashed circles symbolize roles, and their number and sizes are schematic. The speech's Media Circle examples remain on a separate close-up; they are not substituted with a current staffing list.
 
-Audience headlines and labels are paraphrases. `Human extinction` shortens the source's `Omnicide`; the notes preserve its full explanation and conditional framing. The roadmap caption `Federal legislation: an AI treaty` preserves the source mission within the text budget. Donation amounts, dues, Discord, local tactics, democratic institutions, and other detail remain in notes rather than crowded onto slides. No policies from the handbook or tech-team notes enter the speech content.
+| Slide | Source lines | Seconds |
+| --- | --- | --- |
+| 1 `opening` | 3 | 45 |
+| 2 `agenda` | — | 20 |
+| 3 `story-section` | — | 10 |
+| 4 `technology` | 5; 17 | 75 |
+| 5 `vision` | 28–31 | 90 |
+| 6 `crisis` | 19–24 | 90 |
+| 7 `extinction-focus` | — | 30 |
+| 8 `strategy-section` | 35 | 10 |
+| 9 `tree-goal` | 54–64 | 40 |
+| 10 `tree-california` | — | 30 |
+| 11 `tree-berkeley` | — | 35 |
+| 12 `tree-full` | — | 20 |
+| 13 `momentum` | 45–48 | 90 |
+| 14 `trigger-moments` | 39–43 | 55 |
+| 15 `participation-threshold` | 50 | 30 |
+| 16 `chapter-question` | — | 60 |
+| 17 `culture-section` | — | 10 |
+| 18 `culture-values` | 68–71 | 90 |
+| 19 `structure-section` | — | 10 |
+| 20 `participation` | 75–80 | 75 |
+| 21 `circles` | 82–86 | 45 |
+| 22 `ownership-principles` | 88–90 | 30 |
+| 23 `roles` | 92 | 55 |
+| 24 `pathways-section` | — | 10 |
+| 25 `next-step` | 96–101 | 90 |
+
+Headings at lines 1, 13, 15, 26, 33, 37, 52, 66, 73, and 94 are explicitly classified and represented by their section or associated content slide. Lines 7–11 remain classified as the literal four-part navigation agenda. There are no duplicated ranges or uncovered substantive passages.
+
+Audience headlines and labels are paraphrases. `Human extinction` shortens the source's `Omnicide`; the notes preserve its full explanation and conditional framing. The tree root `AI treaty` names the requested goal; original federal-legislation wording stays in notes. Donation amounts, dues, Discord, local tactics, democratic institutions, and other detail remain in notes rather than crowded onto slides. No policies from the handbook or tech-team notes enter the speech content.
 
 The source contains claims that require review before publication: technology effects, AI examples, surveillance and corruption concerns, the 3.5% threshold, roadmap phases, and financial details. Preserving them does not establish their accuracy. This local experiment adds no new statistics, donation links, or QR codes.
 
@@ -95,54 +126,67 @@ The source contains claims that require review before publication: technology ef
 
 Count a word as a whitespace-delimited token after trimming; hyphenated terms count as one. Titles, optional section labels, captions, and every diagram label each consume one authored string. Allow at most six audience strings per slide, six words in titles/section labels/captions, and five words in points or labels. Notes, labelled cues, controls, and slide numbers are outside these budgets.
 
-The DNA deck has ten slides, 840 planned seconds, a question buffer at slide 6, and at most six audience strings on any slide. Slide 7 uses all six strings and therefore has no section label. The deck assigns each slide an explain, engage, or empower purpose. Authored counts are a first check; actual wrapping, logical 40px principal text, clipping, and visual relationships require browser inspection. Planned timings are not a live rehearsal result.
+The DNA deck has twenty-five slides, 1145 planned seconds, five section buffers, an agenda, a tree overview buffer, a percentage downbeat, and a question buffer. It assigns explain, engage, or empower purposes. Connected tree diagrams have explicit label-budget exceptions; all principal labels remain at least 40 logical px. Browser checks verify authored text parity, actual font sizes, bounds, collisions, node containment, progress fill, and offline assets.
 
 ## Editorial verification
 
-The original UTF-8 snapshot and SHA-256 digest were checked byte for byte. Its digest is `a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e`. All nonblank source lines are assigned to notes or explicitly classified headings/agenda; substantive ranges are strictly increasing and never duplicated. Audience labels and titles were inspected against the text budgets. Renderer and browser verification are recorded separately after implementation.
+The original UTF-8 snapshot and SHA-256 digest were checked byte for byte. Its digest is `a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e`. All nonblank source lines are assigned to notes or explicitly classified headings/agenda; substantive ranges are reordered explicitly and never duplicated. Audience labels and titles were inspected against the text budgets. Renderer and browser verification are recorded separately after implementation.
 
 ## Verification and evidence
 
 Run the browser check against the built HTML, directly over `file://`:
 
 ```sh
-node experiments/slides/tests/browser.mjs
+node slides/tests/browser.mjs
 ```
 
 It uses Playwright's installed Chromium by default. To select an existing installation:
 
 ```sh
-SLIDES_CHROMIUM=/path/to/chrome node experiments/slides/tests/browser.mjs
+SLIDES_CHROMIUM=/path/to/chrome node slides/tests/browser.mjs
 ```
 
-Optional positional arguments select another HTML path and an evidence directory. The harness checks this DNA acceptance deck's ten slides and six layouts. It copies the audience HTML alone to a temporary directory and verifies its offline appearance, then adds the companion notes file to test the presenter link, synchronized windows, and standalone notes. It loads embedded assets, exercises navigation/focus, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary files.
+Optional positional arguments select another HTML path and an evidence directory. The harness checks this DNA acceptance deck's twenty-five slides and fourteen current layouts. It copies the audience HTML alone to a temporary directory and verifies its offline appearance, then adds the companion notes file to test the presenter link, synchronized windows, and standalone notes. It loads embedded assets, exercises navigation/focus, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary files.
 
-Checks performed on October 6, 2026:
+Historical checks performed on October 6, 2026 (before the October 9 revision):
 
 | Check | Observed result |
 | --- | --- |
-| Strict DNA validation | Ten slides, 840 planned seconds, zero uncovered lines, no rule exceptions |
-| Complete Node suite | 39 passing tests, including 17 slide validation/generation tests |
-| Chromium verification | 331 passing checks at 1280 × 720, 1920 × 1080, and 390 × 844; 34 screenshots |
+| Strict DNA validation | Nineteen slides, 1020 planned seconds, zero uncovered lines, one explicit slide-count exception |
+| Complete Node suite | 42 passing tests, including 20 slide validation/generation tests |
+| Chromium verification | 588 passing checks at 1280 × 720, 1920 × 1080, and 390 × 844; 61 screenshots |
 | Offline portability | Copied HTML alone opens; identical opener pixels; fonts, logos, photographs, and website artwork decode; zero external requests or browser errors |
 | Actual text geometry | Two to six rendered audience lines per slide; every principal font ≥40 logical px; authored-to-rendered text parity, bounds, and text overlaps pass |
-| Diagram relationships | Cycle edges connect the correct nodes; all role-box corners fit their enclosing ellipse, including a three-role fixture; horizons describe strategic focus |
+| Diagram relationships | Cycle edges connect the correct nodes; role boxes fit their enclosing ellipse, including a three-role fixture; sub-circles fit their parent and contain their role dots; horizons describe strategic focus |
 | Photo geometry | Images stay within the stage and viewport and never obscure audience text |
 | Navigation and notes | All slide keys, boundaries, editable controls, focus, separate presenter link, N shortcut, popup reuse/reopening, two-way sync, standalone notes, exact source passages, and scrolling pass |
 | Notes separation | Audience HTML contains no source snapshot, speaker passages, or editorial cues; the separate notes file retains them verbatim |
-| Source drift | All four current Culture bullets remain in source notes; the speech and plan files were untouched |
-| Visual review | All ten screenshots reviewed by the visual red team and root; story red team checked horizons, cycle, participation, and close; no material remaining findings |
+| Culture and pacing | Four original values appear on their own slide; five section dividers occur in order; the 3.5% impact figure is 300 logical px with a legible separate caption |
+| Source drift | All original source bytes and all substantive passages remain preserved; Culture and holacracy notes are mapped to their dedicated slides; speech and plan files were untouched |
+| Visual review | Root and visual red team reviewed all new layouts; story red team reviewed the expanded sequence and Atlas/source distinction; no material remaining findings |
 | Reuse | Temporary second JSON deck with different source/copy and `statement`/`steps` layouts builds strictly through the unchanged renderer |
 | Handbook regression | `npm run docs:check` and `npm run docs:build` pass |
 | Live speaker rehearsal | Pending; no observed speaking duration is claimed |
 
+Historical October 9 revision 1 checks (superseded deck):
+
+| Check | Observed result |
+| --- | --- |
+| Strict validation and rebuild | 21 slides, 1120 planned seconds, zero uncovered or duplicated source lines; explicit slide-count and seven-line pyramid exceptions |
+| Full Node suite | 49 tests passed, including 27 slide tests |
+| Chromium verification | 678 checks passed at 1280 × 720, 1920 × 1080, and 390 × 844; 67 screenshots |
+| New slide treatments | Transparent logo, background contrast overlay, horizontal promise cards, five-tier pyramid, two-photo montage, and artistic Declaration treatment checked |
+| Source and portability | Original source bytes retained; notes synchronized; embedded assets decoded offline; zero external requests or browser errors |
+| Review | Three simplification agents found no worthwhile changes; local correctness review found no blocking code defects |
+| Remaining editorial work | Steps to success remain TBD; opening wording follows the TODO; AP photo and website hero reuse permissions remain unverified |
+
 The verified browser executable was `/home/rohan/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome`. The JSON report records the HTML digest, actual executable, asset status, every check, viewport geometry, and screenshot names. At 1280 × 720 the controls leave a 0.9333 canvas scale, so 40 logical px displays at about 37.3 effective px. At 1920 × 1080 the scale is 1.4333; at 390 × 844 it is 0.3047. The report distinguishes those effective sizes from the logical 30pt target.
 
-Visual comparison used the existing handbook theme and the public site's paper/ink palette, condensed headlines, coral/yellow/sky panels, marker underline, and restrained shadows. Crisis uses dark outlined rows, vision uses hopeful rounded panels, the audience question uses yellow, and the closing uses coral with photography. The roadmap uses four nested horizon bands; participation uses three connected cards. Every diagram label remains text, with an accessible description of its relationships.
+Visual comparison used the existing handbook theme and the public site's paper/ink palette, condensed headlines, coral/yellow/sky panels, marker underline, and restrained shadows. Crisis uses dark outlined rows, vision uses hopeful rounded panels, the audience question uses yellow, and the closing uses coral with photography. Section dividers use large type and changing background colours; 3.5% uses a centred figure on a dark field. Culture uses four cards, ownership uses two panels, the roadmap uses four horizon bands, and participation uses three connected cards. The Atlas-inspired overview uses four circular sub-circles and dashed role dots inside a larger enclosing scope. Every diagram label remains text, with an accessible description of its relationships.
 
 The first generation-test run failed because the CLI had no build operation; all four added generation scenarios then passed. Browser verification initially exposed a test's incorrect assumption about resetting Tab order after blur; the harness now tests focus using actual keyboard movement. Additional containment checks found SVG text extending slightly above its boxes; enlarging the boxes resolved the defect without changing text size. No renderer acceptance check was weakened. Three simplification reviews found one useful filesystem-check reduction; repeated source splitting was left alone because changing the tiny notes API added no practical value. No lint or typecheck command is configured in this repository.
 
-Before presenting, rehearse the original notes, facilitator cues, transitions, and question pause, then record an observed duration. The intended 840 seconds is not proof of a delivery under twenty minutes.
+Before presenting, rehearse the original notes, facilitator cues, section transitions, percentage pause, and question, then record an observed duration. The planned 1145 seconds is not proof of a delivery under twenty minutes.
 
 ## Make another deck
 

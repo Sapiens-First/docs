@@ -3,6 +3,7 @@ title: "1.4 Structure"
 description: "How roles, circles, participation, and decision rights fit together, and what is still unsettled."
 section: DNA
 status: draft
+slides: dna
 last_updated: 2026-10-09
 handbook_id: dna-structure
 handbook_number: "1.4"

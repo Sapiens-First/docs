@@ -7,7 +7,7 @@
     "downloadUrl": "https://images.unsplash.com/photo-1473895908536-7cbe5466790f?w=1200&q=78&fit=max&fm=jpg",
     "license": "Unsplash License",
     "licenseUrl": "https://unsplash.com/license",
-    "usage": "Illustrative shared public space, opening and closing; not a Sapiens First event.",
+    "usage": "Illustrative shared public space on the closing next-step slide; not a Sapiens First event.",
     "downloadedAt": "2026-10-06",
     "sha256": "ae431ab007f9f4b8875a839a51415fc14c3a2359b2c59fc9c3ad8d86071bc2d5"
   },
@@ -44,5 +44,62 @@
     "usage": "Decorative Sapiens First presentation background.",
     "downloadedAt": "2026-10-06",
     "sha256": "d92f037a8dc8c532d219b91759f26dc805c4995610e1c42b180583cf260ddd6c"
+  },
+  {
+    "file": "homepage-hero-photo.jpg",
+    "kind": "website-photo",
+    "author": "Underlying photographer not identified",
+    "license": "Website reuse requested by user; underlying rights unverified",
+    "sourceUrl": "https://sapiensfirst.org/",
+    "licenseUrl": "https://sapiensfirst.org/",
+    "usage": "A crowd at a peaceful demonstration, from the Sapiens First homepage.",
+    "downloadedAt": "2026-10-09",
+    "sha256": "e1481f0efdcea1b4b87078bffb9698fff996078bd5a5a2e40eb40e100b737770",
+    "downloadUrl": "https://sapiensfirst.org/assets/homepage-hero-photo.jpg"
+  },
+  {
+    "file": "march-on-washington.jpg",
+    "kind": "historical-photo",
+    "author": "U.S. Information Agency / National Archives",
+    "license": "Public Domain, Free of Known Copyright Restrictions",
+    "sourceUrl": "https://docsteach.org/document/civil-rights-march-washington-dc/",
+    "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+    "usage": "Wide-angle March on Washington photograph, August 28, 1963; 3.5% historical illustration.",
+    "downloadedAt": "2026-10-09",
+    "sha256": "e2ef3e651638ea875dbbc1c1ac4da4c717ac47a44a2d04c4c8945159b140400b",
+    "downloadUrl": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Civil_Rights_March_on_Washington%2C_D.C._%28A_wide-angle_view_of_marchers_along_the_mall%2C_showing_the_Reflecting_Pool_and..._-_NARA_-_542045.tif/lossy-page1-1920px-Civil_Rights_March_on_Washington%2C_D.C._%28A_wide-angle_view_of_marchers_along_the_mall%2C_showing_the_Reflecting_Pool_and..._-_NARA_-_542045.tif.jpg"
+  },
+  {
+    "file": "birmingham-dogs.png",
+    "kind": "user-supplied-historical-photo",
+    "author": "Bill Hudson / Associated Press",
+    "license": "Copyrighted AP photograph; reuse permission not verified",
+    "sourceUrl": "https://high.org/collection/police-dog-attack-birmingham-alabama/",
+    "licenseUrl": "https://www.ap.org/content/licensing/",
+    "usage": "A police dog lunges at a young Black man in Birmingham in May 1963; the supplied scan bears an RR Auction watermark.",
+    "downloadedAt": "2026-10-09",
+    "sha256": "8d89107deb8babf8c2663805de98bffb4434dbcaf26a57c935de401b988a15f9"
+  },
+  {
+    "file": "napalm-girl.png",
+    "kind": "user-supplied-historical-photo",
+    "author": "Associated Press; AP credits Nick Ut, attribution disputed",
+    "license": "Copyrighted AP photograph; reuse permission not verified",
+    "sourceUrl": "https://www.ap.org/about/ap-report-terror-of-war/",
+    "licenseUrl": "https://www.ap.org/content/licensing/",
+    "usage": "Children fleeing a napalm attack near Trang Bang, Vietnam, June 8, 1972, in the photograph known as The Terror of War.",
+    "downloadedAt": "2026-10-09",
+    "sha256": "ac546277eff08f0a5318226e9453762c42a2003ee500690b90b7e1a2eda8f63f"
+  },
+  {
+    "file": "crossroads.svg",
+    "kind": "original-illustration",
+    "author": "Sapiens First deck revision",
+    "sourceUrl": "https://github.com/Sapiens-First/docs",
+    "licenseUrl": "https://github.com/Sapiens-First/docs",
+    "license": "Original illustration created for this deck; no third-party image license.",
+    "usage": "Two possible technological futures: storm clouds and sunrise.",
+    "createdAt": "2026-10-09",
+    "sha256": "1d36e04d2826c309f2131914a427a23b2bfdbe29e6debaeecf603415ad83b974"
   }
 ]

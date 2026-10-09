@@ -96,7 +96,7 @@ test('chapters carry reader-facing labels in registry order', () => {
   ])
   assert.ok(chapters.slice(0, 6).every(c => !c.appendix) && chapters.slice(6).every(c => c.appendix))
   assert.deepEqual(chapters.slice(6).map(c => [c.label, c.number]), [
-    ['Reference', 'A'], ['Further reading', 'B'], ['Citations', 'C'], ['Glossary', 'D'], ['Staff', 'E'],
+    ['Reference', 'A'], ['Further reading', 'B'], ['Citations', 'C'], ['Glossary', 'D'], ['Staff', 'E'], ['Slides', 'F'],
   ])
   // every registry page appears exactly once, either as a landing or a page
   const linked = chapters.flatMap(c => [c.link, ...c.pages.map(p => p.link)])

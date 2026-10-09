@@ -3,6 +3,7 @@ title: "1 DNA"
 description: "The beliefs, strategy, culture, and structure behind Sapiens First."
 section: DNA
 status: draft
+slides: dna
 last_updated: 2026-10-02
 handbook_id: dna
 handbook_number: "1"
