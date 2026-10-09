@@ -43,6 +43,16 @@ async function keyboard(page, key, expected) {
   assert.equal(await activeIndex(page), expected, `${key}: active slide`)
 }
 
+// Slides with highlightStep reveal a part on an extra Next press before the deck moves on.
+const stepsOf = slide => slide?.content?.highlightStep ? 1 : 0
+
+// Press Next from slide index-1 (at its first step) until slide index is active.
+async function forward(page, deck, index) {
+  const presses = 1 + stepsOf(deck.slides[index - 1])
+  for (let press = 1; press < presses; press++) await keyboard(page, 'ArrowRight', index - 1)
+  await keyboard(page, 'ArrowRight', index)
+}
+
 async function notesMatch(page, deck, index) {
   const slide = deck.slides[index]
   const lines = deck.source.text.split('\n')
@@ -215,7 +225,7 @@ function verifyGeometry(metric, label) {
   check(`${label}: principal audience font minimum and secondary date`, metric.text.every(item => item.logicalFontSize >= (item.secondary ? 22 : 40)), metric.text.map(item => ({ text: item.text, logical: item.logicalFontSize, effective: item.effectiveFontSize })))
   // Tree exceptions are explicit in the deck; all visible tree labels still undergo
   // the same font, bounds, collision and box-containment checks as other diagrams.
-  const allowedLines = { 'tree-goal': 5, 'tree-california': 8, 'tree-berkeley': 13, 'tree-full': 13, 'agenda-six': 7 }[metric.slideId] ?? 6
+  const allowedLines = { 'tree-goal': 5, 'tree-california': 8, 'tree-bay': 13, 'agenda-six': 7, vision: 8, crisis: 8, 'culture-values': 8 }[metric.slideId] ?? 6
   check(`${label}: rendered lines respect the slide budget`, metric.renderedLineCount <= allowedLines, { actual: metric.renderedLineCount, allowed: allowedLines })
   check(`${label}: audience text inside stage and viewport`, metric.text.every(item => item.lines.every(line => inside(line, metric.stage) && inside(line, metric.viewport))))
   const collisions = []
@@ -326,7 +336,7 @@ async function exerciseBehavior(page, deck) {
   await notesMatch(presenter, deck, 1)
   for (let index = 0; index < count; index++) {
     if (!index) await keyboard(page, 'Home', 0)
-    else await keyboard(page, 'ArrowRight', index)
+    else await forward(page, deck, index)
     await notesMatch(presenter, deck, index)
     assert.equal(await page.getByRole('heading', { level: 1 }).count(), 1)
   }
@@ -419,9 +429,9 @@ try {
     evidence.originalSourceComparison = { status: 'unavailable', path: sourcePath }
   }
   check('DNA acceptance deck renders all twenty-four slides', deck.slides.length === 24 && await page.locator('#stage .slide').count() === 24)
-  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'next-step']))
-  const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'montage', 'agenda', 'tree']
-  check('all fourteen current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
+  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step']))
+  const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'photo', 'figure', 'agenda', 'tree']
+  check('all current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
   const dividerIds = await page.locator('#stage .slide[data-layout="divider"]').evaluateAll(slides => slides.map(slide => slide.dataset.slideId))
   check('four section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section']), dividerIds)
   const threshold = await page.locator('.slide[data-slide-id="participation-threshold"] h1').evaluate(title => ({ text: title.textContent, fontSize: parseFloat(getComputedStyle(title).fontSize) }))
@@ -446,17 +456,22 @@ try {
       openingDate: opening.querySelector('.statement-date')?.textContent,
       badgeStyle: { fill: getComputedStyle(opening.querySelector('.statement-badge')).backgroundColor, border: getComputedStyle(opening.querySelector('.statement-badge')).borderTopWidth },
       dateSize: parseFloat(getComputedStyle(opening.querySelector('.statement-date')).fontSize),
-      extinction: [...document.querySelectorAll('.slide[data-slide-id="extinction-focus"] .triad li')].map(item => item.className),
-      triggerPhotos: document.querySelectorAll('.slide[data-slide-id="trigger-moments"] .montage-photo').length,
+      crisis: [...document.querySelectorAll('.slide[data-slide-id="crisis"] .triad li')].map(item => item.className),
+      crisisSteps: document.querySelector('.slide[data-slide-id="crisis"]').dataset.steps,
+      triggerPhotos: ['trigger-birmingham', 'trigger-vietnam'].map(id => document.querySelectorAll(`.slide[data-slide-id="${id}"] .slide-photo`).length),
+      figureImages: document.querySelectorAll('.slide[data-slide-id="movement-action-plan"][data-layout="figure"] .slide-photo').length,
+      favicon: Boolean(document.querySelector('link[rel="icon"]')),
       dividerMotifs: [...document.querySelectorAll('.slide[data-layout="divider"] .divider-art')].map(svg => svg.dataset.graphic),
     }
   })
   check('logo preserves PNG transparency without a CSS background', revisions.transparentLogo)
   check('opening uses the requested background photo with a contrast overlay', revisions.background)
   check('three AI promise cards form a horizontal row', revisions.cards.length === 3 && revisions.cards.every(card => Math.abs(card.top - revisions.cards[0].top) < 1) && revisions.cards.slice(1).every((card, index) => card.left > revisions.cards[index].right), revisions.cards)
-  check('opening badge and short date', revisions.openingBadge === 'Sapiens First DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 22 && revisions.badgeStyle.fill === 'rgb(237, 131, 107)' && revisions.badgeStyle.border === '2px')
-  check('extinction focus lights the first danger and dims the other two', JSON.stringify(revisions.extinction) === JSON.stringify(['is-lit', 'is-dim', 'is-dim']))
-  check('trigger moments pairs two photographs', revisions.triggerPhotos === 2)
+  check('opening badge and short date', revisions.openingBadge === 'Sapiens First DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 36 && revisions.badgeStyle.fill === 'rgb(36, 29, 24)' && revisions.badgeStyle.border === '0px')
+  check('crisis lights human extinction and dims the other two, revealed on one extra step', revisions.crisisSteps === '1' && JSON.stringify(revisions.crisis) === JSON.stringify(['is-lit', 'is-dim', 'is-dim']))
+  check('Birmingham and Vietnam trigger slides each show a single photograph', JSON.stringify(revisions.triggerPhotos) === JSON.stringify([1, 1]))
+  check('Movement Action Plan figure slide shows its image', revisions.figureImages === 1)
+  check('audience page declares a favicon', revisions.favicon)
   check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested']))
   const assets = await page.evaluate(() => ({
     fonts: [...document.fonts].map(font => ({ family: font.family, weight: font.weight, status: font.status })),
@@ -483,8 +498,8 @@ try {
     check(`${slideId}: photograph credit and source license are available in notes`, attribution.text.includes(image.credit) && attribution.links.includes(image.sourceUrl) && attribution.links.includes(image.licenseUrl), attribution.links)
   }
   check('trusted SVG diagrams have accessible descriptions and real text labels', assets.diagrams.length > 0 && assets.diagrams.every(diagram => diagram.role === 'img' && diagram.description && diagram.labelledBy.every(Boolean) && diagram.labels.every(label => diagram.description.includes(label))))
-  const treeDescription = await page.locator('.slide[data-slide-id="tree-full"] svg.diagram desc').textContent()
-  check('complete tree describes California, Berkeley and current work', ['AI treaty', 'California', 'Berkeley', 'Sacramento', 'Los Angeles', 'You are here'].every(label => treeDescription.includes(label)), treeDescription)
+  const treeDescription = await page.locator('.slide[data-slide-id="tree-bay"] svg.diagram desc').textContent()
+  check('Bay Area tree describes California, Bay Area and current work', ['AI treaty', 'California', 'Bay Area', 'Berkeley chapter', 'You are here'].every(label => treeDescription.includes(label)), treeDescription)
   const cultureSection = deck.source.text.split(/^## Part 3: Culture\s*$/m)[1]?.split(/^## /m)[0] ?? ''
   const culture = cultureSection.split('\n').filter(line => /^[-*] /.test(line))
   evidence.cultureSourceBullets = culture
@@ -504,7 +519,7 @@ try {
     await keyboard(page, 'Home', 0)
     const treePositions = new Map()
     for (const [index, slide] of deck.slides.entries()) {
-      if (index) await keyboard(page, 'ArrowRight', index)
+      if (index) await forward(page, deck, index)
       const metric = await geometry(page)
       entry.slides.push(metric)
       verifyGeometry(metric, `${name} ${slide.id}`)
@@ -539,7 +554,7 @@ try {
     entry.controls = await controlsVisible(page)
     await keyboard(page, 'Home', 0)
     const longNotesIndex = deck.slides.findIndex(slide => slide.id === 'tree-goal')
-    for (let i = 1; i <= longNotesIndex; i++) await keyboard(page, 'ArrowRight', i)
+    for (let i = 1; i <= longNotesIndex; i++) await forward(page, deck, i)
     await notesMatch(presenter, deck, longNotesIndex)
     await presenter.setViewportSize(viewport)
     const noteScroll = await presenter.evaluate(() => {
@@ -566,7 +581,7 @@ try {
   await open(genericPath)
   await page.setViewportSize({ width: 1280, height: 720 })
   await keyboard(page, 'Home', 0)
-  for (let index = 1; index <= genericRoleIndex; index++) await keyboard(page, 'ArrowRight', index)
+  for (let index = 1; index <= genericRoleIndex; index++) await forward(page, generic, index)
   const genericMetric = await geometry(page)
   evidence.threeRoleFixture = genericMetric
   verifyGeometry(genericMetric, '1280x720 generic three-role fixture')
@@ -580,7 +595,7 @@ try {
   const agendaPath = join(isolated, 'six-section-agenda.html')
   await writeFile(agendaPath, renderDeck(agendaFixture))
   await open(agendaPath)
-  await keyboard(page, 'ArrowRight', agendaIndex)
+  for (let index = 1; index <= agendaIndex; index++) await forward(page, agendaFixture, index)
   const agendaMetric = await geometry(page)
   evidence.sixSectionAgendaFixture = agendaMetric
   verifyGeometry(agendaMetric, '1280x720 six-section agenda fixture')

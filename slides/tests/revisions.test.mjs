@@ -174,7 +174,7 @@ test('local crossroads SVG embeds offline and preserves source credit in notes',
 
 test('revision two deck has the complete requested sequence and exact original source', () => {
   const data = JSON.parse(readFileSync(new URL('../decks/10-6-dna.deck.json', import.meta.url)))
-  assert.deepEqual(data.slides.map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'extinction-focus', 'strategy-section', 'tree-goal', 'tree-california', 'tree-berkeley', 'tree-full', 'momentum', 'trigger-moments', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'circles', 'ownership-principles', 'roles', 'next-step'])
+  assert.deepEqual(data.slides.map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step'])
   const report = validateDeck(data)
   assert.deepEqual(report.errors, [])
   assert.deepEqual(report.coverage.uncovered, [])
@@ -183,6 +183,61 @@ test('revision two deck has the complete requested sequence and exact original s
   assert.equal(data.source.sha256, 'a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e')
   assert.equal(data.slides[3].image.path, 'assets/crossroads.svg')
   const trees = data.slides.filter(slide => slide.layout === 'tree')
-  assert.equal(trees.length, 4)
+  assert.equal(trees.length, 3)
   assert.ok(trees.every(slide => JSON.stringify(slide.content.tree) === JSON.stringify(trees[0].content.tree)))
+})
+
+test('triad highlightStep requires a highlight and is only true', () => {
+  const labels = ['A', 'B', 'C']
+  assert.deepEqual(validateDeck(deck('triad', { labels, highlight: 0, highlightStep: true })).errors, [])
+  for (const content of [{ labels, highlightStep: true }, { labels, highlight: 0, highlightStep: false }, { labels, highlight: 0, highlightStep: 'yes' }]) {
+    assert.match(validateDeck(deck('triad', content)).errors.join(' '), /highlightStep/, JSON.stringify(content))
+  }
+  assert.deepEqual(validateDeck(deck('choice', { highlightStep: true }, { image: image() })).errors.length > 0, true, 'highlightStep belongs to triads')
+})
+
+test('a stepped triad exposes one step; unstepped slides expose none', () => {
+  const stepped = renderDeck(deck('triad', { labels: ['A', 'B', 'C'], highlight: 0, highlightStep: true }))
+  assert.match(stepped, /data-steps="1"/)
+  assert.match(stepped, /class="triad stepped"/)
+  assert.doesNotMatch(renderDeck(deck('triad', { labels: ['A', 'B', 'C'], highlight: 0 })), /data-steps=/)
+})
+
+test('photo and figure layouts require exactly one image and accept only a caption', () => {
+  for (const layout of ['photo', 'figure']) {
+    assert.deepEqual(validateDeck(deck(layout, { caption: 'A caption' }, { image: image() })).errors, [], layout)
+    assert.deepEqual(validateDeck(deck(layout, {}, { image: image() })).errors, [], layout)
+    assert.ok(validateDeck(deck(layout, { caption: 'A caption' })).errors.length, `${layout} without an image`)
+    assert.ok(validateDeck(deck(layout, {}, { images: [image(), image()] })).errors.length, `${layout} with two images`)
+    assert.ok(validateDeck(deck(layout, { labels: ['Unexpected'] }, { image: image() })).errors.length, `${layout} with labels`)
+    const html = renderDeck(deck(layout, { caption: 'A caption' }, { image: image() }))
+    assert.match(html, new RegExp(`data-layout="${layout}"`))
+    assert.match(html, /class="slide-photo/)
+  }
+})
+
+test('choice accepts no labels and still renders its image', () => {
+  const data = deck('choice', {}, { image: image() })
+  assert.deepEqual(validateDeck(data).errors, [])
+  const html = renderDeck(data)
+  assert.match(html, /data-layout="choice"/)
+  assert.match(html, /class="slide-photo/)
+  assert.deepEqual(audienceLines(data.slides[0]).map(line => line.text), ['A better future'])
+})
+
+test('sunrise and sage tones are valid; unknown tones are rejected', () => {
+  for (const tone of ['sunrise', 'sage', 'dark']) {
+    const data = deck('statement', { lines: [] }, { tone })
+    assert.deepEqual(validateDeck(data).errors, [], tone)
+    assert.match(renderDeck(data), new RegExp(`data-tone="${tone}"`))
+  }
+  assert.match(validateDeck(deck('statement', { lines: [] }, { tone: 'neon' })).errors.join(' '), /tone/)
+})
+
+test('both built pages carry an inline favicon', () => {
+  const data = deck('statement', { lines: [] })
+  for (const page of [renderDeck(data), renderNotes(data)]) {
+    assert.match(page, /<link rel="icon" type="image\/png"[^>]*href="data:image\/png;base64,/)
+    assert.doesNotMatch(page, /<link[^>]*rel="icon"[^>]*href="(?!data:)/)
+  }
 })

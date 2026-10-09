@@ -13,7 +13,7 @@
     "dna-culture",
     "dna-structure"
   ],
-  "targetDurationSeconds": 1135,
+  "targetDurationSeconds": 1195,
   "source": {
     "path": "slides/sources/10-6-dna.md",
     "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
@@ -171,7 +171,7 @@
           "Section transition: introduce Story before advancing to its content."
         ]
       },
-      "tone": "dark",
+      "tone": "sunrise",
       "graphic": "book",
       "section": "story"
     },
@@ -181,12 +181,7 @@
       "purpose": "explain",
       "role": "content",
       "title": "Humanity faces a choice",
-      "content": {
-        "labels": [
-          "AI dangers",
-          "AI promise"
-        ]
-      },
+      "content": {},
       "durationSeconds": 75,
       "notes": {
         "sourceRanges": [
@@ -201,7 +196,7 @@
         ],
         "cues": [
           "Connect agriculture and industry to the digital-age examples. Explain the source’s tension between technological benefits and political consequences.",
-          "The two roads contrast the promise and risks of AI. Their labels are editorial framing; preserve the original technology examples in notes. The park photo illustrates an optimistic shared future."
+          "The two roads contrast the promise and risks of AI; the illustration carries the choice without labels. Preserve the original technology examples in notes."
         ]
       },
       "image": {
@@ -222,9 +217,9 @@
       "title": "The promise of AI",
       "content": {
         "labels": [
-          "Human survival",
-          "Democratic power",
-          "Shared prosperity"
+          "Scientific progress",
+          "Radical democracy",
+          "Common prosperity"
         ],
         "direction": "horizontal"
       },
@@ -237,7 +232,7 @@
           }
         ],
         "cues": [
-          "Explain the treaty, democracy, and distribution proposals in the original notes. The three values serve one shared vision."
+          "Explain the treaty, democracy, and distribution proposals in the original notes. The three values serve one shared vision. October 9 wording: scientific progress, radical democracy, common prosperity."
         ]
       },
       "section": "story"
@@ -253,9 +248,12 @@
           "Human extinction",
           "Threats to democracy",
           "Vast inequality"
-        ]
+        ],
+        "highlight": 0,
+        "highlightStep": true,
+        "direction": "horizontal"
       },
-      "durationSeconds": 90,
+      "durationSeconds": 120,
       "notes": {
         "sourceRanges": [
           {
@@ -264,33 +262,8 @@
           }
         ],
         "cues": [
-          "Keep the source’s conditional framing and attribution to the draft. Explain the three risks without turning them into stronger empirical claims."
-        ]
-      },
-      "tone": "dark",
-      "section": "story"
-    },
-    {
-      "id": "extinction-focus",
-      "layout": "triad",
-      "purpose": "explain",
-      "role": "content",
-      "title": "Our focus: human extinction",
-      "tone": "dark",
-      "content": {
-        "labels": [
-          "Human extinction",
-          "Threats to democracy",
-          "Vast inequality"
-        ],
-        "highlight": 0
-      },
-      "durationSeconds": 30,
-      "notes": {
-        "sourceRanges": [],
-        "cues": [
-          "Life, Liberty, and the Pursuit of Happiness in the age of AI. This is an editorial bridge requested on October 9, linking the source’s three values to the Declaration of Independence; it adds no policy commitment.",
-          "This is the risk the strategy that follows addresses first."
+          "Keep the source’s conditional framing and attribution to the draft. Explain the three risks without turning them into stronger empirical claims.",
+          "Advance once to highlight human extinction as our focus; the other two risks stay visible but recede. This is the risk the strategy that follows addresses first."
         ]
       },
       "section": "story"
@@ -314,7 +287,7 @@
           "Section transition: introduce Strategy before advancing to its content."
         ]
       },
-      "tone": "dark",
+      "tone": "sage",
       "graphic": "route",
       "section": "strategy"
     },
@@ -334,8 +307,8 @@
               "label": "State action in California",
               "children": [
                 {
-                  "id": "berkeley",
-                  "label": "Berkeley",
+                  "id": "bay",
+                  "label": "Bay Area",
                   "children": [
                     {
                       "id": "chapter",
@@ -343,20 +316,16 @@
                       "current": true
                     },
                     {
-                      "id": "cal",
-                      "label": "Campaign in Cal"
-                    },
-                    {
-                      "id": "freeze",
-                      "label": "Freeze AI in California"
-                    },
-                    {
                       "id": "policy",
                       "label": "Policy creation"
                     },
                     {
                       "id": "protest",
-                      "label": "Protest planning"
+                      "label": "Protests"
+                    },
+                    {
+                      "id": "statewide",
+                      "label": "Statewide strategy"
                     }
                   ]
                 },
@@ -398,7 +367,7 @@
         "cues": [
           "The October 9 revision moves the roadmap to the first content slide of Strategy. The original source’s four phases are preserved verbatim below; the audience tree presents the user’s revised three phases and federal goal.",
           "Phase 1: action in California. Phase 2: expansion to New York, Florida, Texas. Phase 3: national movement. The March on Washington photograph illustrates mass mobilization, not a Sapiens First event or a scheduled march.",
-          "The revised tree names the specified Berkeley work. Sacramento, Los Angeles, and the national movement remain leaf nodes; no completion dates or unspecified commitments are invented.",
+          "The revised tree names the Bay Area and its four working groups. Sacramento, Los Angeles, and the national movement remain leaf nodes; no completion dates or unspecified commitments are invented.",
           "The tree shows the revised strategy; the original roadmap phases remain verbatim in source notes. AI treaty is the goal, with California, other states, and a national movement beneath it."
         ]
       },
@@ -420,8 +389,8 @@
               "label": "State action in California",
               "children": [
                 {
-                  "id": "berkeley",
-                  "label": "Berkeley",
+                  "id": "bay",
+                  "label": "Bay Area",
                   "children": [
                     {
                       "id": "chapter",
@@ -429,20 +398,16 @@
                       "current": true
                     },
                     {
-                      "id": "cal",
-                      "label": "Campaign in Cal"
-                    },
-                    {
-                      "id": "freeze",
-                      "label": "Freeze AI in California"
-                    },
-                    {
                       "id": "policy",
                       "label": "Policy creation"
                     },
                     {
                       "id": "protest",
-                      "label": "Protest planning"
+                      "label": "Protests"
+                    },
+                    {
+                      "id": "statewide",
+                      "label": "Statewide strategy"
                     }
                   ]
                 },
@@ -471,7 +436,7 @@
           "ca",
           "states",
           "national",
-          "berkeley",
+          "bay",
           "sac",
           "la"
         ],
@@ -481,7 +446,7 @@
       "notes": {
         "sourceRanges": [],
         "cues": [
-          "Expand California into Berkeley, Sacramento, and Los Angeles; only Berkeley has specified next steps."
+          "Expand California into the Bay Area, Sacramento, and Los Angeles; only the Bay Area has specified working groups."
         ]
       },
       "ruleExceptions": [
@@ -493,17 +458,17 @@
         {
           "rule": "5-5-5",
           "text": "It starts in California",
-          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
+          "reason": "The requested tree exposes California and Bay Area branches together; the extra labels show one connected strategy rather than a list of independent talking points."
         }
       ],
       "section": "strategy"
     },
     {
-      "id": "tree-berkeley",
+      "id": "tree-bay",
       "layout": "tree",
       "purpose": "explain",
       "role": "content",
-      "title": "Where we are now: Berkeley",
+      "title": "Where we are now: the Bay Area",
       "content": {
         "tree": {
           "id": "treaty",
@@ -514,8 +479,8 @@
               "label": "State action in California",
               "children": [
                 {
-                  "id": "berkeley",
-                  "label": "Berkeley",
+                  "id": "bay",
+                  "label": "Bay Area",
                   "children": [
                     {
                       "id": "chapter",
@@ -523,20 +488,16 @@
                       "current": true
                     },
                     {
-                      "id": "cal",
-                      "label": "Campaign in Cal"
-                    },
-                    {
-                      "id": "freeze",
-                      "label": "Freeze AI in California"
-                    },
-                    {
                       "id": "policy",
                       "label": "Policy creation"
                     },
                     {
                       "id": "protest",
-                      "label": "Protest planning"
+                      "label": "Protests"
+                    },
+                    {
+                      "id": "statewide",
+                      "label": "Statewide strategy"
                     }
                   ]
                 },
@@ -565,132 +526,33 @@
           "ca",
           "states",
           "national",
-          "berkeley",
+          "bay",
           "sac",
           "la",
           "chapter",
-          "cal",
-          "freeze",
           "policy",
-          "protest"
+          "protest",
+          "statewide"
         ],
-        "focus": "berkeley"
+        "focus": "bay"
       },
       "durationSeconds": 35,
       "notes": {
         "sourceRanges": [],
         "cues": [
-          "Focus on Berkeley: chapter, Cal campaign, Freeze AI in California, policy creation, and protest planning. These branches are the requested revision, not new source passages."
+          "Focus on the Bay Area. Its four working groups are the Berkeley chapter, policy creation, protests, and statewide strategy. These branches are the requested revision, not new source passages."
         ]
       },
       "ruleExceptions": [
         {
           "rule": "1-6-6",
-          "text": "Where we are now: Berkeley",
+          "text": "Where we are now: the Bay Area",
           "reason": "The requested progressive strategy tree shows related nodes with large type and elbow connectors; its complete relationships require more than six audience labels."
         },
         {
           "rule": "5-5-5",
-          "text": "Where we are now: Berkeley",
-          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
-        }
-      ],
-      "section": "strategy"
-    },
-    {
-      "id": "tree-full",
-      "layout": "tree",
-      "purpose": "engage",
-      "role": "buffer",
-      "title": "One chapter at a time",
-      "content": {
-        "tree": {
-          "id": "treaty",
-          "label": "AI treaty",
-          "children": [
-            {
-              "id": "ca",
-              "label": "State action in California",
-              "children": [
-                {
-                  "id": "berkeley",
-                  "label": "Berkeley",
-                  "children": [
-                    {
-                      "id": "chapter",
-                      "label": "Berkeley chapter",
-                      "current": true
-                    },
-                    {
-                      "id": "cal",
-                      "label": "Campaign in Cal"
-                    },
-                    {
-                      "id": "freeze",
-                      "label": "Freeze AI in California"
-                    },
-                    {
-                      "id": "policy",
-                      "label": "Policy creation"
-                    },
-                    {
-                      "id": "protest",
-                      "label": "Protest planning"
-                    }
-                  ]
-                },
-                {
-                  "id": "sac",
-                  "label": "Sacramento"
-                },
-                {
-                  "id": "la",
-                  "label": "Los Angeles"
-                }
-              ]
-            },
-            {
-              "id": "states",
-              "label": "New York, Florida, Texas"
-            },
-            {
-              "id": "national",
-              "label": "National movement"
-            }
-          ]
-        },
-        "reveal": [
-          "treaty",
-          "ca",
-          "states",
-          "national",
-          "berkeley",
-          "sac",
-          "la",
-          "chapter",
-          "cal",
-          "freeze",
-          "policy",
-          "protest"
-        ]
-      },
-      "durationSeconds": 20,
-      "notes": {
-        "sourceRanges": [],
-        "cues": [
-          "Step back to the whole tree. You are here marks the Berkeley chapter as the current focus."
-        ]
-      },
-      "ruleExceptions": [
-        {
-          "rule": "1-6-6",
-          "text": "One chapter at a time",
-          "reason": "The requested progressive strategy tree shows related nodes with large type and elbow connectors; its complete relationships require more than six audience labels."
-        },
-        {
-          "rule": "5-5-5",
-          "text": "One chapter at a time",
-          "reason": "The requested tree exposes California and Berkeley branches together; the extra labels show one connected strategy rather than a list of independent talking points."
+          "text": "Where we are now: the Bay Area",
+          "reason": "The requested tree exposes California and Bay Area branches together; the extra labels show one connected strategy rather than a list of independent talking points."
         }
       ],
       "section": "strategy"
@@ -723,12 +585,15 @@
       "section": "strategy"
     },
     {
-      "id": "trigger-moments",
-      "layout": "montage",
-      "purpose": "explain",
-      "role": "content",
-      "title": "Trigger moments",
-      "content": {},
+      "id": "trigger-birmingham",
+      "layout": "photo",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Birmingham, 1963",
+      "sectionLabel": "Trigger moment",
+      "content": {
+        "caption": "Civil rights movement"
+      },
       "durationSeconds": 55,
       "notes": {
         "sourceRanges": [
@@ -738,29 +603,77 @@
           }
         ],
         "cues": [
-          "Growth can be nonlinear: trigger events can spur mass mobilization, followed by absorbing people into the movement. These historical photographs illustrate the source’s organizing concept; they do not establish a causal or quantitative claim about either movement.",
-          "The Birmingham photograph (1963) and The Terror of War (1972) were supplied by the user for this local draft. Both are copyrighted Associated Press imagery, and the Birmingham scan bears an RR Auction watermark. Permission for redistribution/publication has not been verified; preserve these credits and do not remove the watermark.",
-          "Connect the preceding Act / Recruit / Train cycle to sudden mobilization; the participation threshold follows."
+          "Growth can be nonlinear: trigger events can spur mass mobilization, followed by absorbing people into the movement. This photograph illustrates the source’s organizing concept; it does not establish a causal or quantitative claim.",
+          "The Birmingham photograph (May 3, 1963) was supplied by the user for this local draft. It is copyrighted Associated Press imagery and the scan bears an RR Auction watermark. Permission for redistribution/publication has not been verified; preserve this credit and do not remove the watermark.",
+          "The full frame is shown so the young man’s face stays in the picture."
         ]
       },
-      "images": [
-        {
-          "path": "assets/birmingham-dogs.png",
-          "alt": "A police dog lunges at a young Black man in Birmingham in May 1963; the supplied scan bears an RR Auction watermark.",
-          "credit": "Bill Hudson / Associated Press, Birmingham, May 3, 1963. User-supplied RR Auction scan; copyrighted, reuse permission not verified.",
-          "sourceUrl": "https://high.org/collection/police-dog-attack-birmingham-alabama/",
-          "licenseUrl": "https://www.ap.org/content/licensing/",
-          "position": "center"
-        },
-        {
-          "path": "assets/napalm-girl.png",
-          "alt": "Children fleeing a napalm attack near Trang Bang, Vietnam, June 8, 1972, in the photograph known as The Terror of War.",
-          "credit": "The Terror of War / Associated Press, June 8, 1972. AP credits Nick Ut; attribution is disputed. User-supplied image; copyrighted, reuse permission not verified.",
-          "sourceUrl": "https://www.ap.org/about/ap-report-terror-of-war/",
-          "licenseUrl": "https://www.ap.org/content/licensing/",
-          "position": "center"
-        }
-      ],
+      "image": {
+        "path": "assets/birmingham-dogs.png",
+        "alt": "A police dog lunges at a young Black man in Birmingham in May 1963; the supplied scan bears an RR Auction watermark.",
+        "credit": "Bill Hudson / Associated Press, Birmingham, May 3, 1963. User-supplied RR Auction scan; copyrighted, reuse permission not verified.",
+        "sourceUrl": "https://high.org/collection/police-dog-attack-birmingham-alabama/",
+        "licenseUrl": "https://www.ap.org/content/licensing/",
+        "position": "top"
+      },
+      "section": "strategy"
+    },
+    {
+      "id": "trigger-vietnam",
+      "layout": "photo",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Vietnam, 1972",
+      "sectionLabel": "Trigger moment",
+      "content": {
+        "caption": "The Vietnam War"
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "A second trigger moment: a single image that moved public opinion. It illustrates the organizing concept only; it does not establish a causal claim about the end of the war.",
+          "The Terror of War (June 8, 1972) was supplied by the user. AP credits Nick Ut; attribution is disputed. It is copyrighted; permission for redistribution/publication has not been verified.",
+          "Connect the Act / Recruit / Train cycle to sudden mobilization; the Movement Action Plan follows."
+        ]
+      },
+      "image": {
+        "path": "assets/napalm-girl.png",
+        "alt": "Children fleeing a napalm attack near Trang Bang, Vietnam, June 8, 1972, in the photograph known as The Terror of War.",
+        "credit": "The Terror of War / Associated Press, June 8, 1972. AP credits Nick Ut; attribution is disputed. User-supplied image; copyrighted, reuse permission not verified.",
+        "sourceUrl": "https://www.ap.org/about/ap-report-terror-of-war/",
+        "licenseUrl": "https://www.ap.org/content/licensing/",
+        "position": "center"
+      },
+      "section": "strategy"
+    },
+    {
+      "id": "movement-action-plan",
+      "layout": "figure",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Movement Action Plan",
+      "sectionLabel": "Bill Moyer",
+      "content": {
+        "caption": "Eight stages of a social movement"
+      },
+      "durationSeconds": 50,
+      "notes": {
+        "sourceRanges": [],
+        "cues": [
+          "Bill Moyer’s Movement Action Plan describes eight stages. Stage 3, conditions ripen, ends with a trigger event; stage 4, take off, is when rebels surge and the public takes notice.",
+          "Stage 5 is the point where activists feel like they have failed even as the public is being won over; stage 6 wins a majority of the public. Re-trigger events keep momentum going.",
+          "This slide was added on October 9 and is not in the original speech source. The graphic was supplied by the user; its original publisher and licence are unverified."
+        ]
+      },
+      "image": {
+        "path": "assets/movement-action-plan.png",
+        "alt": "Bill Moyer’s Movement Action Plan: eight stages from business as usual to moving on, plotted against the activity of reformers, rebels, the public and organisers, with a trigger event before stage four.",
+        "credit": "Bill Moyer, Movement Action Plan (MAP). Graphic supplied by the user; original publisher and reuse permission not verified.",
+        "sourceUrl": "https://en.wikipedia.org/wiki/Movement_Action_Plan",
+        "licenseUrl": "https://en.wikipedia.org/wiki/Movement_Action_Plan",
+        "position": "center"
+      },
       "section": "strategy"
     },
     {
@@ -785,7 +698,7 @@
           "The March on Washington image is historical context for mass participation; it does not prove the 3.5% claim or represent 3.5% of a population."
         ]
       },
-      "tone": "dark",
+      "tone": "coral",
       "image": {
         "path": "assets/march-on-washington.jpg",
         "alt": "A wide-angle view of marchers along the National Mall, Reflecting Pool, and Washington Monument during the March on Washington, August 28, 1963.",
@@ -882,7 +795,7 @@
       "layout": "steps",
       "purpose": "explain",
       "role": "content",
-      "title": "Grow through participation",
+      "title": "Ladder of Engagement",
       "content": {
         "labels": [
           "Supporter",
@@ -906,41 +819,11 @@
       "section": "structure"
     },
     {
-      "id": "circles",
-      "layout": "circles",
-      "purpose": "explain",
-      "role": "content",
-      "title": "Circles within circles",
-      "content": {
-        "circle": "Sapiens First Global",
-        "labels": [
-          "Media",
-          "Advocacy",
-          "Community",
-          "Tech"
-        ]
-      },
-      "durationSeconds": 45,
-      "notes": {
-        "sourceRanges": [
-          {
-            "start": 82,
-            "end": 86
-          }
-        ],
-        "cues": [
-          "Explain self-organization and autonomy within a shared purpose. The diagram adapts the public Atlas’s nested-circle visualization: https://sapiensfirst.org/atlas . Media, Advocacy, Community, and Tech are four current sub-circles of Sapiens First Global as inspected on October 6, 2026. This is a selected excerpt, not the complete organizational roster.",
-          "Small dashed dots represent roles inside a circle; their number and sizes are schematic, not staffing or importance measures. Retired Atlas circles are excluded. Berkeley Chapter is a separate root in the Atlas and is not drawn as a child of Global."
-        ]
-      },
-      "section": "structure"
-    },
-    {
       "id": "ownership-principles",
       "layout": "pair",
       "purpose": "explain",
       "role": "content",
-      "title": "Autonomy needs shared rules",
+      "title": "Holacracy",
       "content": {
         "labels": [
           "Rules of the road",
@@ -957,6 +840,37 @@
         ],
         "cues": [
           "Use the source’s two principles together: enforceable shared rules and clear areas of authority. This pair connects the nested-circle overview to the named role example that follows."
+        ]
+      },
+      "section": "structure"
+    },
+    {
+      "id": "circles",
+      "layout": "circles",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Atlas",
+      "content": {
+        "circle": "Sapiens First Global",
+        "labels": [
+          "Media",
+          "Advocacy",
+          "Community",
+          "Tech"
+        ],
+        "link": "sapiensfirst.org/atlas"
+      },
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 82,
+            "end": 86
+          }
+        ],
+        "cues": [
+          "Explain self-organization and autonomy within a shared purpose. The diagram adapts the public Atlas’s nested-circle visualization: https://sapiensfirst.org/atlas . Media, Advocacy, Community, and Tech are four current sub-circles of Sapiens First Global as inspected on October 6, 2026. This is a selected excerpt, not the complete organizational roster.",
+          "Small dashed dots represent roles inside a circle; their number and sizes are schematic, not staffing or importance measures. Retired Atlas circles are excluded. Berkeley Chapter is a separate root in the Atlas and is not drawn as a child of Global."
         ]
       },
       "section": "structure"
@@ -1000,7 +914,13 @@
           "Donate",
           "Join",
           "Organize"
-        ]
+        ],
+        "links": [
+          "sapiensfirst.org/donate",
+          "sapiensfirst.org/join",
+          "sapiensfirst.org/fellowship"
+        ],
+        "caption": "Express your interest today"
       },
       "durationSeconds": 90,
       "notes": {
@@ -1012,7 +932,8 @@
         ],
         "cues": [
           "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism.",
-          "Pathways to Action is this slide’s title, not a section; it closes the Structure section."
+          "Pathways to Action is this slide’s title, not a section; it closes the Structure section.",
+          "Each pathway has its own page: donate, join, and the organizer fellowship. Invite people to express interest in whichever fits."
         ]
       },
       "tone": "coral",
@@ -1032,7 +953,7 @@
     {
       "rule": "10-20-30",
       "text": "slide count",
-      "reason": "The user requested five section dividers, an agenda, extinction focus, four strategy-tree views, Culture and holacracy content, and Trigger moments. Twenty-five slides total 1145 planned seconds, within twenty minutes."
+      "reason": "The user requested section dividers, an agenda, a stepped extinction focus, three strategy-tree views, separate trigger-moment photographs, a Movement Action Plan slide, Culture and holacracy content. The slides total 1195 planned seconds, within twenty minutes."
     }
   ],
   "sourceOrder": "presentation"

@@ -101,5 +101,16 @@
     "usage": "Two possible technological futures: storm clouds and sunrise.",
     "createdAt": "2026-10-09",
     "sha256": "1d36e04d2826c309f2131914a427a23b2bfdbe29e6debaeecf603415ad83b974"
+  },
+  {
+    "file": "movement-action-plan.png",
+    "kind": "user-supplied-graphic",
+    "author": "Bill Moyer (Movement Action Plan); graphic redrawn by an unknown publisher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Movement_Action_Plan",
+    "licenseUrl": "https://en.wikipedia.org/wiki/Movement_Action_Plan",
+    "license": "Unverified; supplied by the user. Publisher and reuse permission not established.",
+    "usage": "Movement Action Plan slide between trigger moments and the 3.5% threshold.",
+    "downloadedAt": "2026-10-09",
+    "sha256": "209bacb5bfa0de520000ec174b6dfc59e1f9e16393b47b161cea9ec755dbdb75"
   }
 ]

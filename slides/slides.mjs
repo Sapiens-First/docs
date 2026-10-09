@@ -4,7 +4,7 @@ import { resolve, dirname, basename, extname, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { generateDeck } from './generate.mjs'
 
-const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree']
+const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree', 'photo', 'figure']
 const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure' }
 const topicalGraphics = ['book', 'route', 'hands', 'nested', 'signpost']
 const purposes = ['explain', 'engage', 'empower']
@@ -127,7 +127,7 @@ export function validateDeck(deck) {
     if (!text(slide.title)) fail(`${owner}: title required`)
     if (slide.sectionLabel !== undefined && !text(slide.sectionLabel)) fail(`${owner}: sectionLabel must be text`)
     if (slide.section !== undefined && (!text(slide.section) || !Object.hasOwn(sections, slide.section))) fail(`${owner}: unsupported section`)
-    if (slide.tone !== undefined && !['paper', 'dark', 'coral', 'yellow'].includes(slide.tone)) fail(`${owner}: unsupported tone`)
+    if (slide.tone !== undefined && !['paper', 'dark', 'coral', 'yellow', 'sunrise', 'sage'].includes(slide.tone)) fail(`${owner}: unsupported tone`)
     if (slide.image !== undefined) { try { imageAsset(slide.image) } catch (error) { fail(`${owner}: ${error.message}`) } }
     if (slide.image?.treatment !== undefined && slide.layout !== 'statement') fail(`${owner}: image treatment is supported only for statement slides`)
     if (slide.images !== undefined) {
@@ -149,12 +149,16 @@ export function validateDeck(deck) {
     const labelArray = (key, min, max) => {
       if (!Array.isArray(c[key]) || c[key].length < min || c[key].length > max || !c[key].every(text)) fail(`${owner}: ${key} requires ${min}–${max} nonempty strings`)
     }
-    const allowedContent = { statement: ['lines'], triad: ['labels', 'direction', 'highlight'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels'], pair: ['labels'], circles: ['circle', 'labels'], choice: ['labels'], pyramid: ['labels', 'caption'], montage: [], agenda: ['labels'], tree: ['tree', 'reveal', 'focus'] }[slide.layout]
+    const allowedContent = { statement: ['lines'], triad: ['labels', 'direction', 'highlight', 'highlightStep', 'links', 'caption'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels'], pair: ['labels'], circles: ['circle', 'labels', 'link'], choice: ['labels'], photo: ['caption'], figure: ['caption'], pyramid: ['labels', 'caption'], montage: [], agenda: ['labels'], tree: ['tree', 'reveal', 'focus'] }[slide.layout]
     if (allowedContent) for (const key of Object.keys(c)) if (!allowedContent.includes(key)) fail(`${owner}: unsupported content field ${key}`)
     if (slide.layout === 'statement') labelArray('lines', 0, 2)
     if (['triad', 'cycle'].includes(slide.layout)) labelArray('labels', 3, 3)
     if (slide.layout === 'triad' && c.direction !== undefined && c.direction !== 'horizontal') fail(`${owner}: unsupported triad direction`)
     if (slide.layout === 'triad' && c.highlight !== undefined && (!Number.isInteger(c.highlight) || c.highlight < 0 || c.highlight >= (c.labels?.length ?? 0))) fail(`${owner}: highlight must index a triad label`)
+    if (slide.layout === 'triad' && c.highlightStep !== undefined && (c.highlightStep !== true || c.highlight === undefined)) fail(`${owner}: highlightStep must be true and requires highlight`)
+    if (['photo', 'figure'].includes(slide.layout) && slide.image === undefined) fail(`${owner}: ${slide.layout} requires an image`)
+    if (c.links !== undefined && (slide.layout !== 'triad' || !Array.isArray(c.links) || c.links.length !== c.labels?.length || !c.links.every(text))) fail(`${owner}: links must be one nonempty string per triad label`)
+    if (c.link !== undefined && (slide.layout !== 'circles' || !text(c.link))) fail(`${owner}: link must be nonempty text on a circles slide`)
     if (slide.layout === 'agenda') labelArray('labels', 3, 6)
     if (slide.layout === 'tree') {
       const nodes = new Map()
@@ -183,7 +187,7 @@ export function validateDeck(deck) {
       }
     }
     if (['values', 'circles'].includes(slide.layout)) labelArray('labels', 4, 4)
-    if (['pair', 'choice'].includes(slide.layout)) labelArray('labels', 2, 2)
+    if (slide.layout === 'pair' || (slide.layout === 'choice' && c.labels !== undefined)) labelArray('labels', 2, 2)
     if (slide.layout === 'pyramid') labelArray('labels', 5, 5)
     if (slide.layout === 'circles' && !text(c.circle)) fail(`${owner}: circle label required`)
     if (slide.layout === 'steps') labelArray('labels', 3, 4)
@@ -330,8 +334,8 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .agenda li:nth-child(4)::before { background:var(--paper); }
 .agenda li:nth-child(5)::before { background:var(--coral); }
 .slide[data-layout="tree"] { padding-top:40px; }
-.slide[data-layout="tree"] h1 { font-size:64px; margin-bottom:10px; }
-.diagram.tree-map { height:536px; }
+.slide[data-layout="tree"] h1 { font-size:64px; margin-bottom:26px; }
+.diagram.tree-map { height:530px; }
 .tree-node rect { stroke:var(--ink); stroke-width:2; }
 .tree-map .tree-node text { font:800 40px 'Barlow Condensed',sans-serif; fill:var(--ink); }
 .tree-node[data-dim="true"],.tree-edge[data-dim="true"] { opacity:.3; }
@@ -394,6 +398,75 @@ button:disabled { opacity:.45; cursor:default; }
 button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--coral); outline-offset:2px; }
 #progress { min-width:56px; text-align:center; font-size:16px; }
 @media (max-width:700px) { #controls { gap:6px; padding:4px; } button,#notes-link { padding:5px 8px; } }
+
+/* Revision 3: a warmer palette and bolder display type, in the sapiensfirst.org style. */
+:root { --sage-light:#d8e8bd; }
+.slide[data-tone="sunrise"] { background:linear-gradient(135deg,#ffe28a 0%,#ffc08a 55%,#ff9f8a 100%); }
+.slide[data-tone="sunrise"] .divider-art { color:var(--paper); }
+.slide[data-tone="sunrise"] h1::after { background:var(--ink); }
+.slide[data-tone="sage"] { background:var(--sage-light); }
+.slide[data-tone="sage"] .divider-art { color:var(--coral); }
+.slide[data-layout="agenda"] h1 { margin-bottom:16px; }
+.agenda { margin-top:12px; gap:10px; }
+.agenda li { height:112px; gap:36px; font:800 92px/1 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:.5px; border-bottom:3px solid #241d1830; }
+.agenda:has(li:nth-child(5)) li { height:68px; font-size:56px; gap:24px; }
+.agenda:has(li:nth-child(5)) li::before { width:72px; height:58px; font-size:44px; box-shadow:none; }
+.agenda li::before { width:112px; height:96px; border-radius:18px; font-size:76px; box-shadow:4px 4px 0 var(--ink); }
+.triad li,.values li,.pair li { font-family:'Barlow Condensed',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
+.triad li { font-size:56px; line-height:1; }
+.values { gap:20px; margin-top:24px; }
+.values li { font-size:60px; line-height:1; min-height:226px; gap:12px; padding:20px 28px; }
+.values .point-icon { width:52px; height:52px; }
+.pair li { font-size:72px; line-height:1; }
+.slide .triad.horizontal li { font-size:76px; line-height:.98; min-height:420px; gap:40px; }
+.triad.horizontal .point-icon { width:96px; height:96px; stroke-width:2.5; }
+.slide[data-layout="triad"]:not(.with-photo) .triad.horizontal { margin-top:46px; }
+.triad li { transition:opacity .45s, box-shadow .45s, transform .45s; }
+.focus-tag { position:absolute; top:-18px; left:50%; transform:translateX(-50%) rotate(-3deg); padding:4px 18px; background:var(--yellow); color:var(--ink); border:2px solid var(--ink); font:800 30px/1.1 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:1.5px; opacity:0; transition:opacity .45s; white-space:nowrap; }
+.triad.stepped li { position:relative; }
+.slide[data-step="1"] .triad.stepped .focus-tag { opacity:1; }
+.slide:not([data-step="1"]) .triad.stepped li.is-dim,.slide:not([data-step="1"]) .triad.stepped li.is-lit { opacity:1; }
+.slide[data-step="1"] .triad.stepped li.is-lit { box-shadow:0 0 0 5px var(--ink),8px 8px 0 5px var(--coral); transform:translateY(-6px) scale(1.03); }
+.slide[data-step="1"] .triad.stepped li.is-dim { opacity:.4; }
+/* Choice: the illustration carries the decision, so it fills the slide. */
+.slide[data-layout="choice"] h1 { margin-bottom:18px; }
+.slide[data-layout="choice"] .slide-photo { position:absolute; left:72px; right:72px; top:176px; width:1136px; height:470px; object-fit:cover; border-radius:36px; border:3px solid var(--ink); box-shadow:8px 8px 0 var(--ink); }
+/* Opening: the hero treatment from sapiensfirst.org, on a light warm wash. */
+.slide[data-layout="statement"][data-image-treatment="background"] { color:var(--ink); }
+.photo-overlay { background:linear-gradient(90deg,rgba(251,241,223,.97),rgba(251,241,223,.9) 46%,rgba(251,241,223,.12)); }
+.slide[data-slide-id="opening"] { display:block; }
+.slide[data-slide-id="opening"][data-layout="statement"] h1 { margin:30px 0 0; max-width:960px; font-size:156px; line-height:.9; letter-spacing:-1.5px; }
+.slide[data-slide-id="opening"] h1 .hl { display:inline-block; padding:0 .09em; margin-top:6px; background:var(--yellow); transform:rotate(-2deg); line-height:.95; }
+.slide[data-slide-id="opening"] h1::after { display:none; }
+.slide[data-slide-id="opening"][data-layout="statement"] .statement-meta { margin-top:54px; display:block; position:relative; z-index:1; }
+.slide[data-slide-id="opening"] .statement-meta li { display:inline-block; }
+.slide[data-slide-id="opening"][data-layout="statement"] .statement-lines:has(.statement-badge) .statement-badge { position:static; padding:6px 30px 2px; background:var(--ink); color:var(--paper); border:0; border-radius:0; box-shadow:10px 10px 0 var(--coral); font:800 104px/1.05 'Barlow Condensed',sans-serif; letter-spacing:5px; text-transform:uppercase; transform:rotate(-2deg); }
+.slide[data-slide-id="opening"][data-layout="statement"] .statement-lines:has(.statement-date) .statement-date { position:static; display:block; margin:34px 0 0 6px; padding:0; font:800 36px/1 'Barlow Condensed',sans-serif; letter-spacing:6px; opacity:1; }
+.confetti { position:absolute; z-index:1; pointer-events:none; }
+.confetti.c1 { top:26px; right:46px; width:300px; height:170px; transform:rotate(-8deg); }
+.confetti.c2 { right:60px; bottom:70px; width:250px; height:140px; transform:rotate(14deg); }
+.confetti.c3 { top:300px; left:640px; width:130px; height:75px; transform:rotate(12deg); }
+/* Photographs and figures. */
+.slide[data-layout="photo"] { display:block; }
+.slide[data-layout="photo"] h1 { max-width:560px; font-size:118px; line-height:.95; margin:26px 0 24px; }
+.slide[data-layout="photo"] .section-label { font:800 40px/1 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:5px; margin:64px 0 0; color:#b53236; }
+.slide[data-layout="photo"] .caption { width:540px; font:800 56px/1 'Barlow Condensed',sans-serif; text-transform:uppercase; }
+.slide[data-layout="photo"] .caption::before { content:''; display:block; width:150px; height:14px; margin:0 0 26px; background:var(--yellow); transform:rotate(-2deg); }
+.slide[data-layout="photo"] .slide-photo { right:64px; top:330px; width:auto; height:auto; max-width:620px; max-height:596px; transform:translateY(-50%) rotate(1.2deg); background:var(--paper); border:3px solid var(--ink); box-shadow:10px 10px 0 var(--coral); border-radius:6px; }
+.slide[data-layout="figure"] { display:block; }
+.slide[data-layout="figure"] h1 { max-width:340px; font-size:78px; line-height:.95; margin:22px 0 24px; }
+.slide[data-layout="figure"] .section-label { font:800 40px/1 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:5px; margin:80px 0 0; color:#b53236; }
+.slide[data-layout="figure"] .caption { width:320px; font:800 40px/1.02 'Barlow Condensed',sans-serif; text-transform:uppercase; }
+.slide[data-layout="figure"] .caption::before { content:''; display:block; width:130px; height:12px; margin:0 0 22px; background:var(--yellow); transform:rotate(-2deg); }
+.slide[data-layout="figure"] .slide-photo { right:56px; top:330px; width:auto; height:auto; max-width:780px; max-height:590px; transform:translateY(-50%); background:#fff; border:3px solid var(--ink); box-shadow:8px 8px 0 var(--ink); border-radius:10px; }
+/* Links to sapiensfirst.org pages. */
+.action-text { display:flex; flex-direction:column; gap:10px; align-items:flex-start; text-align:left; }
+.action-link { font:700 30px/1 'DM Sans',sans-serif; text-transform:none; letter-spacing:0; color:var(--ink); text-decoration:none; border-bottom:3px solid var(--ink); padding-bottom:2px; }
+.slide[data-layout="triad"].with-photo .triad li { padding:14px 28px; }
+.slide[data-layout="triad"].with-photo .triad:has(.action-link) { gap:16px; margin-top:30px; }
+.slide[data-layout="triad"].with-photo .caption { position:absolute; right:72px; top:176px; width:420px; margin:0; font:800 54px/.98 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:1px; }
+.slide[data-layout="triad"].with-photo:has(.caption) .slide-photo { top:330px; height:290px; }
+.atlas-link { position:absolute; z-index:2; right:72px; top:70px; padding:10px 26px 6px; background:var(--yellow); color:var(--ink); border:2px solid var(--ink); box-shadow:5px 5px 0 var(--ink); font:800 48px/1.05 'Barlow Condensed',sans-serif; letter-spacing:1.5px; text-decoration:none; transform:rotate(-2deg); }
 `
 
 const RUNTIME_JS = `
@@ -407,36 +480,47 @@ const RUNTIME_JS = `
   const viewport = document.getElementById('viewport');
   const stage = document.getElementById('stage');
   let index = 0;
+  let step = 0;
+  const stepsOf = slide => Number(slide?.dataset.steps || 0);
   function fit() { stage.style.setProperty('--scale', Math.min(viewport.clientWidth / 1280, viewport.clientHeight / 720)); }
-  function show(value) {
+  function show(value, at = 0) {
     index = Math.max(0, Math.min(slides.length - 1, value));
+    step = Math.min(at, stepsOf(slides[index]));
     slides.forEach((slide, i) => { slide.hidden = i !== index; });
-    previous.disabled = index === 0;
-    next.disabled = index === slides.length - 1;
+    slides[index].dataset.step = step;
+    previous.disabled = index === 0 && step === 0;
+    next.disabled = index === slides.length - 1 && step === stepsOf(slides[index]);
     document.getElementById('progress').textContent = (index + 1) + ' / ' + slides.length;
     if (presenter && !presenter.closed) presenter.postMessage({ type:'sapiens-slide', deckId, index }, '*');
   }
+  // Slides with steps reveal their next part before the deck moves on, and back up through it first.
+  function advance(direction) {
+    if (direction > 0 && step < stepsOf(slides[index])) show(index, step + 1);
+    else if (direction > 0) show(index + 1);
+    else if (step > 0) show(index, step - 1);
+    else if (index > 0) show(index - 1, stepsOf(slides[index - 1]));
+  }
   function openNotes(event) {
     if (event && (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey)) return;
-    if (presenter && !presenter.closed) { event?.preventDefault(); presenter.focus(); show(index); return; }
+    if (presenter && !presenter.closed) { event?.preventDefault(); presenter.focus(); show(index, step); return; }
     const opened = window.open(link.href, '_blank', 'popup,width=900,height=900');
     if (opened) { presenter = opened; event?.preventDefault(); }
   }
   window.addEventListener('message', event => {
     if (!presenter || event.source !== presenter || event.data?.deckId !== deckId) return;
-    if (event.data.type === 'sapiens-notes-ready') show(index);
+    if (event.data.type === 'sapiens-notes-ready') show(index, step);
     if (event.data.type === 'sapiens-navigate' && Number.isInteger(event.data.index) && event.data.index >= 0 && event.data.index < slides.length) show(event.data.index);
   });
-  previous.addEventListener('click', () => show(index - 1));
-  next.addEventListener('click', () => show(index + 1));
+  previous.addEventListener('click', () => advance(-1));
+  next.addEventListener('click', () => advance(1));
   link.addEventListener('click', openNotes);
   document.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.target.isContentEditable || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
     if (event.key === ' ' && event.target.closest('button,a')) return;
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'PageDown' || (event.key === ' ' && !event.shiftKey)) show(index + 1);
-    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp' || (event.key === ' ' && event.shiftKey)) show(index - 1);
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown' || event.key === 'PageDown' || (event.key === ' ' && !event.shiftKey)) advance(1);
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp' || (event.key === ' ' && event.shiftKey)) advance(-1);
     else if (event.key === 'Home') show(0);
-    else if (event.key === 'End') show(slides.length - 1);
+    else if (event.key === 'End') show(slides.length - 1, stepsOf(slides[slides.length - 1]));
     else if (event.key.toLowerCase() === 'n') { link.click(); return; }
     else return;
     event.preventDefault();
@@ -446,14 +530,23 @@ const RUNTIME_JS = `
 })();
 `
 
+// Confetti pieces from the sapiensfirst.org hero, in its coral, blue and yellow.
+const CONFETTI_PIECES = '<path fill="#ff7870" d="M8 35l6-3 8 17-6 3zM124 8l6 2-5 15-6-2z"/><path fill="#3a86ff" d="M58 4l7 1-2 17-7-1zM114 73l5-5 11 10-5 5z"/><path fill="#ffd60a" d="M37 72l13-7 4 6-13 7zM148 40l7 3-4 8-7-3z"/>'
+const CONFETTI = `<svg class="confetti c1" viewBox="0 0 160 90" aria-hidden="true">${CONFETTI_PIECES}</svg><svg class="confetti c2" viewBox="0 0 160 90" aria-hidden="true">${CONFETTI_PIECES}</svg><svg class="confetti c3" viewBox="0 0 160 90" aria-hidden="true">${CONFETTI_PIECES}</svg>`
+
 function person(x, y, size = 1) {
   return `<g aria-hidden="true" transform="translate(${x} ${y}) scale(${size})" fill="none" stroke="currentColor" stroke-width="3"><circle cy="-17" r="13"/><path d="M-27 30V15Q-27 0 0 0Q27 0 27 15V30"/></g>`
 }
 
 function pointIcon(index, hopeful) {
   const paths = hopeful
-    ? ['<path d="M32 54S8 38 8 22C8 7 26 6 32 18C38 6 56 7 56 22C56 38 32 54 32 54Z"/>', '<path d="M8 25L32 9L56 25M13 54H51M18 28V47M32 28V47M46 28V47"/>', '<path d="M13 39H24V54H13ZM27 28H38V54H27ZM41 14H52V54H41ZM12 25L48 8M36 8H48V20"/>']
-    : ['<path d="M12 48V35H22V48M28 48V23H38V48M44 48V10H54V48M8 54H58"/>', '<path d="M8 24L32 9L56 24M10 54H54M18 29V47M32 29V36M46 29V47M25 45L39 31"/>', '<path d="M32 8L58 54H6ZM32 24V38"/><circle cx="32" cy="46" r="1.5"/>']
+    ? ['<path d="M25 7H39M28 7V26L11 52Q9 57 14 57H50Q55 57 53 52L36 26V7M18 42H46M26 49H28M36 46H38"/>', '<path d="M8 25L32 9L56 25M13 54H51M18 28V47M32 28V47M46 28V47"/>', '<path d="M13 39H24V54H13ZM27 28H38V54H27ZM41 14H52V54H41ZM12 25L48 8M36 8H48V20"/>']
+    : ['<path d="M18 7H46M18 57H46M21 7C21 27 32 28 32 32C32 36 21 37 21 57M43 7C43 27 32 28 32 32C32 36 43 37 43 57M26 50H38"/>', '<path d="M8 24L32 9L56 24M10 54H54M18 29V47M32 29V36M46 29V47M25 45L39 31"/>', '<path d="M32 8L58 54H6ZM32 24V38"/><circle cx="32" cy="46" r="1.5"/>']
+  return `<svg class="point-icon" viewBox="0 0 64 64" aria-hidden="true">${paths[index % 3]}</svg>`
+}
+
+function actionIcon(index) {
+  const paths = ['<path d="M32 54S8 38 8 22C8 7 26 6 32 18C38 6 56 7 56 22C56 38 32 54 32 54Z"/>', '<circle cx="23" cy="19" r="8"/><circle cx="44" cy="22" r="6"/><path d="M8 52V43Q8 31 23 31Q38 31 38 43V52M42 34Q56 34 56 44V52"/>', '<path d="M14 54V8M14 10H50L42 22L50 34H14"/>']
   return `<svg class="point-icon" viewBox="0 0 64 64" aria-hidden="true">${paths[index % 3]}</svg>`
 }
 
@@ -473,6 +566,7 @@ function diagram(slide, index) {
   const colors = ['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)']
   let body, description
   if (slide.layout === 'choice') {
+    if (!c.labels) return ''
     description = `Two futures to choose between: ${c.labels.join(' and ')}. They represent a choice, not measured outcomes.`
     body = `<rect class="node" x="25" y="70" width="600" height="110" rx="24" style="fill:var(--coral)"/>${label(c.labels[0], 325, 125, 48)}<rect class="node" x="25" y="230" width="600" height="110" rx="24" style="fill:var(--sage)"/>${label(c.labels[1], 325, 285, 48)}`
   } else if (slide.layout === 'pyramid') {
@@ -521,6 +615,12 @@ function diagram(slide, index) {
   return `<svg class="diagram${dimensions[2] ? ` ${dimensions[2]}` : ''}" viewBox="0 0 ${dimensions[0]} ${dimensions[1]}" role="img" aria-labelledby="diagram-title-${index} diagram-desc-${index}"><title id="diagram-title-${index}">${escapeHTML(slide.title)}</title><desc id="diagram-desc-${index}">${escapeHTML(description)}</desc><defs><marker id="${marker}" markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="14" refX="14" refY="7" orient="auto"><path d="M0 0 L14 7 L0 14 Z" fill="currentColor"/></marker></defs>${body}</svg>`
 }
 
+// The site's hero sets its last word on a tilted yellow highlight; the opening title does the same.
+function highlightLastWord(title) {
+  const match = title.match(/^(.*\s)(\S+)$/)
+  return match ? `${escapeHTML(match[1])}<span class="hl">${escapeHTML(match[2])}</span>` : escapeHTML(title)
+}
+
 function renderTree(content, index) {
   const all = treeNodes(content.tree), revealed = new Set(content.reveal)
   // Size against the complete authored tree so every reveal retains its coordinates.
@@ -530,11 +630,11 @@ function renderTree(content, index) {
   const weight = node => stacked(node) || !children(node).length ? 1 : children(node).reduce((sum, child) => sum + weight(child), 0)
   const positions = new Map()
   function place(node, left, width) {
-    const x = left + width / 2, height = node.depth === 1 ? 104 : 60
-    const y = [34, 122, 228][node.depth] ?? 288 + (node.depth - 3) * 60
+    const x = left + width / 2, height = node.depth === 1 ? 96 : node.depth === 0 ? 60 : 62
+    const y = [32, 134, 240][node.depth] ?? 326 + (node.depth - 3) * 60
     positions.set(node.id, { x, y, width: Math.min(width - 12, node.depth === 0 ? 460 : 550), height })
     if (stacked(node)) {
-      children(node).forEach((child, i) => positions.set(child.id, { x: Math.max(238, x), y: 288 + i * 54, width: 440, height: 52, stacked: true }))
+      children(node).forEach((child, i) => positions.set(child.id, { x: Math.max(300, x), y: 326 + i * 54, width: 440, height: 50, stacked: true }))
     } else {
       const branchWeight = child => node.depth === 0 ? Math.max(1.5, weight(child) * (child.children?.length ? 1.2 : 1)) : weight(child)
       const total = children(node).reduce((sum, child) => sum + branchWeight(child), 0)
@@ -553,7 +653,7 @@ function renderTree(content, index) {
   const connectors = visible.filter(node => node.parent).map(node => {
     const p = positions.get(node.parent), n = positions.get(node.id)
     const path = n.stacked
-      ? `M${p.x} ${p.y + p.height / 2}V${p.y + p.height / 2 + 12}H8V${n.y}H${n.x - n.width / 2}`
+      ? `M${p.x} ${p.y + p.height / 2}V${p.y + p.height / 2 + 14}H${n.x - n.width / 2 - 28}V${n.y}H${n.x - n.width / 2}`
       : `M${p.x} ${p.y + p.height / 2}V${(p.y + p.height / 2 + n.y - n.height / 2) / 2}H${n.x}V${n.y - n.height / 2}`
     return `<path class="tree-edge" data-parent="${escapeHTML(node.parent)}" data-child="${escapeHTML(node.id)}"${!focused(node) ? ' data-dim="true"' : ''} d="${path}"/>`
   }).join('')
@@ -568,7 +668,7 @@ function renderTree(content, index) {
     return `<g class="tree-node" data-node="${escapeHTML(node.id)}"${node.current ? ' data-current="true"' : ''}${!focused(node) ? ' data-dim="true"' : ''}><rect x="${p.x - p.width / 2}" y="${p.y - p.height / 2}" width="${p.width}" height="${p.height}" rx="12" fill="${['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)'][Math.min(node.depth, 3)]}"/><text class="audience-text" x="${p.x}" y="${p.y + 6 - (lines.length - 1) * 21}" text-anchor="middle" dominant-baseline="middle">${label}</text>${node.current ? `<text class="current-tag" x="${p.x + p.width / 2 + 18}" y="${p.y}" dominant-baseline="middle">← You are here</text>` : ''}</g>`
   }).join('')
   const description = visible.map(node => `${node.label}${node.parent ? ` under ${byId.get(node.parent).label}` : ''}${node.current ? ' (You are here)' : ''}`).join('; ')
-  return `<svg class="diagram tree-map" viewBox="0 0 1136 536" role="img" aria-labelledby="tree-title-${index} tree-desc-${index}"><title id="tree-title-${index}">Strategy tree</title><desc id="tree-desc-${index}">${escapeHTML(description)}</desc>${connectors}${nodes}</svg>`
+  return `<svg class="diagram tree-map" viewBox="0 0 1136 530" role="img" aria-labelledby="tree-title-${index} tree-desc-${index}"><title id="tree-title-${index}">Strategy tree</title><desc id="tree-desc-${index}">${escapeHTML(description)}</desc>${connectors}${nodes}</svg>`
 }
 
 function dividerArt(index, graphic) {
@@ -595,11 +695,14 @@ function embeddedFonts() {
   const fonts = [['barlow-condensed-800', 'Barlow Condensed', 800], ['dm-sans-400', 'DM Sans', 400], ['dm-sans-700', 'DM Sans', 700]]
   return fonts.map(([file, family, weight]) => `@font-face { font-family:'${family}'; font-style:normal; font-weight:${weight}; src:url(data:font/ttf;base64,${asset(`fonts/${file}.ttf`).toString('base64')}) format('truetype'); font-display:block; }`).join('\n')
 }
+// The Sapiens First logo, embedded so the browser tab shows it offline.
+const faviconLink = () => `<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,${asset('../docs/public/favicon-32x32.png').toString('base64')}"><link rel="apple-touch-icon" href="data:image/png;base64,${asset('../docs/public/apple-touch-icon.png').toString('base64')}">`
 const fontLicenses = () => ['Barlow-Condensed-OFL.txt', 'DM-Sans-OFL.txt'].map(file => asset(`fonts/${file}`).toString('utf8')).join('\n\n')
 
 export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.notes.html` } = {}) {
   if (!text(notesHref) || /[\\/]/.test(notesHref) || /^[a-z][a-z\d+.-]*:/i.test(notesHref)) throw new Error('Notes link must be a sibling filename')
   const logo = asset('../docs/public/logo.png').toString('base64')
+  const icon = faviconLink()
   const sectionOrder = [...new Set(deck.slides.map(slide => slide.section).filter(Boolean))]
   function progressStrip(slide, index) {
     if (!slide.section) return ''
@@ -612,19 +715,20 @@ export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.n
     if (slide.layout === 'statement') content = `<ul class="statement-lines${slide.image?.treatment ? ' statement-meta' : ''}">${slide.content.lines.map((value, i) => `<li class="audience-text${slide.id === 'opening' && slide.content.lines.length === 2 ? ` statement-${i ? 'date' : 'badge'}` : ''}">${escapeHTML(value)}</li>`).join('')}</ul>`
     if (slide.layout === 'agenda') content = `<ol class="agenda">${slide.content.labels.map(value => `<li><span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ol>`
     if (slide.layout === 'tree') content = renderTree(slide.content, index)
-    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${pointIcon(i, slide.tone !== 'dark')}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
+    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}${slide.content.highlightStep ? ' stepped' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${slide.content.links ? actionIcon(i) : pointIcon(i, slide.tone !== 'dark' && !slide.content.highlightStep)}${slide.content.links ? `<span class="action-text"><span class="audience-text">${escapeHTML(value)}</span><a class="action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i])}</a></span>` : `<span class="audience-text">${escapeHTML(value)}</span>`}${slide.content.highlightStep && i === slide.content.highlight ? '<span class="focus-tag" aria-hidden="true">Our focus</span>' : ''}</li>`).join('')}</ul>`
     if (slide.layout === 'values') content = `<ul class="values">${slide.content.labels.map((value, i) => `<li>${valueIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
     if (slide.layout === 'pair') content = `<ul class="pair">${slide.content.labels.map((value, i) => `<li>${pairIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
-    if (['cycle', 'steps', 'roles', 'circles', 'choice', 'pyramid'].includes(slide.layout)) content = diagram(slide, index)
+    if (['cycle', 'steps', 'roles', 'circles', 'choice', 'pyramid'].includes(slide.layout)) content = diagram(slide, index) + (slide.content.link ? `<a class="atlas-link" href="https://${escapeHTML(slide.content.link)}" target="_blank" rel="noopener">${escapeHTML(slide.content.link)}</a>` : '')
     if (slide.layout === 'montage') content = `<div class="montage-photos">${slide.images.map(image => `<img class="slide-photo montage-photo" alt="${escapeHTML(image.alt)}" src="${imageAsset(image)}" style="object-position:${image.position ?? 'center'}">`).join('')}</div>`
-    const photo = slide.image ? `<img class="slide-photo" alt="${escapeHTML(slide.image.alt)}" src="${imageAsset(slide.image)}" style="object-position:${slide.image.position ?? 'center'}">` : ''
+    if (['photo', 'figure'].includes(slide.layout)) content = `<img class="slide-photo" alt="${escapeHTML(slide.image.alt)}" src="${imageAsset(slide.image)}" style="object-position:${slide.image.position ?? 'center'}">`
+    const photo = !['photo', 'figure'].includes(slide.layout) && slide.image ? `<img class="slide-photo" alt="${escapeHTML(slide.image.alt)}" src="${imageAsset(slide.image)}" style="object-position:${slide.image.position ?? 'center'}">` : ''
     if (slide.graphic !== undefined && !['contours', 'arcs', ...topicalGraphics].includes(slide.graphic)) throw new Error('Unsupported graphic')
     const graphic = ['contours', 'arcs'].includes(slide.graphic) ? `<img class="brand-art" alt="" aria-hidden="true" src="data:image/svg+xml;base64,${asset(`assets/sapiens-${slide.graphic}.svg`).toString('base64')}">` : ''
-    return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? '<div class="photo-overlay" aria-hidden="true"></div>' : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}${deck.origin === 'generated' ? '<span class="generated-label">Auto-generated from the handbook text</span>' : ''}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
+    return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.content.highlightStep ? ' data-steps="1" data-step="0"' : ''}${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? `<div class="photo-overlay" aria-hidden="true"></div>${slide.id === 'opening' ? CONFETTI : ''}` : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${slide.id === 'opening' ? highlightLastWord(slide.title) : escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}${deck.origin === 'generated' ? '<span class="generated-label">Auto-generated from the handbook text</span>' : ''}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
   }).join('\n')
   const audience = { id: deck.id, title: deck.title, slides: deck.slides.map(({ notes, ...slide }) => slide) }
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)}</title><style>${embeddedFonts()}\n${THEME_CSS}</style></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)}</title>${icon}<style>${embeddedFonts()}\n${THEME_CSS}</style></head>
 <body><main id="presentation"><div id="viewport"><div id="stage" aria-label="Presentation slides">${slides}</div></div></main>
 <nav id="controls" aria-label="Presentation controls"><button id="previous" type="button" disabled aria-label="Previous slide">Previous</button><span id="progress" role="status" aria-live="polite">1 / ${deck.slides.length}</span><button id="next" type="button"${deck.slides.length === 1 ? ' disabled' : ''} aria-label="Next slide">Next</button><a id="notes-link" href="${escapeHTML(notesHref)}" target="_blank">Presenter notes</a></nav>
 <script id="deck-data" type="application/json">${embeddedJSON(audience)}</script><pre id="font-licenses" hidden>${escapeHTML(fontLicenses())}</pre><script>${RUNTIME_JS}</script></body></html>\n`
@@ -706,7 +810,7 @@ export function renderNotes(deck) {
     return `<article class="slide-notes" data-slide-id="${escapeHTML(note.slideId)}"${index ? ' hidden' : ''}><h2>${escapeHTML(slide.title)}</h2><h3>Original source passages</h3>${note.passages.map(passage => `<pre class="source-passage"><span>${escapeHTML(passage)}</span></pre>`).join('')}${note.cues.length ? `<h3>Editorial cues (added prompts)</h3><ul class="editorial-cues">${note.cues.map(cue => `<li>${escapeHTML(cue)}</li>`).join('')}</ul>` : ''}${credits ? `<h3>Image and artwork credits</h3>${credits}` : ''}</article>`
   }).join('\n')
   return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)} — Presenter notes</title><style>${embeddedFonts()}\n${NOTES_CSS}</style></head>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)} — Presenter notes</title>${faviconLink()}<style>${embeddedFonts()}\n${NOTES_CSS}</style></head>
 <body><header><h1>${escapeHTML(deck.title)} — Presenter notes</h1><p>Move this window to your second screen. Open it from the slides to keep navigation in sync.</p><p id="connection-status" role="status">Standalone notes. Use the controls to choose a slide.</p></header>
 <nav aria-label="Presenter controls"><button id="previous" type="button" disabled>Previous</button><span id="progress" role="status" aria-live="polite">1 / ${deck.slides.length}</span><button id="next" type="button"${deck.slides.length === 1 ? ' disabled' : ''}>Next</button><select id="slide-select" aria-label="Choose slide">${deck.slides.map((slide, i) => `<option value="${i}">${i + 1}. ${escapeHTML(slide.title)}</option>`).join('')}</select></nav>
 <main aria-label="Speaker notes">${notesHTML}</main><script id="deck-data" type="application/json">${embeddedJSON({ ...deck, notes })}</script><pre id="font-licenses" hidden>${escapeHTML(fontLicenses())}</pre><script>${NOTES_RUNTIME_JS}</script></body></html>\n`
