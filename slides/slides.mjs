@@ -3,8 +3,11 @@ import { readFileSync, mkdirSync, writeFileSync, renameSync, rmSync, realpathSyn
 import { resolve, dirname, basename, extname, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { generateDeck } from './generate.mjs'
+import { escapeHTML } from './html.mjs'
+import { renderTree, TREE_CSS } from './layouts/strategy-tree.mjs'
+import { renderMovementPlan, MOVEMENT_CSS } from './layouts/movement-plan.mjs'
 
-const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree', 'photo', 'figure']
+const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree', 'photo', 'figure', 'movement', 'actions']
 const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure' }
 const topicalGraphics = ['book', 'route', 'hands', 'nested', 'signpost']
 const purposes = ['explain', 'engage', 'empower']
@@ -45,6 +48,8 @@ export function audienceLines(slide) {
   if (slide.sectionLabel) result.push({ kind: 'sectionLabel', text: slide.sectionLabel })
   const content = slide.content
   for (const value of content.lines ?? content.labels ?? []) result.push({ kind: 'point', text: value })
+  for (const value of content.descriptions ?? content.stages ?? []) result.push({ kind: 'point', text: value })
+  if (slide.layout === 'actions') for (const value of content.links ?? []) result.push({ kind: 'point', text: value })
   if (slide.layout === 'tree') for (const node of treeNodes(content.tree)) {
     if (content.reveal.includes(node.id)) result.push({ kind: 'point', text: node.label })
   }
@@ -129,6 +134,7 @@ export function validateDeck(deck) {
     if (slide.section !== undefined && (!text(slide.section) || !Object.hasOwn(sections, slide.section))) fail(`${owner}: unsupported section`)
     if (slide.tone !== undefined && !['paper', 'dark', 'coral', 'yellow', 'sunrise', 'sage'].includes(slide.tone)) fail(`${owner}: unsupported tone`)
     if (slide.image !== undefined) { try { imageAsset(slide.image) } catch (error) { fail(`${owner}: ${error.message}`) } }
+    if (slide.referenceImage !== undefined) { try { imageAsset(slide.referenceImage) } catch (error) { fail(`${owner}: ${error.message}`) } }
     if (slide.image?.treatment !== undefined && slide.layout !== 'statement') fail(`${owner}: image treatment is supported only for statement slides`)
     if (slide.images !== undefined) {
       if (slide.layout !== 'montage') fail(`${owner}: images are supported only for montage slides`)
@@ -149,7 +155,7 @@ export function validateDeck(deck) {
     const labelArray = (key, min, max) => {
       if (!Array.isArray(c[key]) || c[key].length < min || c[key].length > max || !c[key].every(text)) fail(`${owner}: ${key} requires ${min}–${max} nonempty strings`)
     }
-    const allowedContent = { statement: ['lines'], triad: ['labels', 'direction', 'highlight', 'highlightStep', 'links', 'caption'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels'], pair: ['labels'], circles: ['circle', 'labels', 'link'], choice: ['labels'], photo: ['caption'], figure: ['caption'], pyramid: ['labels', 'caption'], montage: [], agenda: ['labels'], tree: ['tree', 'reveal', 'focus'] }[slide.layout]
+    const allowedContent = { statement: ['lines'], triad: ['labels', 'direction', 'highlight', 'highlightStep', 'links', 'caption'], cycle: ['labels'], question: [], steps: ['labels', 'caption', 'mode'], roles: ['circle', 'roles', 'caption'], divider: [], impact: ['caption'], values: ['labels', 'descriptions'], pair: ['labels', 'caption'], circles: ['circle', 'labels', 'link', 'caption'], choice: ['labels'], photo: ['caption'], figure: ['caption'], pyramid: ['labels', 'caption'], montage: [], agenda: ['labels'], tree: ['tree', 'reveal', 'focus'], movement: ['stages', 'highlight', 'caption'], actions: ['labels', 'descriptions', 'links', 'caption'] }[slide.layout]
     if (allowedContent) for (const key of Object.keys(c)) if (!allowedContent.includes(key)) fail(`${owner}: unsupported content field ${key}`)
     if (slide.layout === 'statement') labelArray('lines', 0, 2)
     if (['triad', 'cycle'].includes(slide.layout)) labelArray('labels', 3, 3)
@@ -157,7 +163,13 @@ export function validateDeck(deck) {
     if (slide.layout === 'triad' && c.highlight !== undefined && (!Number.isInteger(c.highlight) || c.highlight < 0 || c.highlight >= (c.labels?.length ?? 0))) fail(`${owner}: highlight must index a triad label`)
     if (slide.layout === 'triad' && c.highlightStep !== undefined && (c.highlightStep !== true || c.highlight === undefined)) fail(`${owner}: highlightStep must be true and requires highlight`)
     if (['photo', 'figure'].includes(slide.layout) && slide.image === undefined) fail(`${owner}: ${slide.layout} requires an image`)
-    if (c.links !== undefined && (slide.layout !== 'triad' || !Array.isArray(c.links) || c.links.length !== c.labels?.length || !c.links.every(text))) fail(`${owner}: links must be one nonempty string per triad label`)
+    if (c.links !== undefined && (!['triad', 'actions'].includes(slide.layout) || !Array.isArray(c.links) || c.links.length !== c.labels?.length || !c.links.every(text))) fail(`${owner}: links must be one nonempty string per action label`)
+    if (c.descriptions !== undefined && (!['values', 'actions'].includes(slide.layout) || !Array.isArray(c.descriptions) || c.descriptions.length !== c.labels?.length || !c.descriptions.every(text))) fail(`${owner}: descriptions must be one nonempty string per label`)
+    if (slide.layout === 'actions') { labelArray('labels', 3, 3); labelArray('links', 3, 3) }
+    if (slide.layout === 'movement') {
+      labelArray('stages', 8, 8)
+      if (c.highlight !== undefined && (!Number.isInteger(c.highlight) || c.highlight < 0 || c.highlight > 7)) fail(`${owner}: highlight must index a movement stage`)
+    }
     if (c.link !== undefined && (slide.layout !== 'circles' || !text(c.link))) fail(`${owner}: link must be nonempty text on a circles slide`)
     if (slide.layout === 'agenda') labelArray('labels', 3, 6)
     if (slide.layout === 'tree') {
@@ -245,7 +257,6 @@ export function loadDeck(path) {
   catch (error) { throw new Error(`Cannot read deck JSON: ${error.message}`) }
 }
 
-const escapeHTML = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]))
 // JSON is inert even when source text contains a script-closing sequence.
 const embeddedJSON = value => JSON.stringify(value).replace(/[<>&\u2028\u2029]/g, character => `\\u${character.charCodeAt(0).toString(16).padStart(4, '0')}`)
 
@@ -333,15 +344,8 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .agenda li:nth-child(3)::before { background:var(--yellow); }
 .agenda li:nth-child(4)::before { background:var(--paper); }
 .agenda li:nth-child(5)::before { background:var(--coral); }
-.slide[data-layout="tree"] { padding-top:40px; }
-.slide[data-layout="tree"] h1 { font-size:64px; margin-bottom:26px; }
-.diagram.tree-map { height:530px; }
-.tree-node rect { stroke:var(--ink); stroke-width:2; }
-.tree-map .tree-node text { font:800 40px 'Barlow Condensed',sans-serif; fill:var(--ink); }
-.tree-node[data-dim="true"],.tree-edge[data-dim="true"] { opacity:.3; }
-.tree-node[data-current="true"] rect { stroke:var(--coral); stroke-width:4; }
-.tree-map .tree-node .current-tag { font:700 20px 'DM Sans',sans-serif; fill:var(--ink); }
-.tree-edge { fill:none; stroke:var(--ink); stroke-width:3; }
+${TREE_CSS}
+${MOVEMENT_CSS}
 .slide[data-layout="statement"][data-image-treatment="artistic"] .slide-photo { inset:0 0 0 auto; width:690px; height:720px; border:0; border-radius:0; opacity:.45; filter:sepia(1) contrast(.82); mix-blend-mode:multiply; object-fit:cover; }
 .slide[data-layout="statement"][data-image-treatment="artistic"] h1 { margin-top:100px; max-width:1050px; font-size:102px; line-height:1.04; }
 .slide[data-layout="statement"][data-image-treatment="artistic"]:has(.statement-lines:empty) { display:block; }
@@ -384,20 +388,22 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .brand-logo { width:42px; height:42px; object-fit:contain; }
 .slide.with-photo .slide-footer > span { background:var(--paper); color:var(--ink); padding:3px 9px; border-radius:5px; }
 /* Quiet progress indicator: a thin line of section ticks and a small label, no panel. */
-.section-progress { display:flex; gap:12px; align-items:center; width:520px; color:var(--ink); opacity:.7; }
+.section-progress { display:flex; gap:12px; align-items:center; width:520px; color:var(--ink); }
 .slide[data-tone="dark"] .section-progress { color:var(--paper); }
 .slide.with-photo .section-progress { padding:3px 9px; border-radius:5px; background:var(--paper); color:var(--ink); opacity:.9; }
-.progress-label { flex:none; font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:1.5px; }
+.progress-label { flex:none; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
 .progress-track { flex:1; display:flex; gap:6px; }
-.progress-seg { flex:1; height:3px; border-radius:2px; background:color-mix(in srgb, currentColor 22%, transparent); overflow:hidden; position:relative; }
+.progress-seg { flex:1; height:4px; border-radius:2px; background:color-mix(in srgb, currentColor 35%, transparent); overflow:hidden; position:relative; }
 .progress-seg::before { content:''; position:absolute; inset:0 auto 0 0; width:var(--fill); background:currentColor; }
-.progress-seg[aria-current="step"]::before { background:var(--coral); }
+.progress-seg[aria-current="step"]::before { background:#b53236; }
 #controls { height:48px; display:flex; align-items:center; justify-content:center; gap:12px; padding:4px 12px; background:var(--paper); border-top:2px solid var(--ink); }
 button,#notes-link { font:700 16px 'DM Sans',sans-serif; color:var(--ink); background:var(--paper); border:2px solid var(--ink); padding:5px 12px; cursor:pointer; text-decoration:none; }
 button:disabled { opacity:.45; cursor:default; }
 button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--coral); outline-offset:2px; }
 #progress { min-width:56px; text-align:center; font-size:16px; }
-@media (max-width:700px) { #controls { gap:6px; padding:4px; } button,#notes-link { padding:5px 8px; } }
+body.presenting #presentation { height:100%; }
+body.presenting #controls { display:none; }
+@media (max-width:700px) { #controls { gap:6px; padding:4px; } button,#notes-link { padding:5px 8px; white-space:nowrap; } #controls #progress { display:none; } }
 
 /* Revision 3: a warmer palette and bolder display type, in the sapiensfirst.org style. */
 :root { --sage-light:#d8e8bd; }
@@ -414,20 +420,21 @@ button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid va
 .agenda li::before { width:112px; height:96px; border-radius:18px; font-size:76px; box-shadow:4px 4px 0 var(--ink); }
 .triad li,.values li,.pair li { font-family:'Barlow Condensed',sans-serif; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
 .triad li { font-size:56px; line-height:1; }
-.values { gap:20px; margin-top:24px; }
-.values li { font-size:60px; line-height:1; min-height:226px; gap:12px; padding:20px 28px; }
-.values .point-icon { width:52px; height:52px; }
-.pair li { font-size:72px; line-height:1; }
-.slide .triad.horizontal li { font-size:76px; line-height:.98; min-height:420px; gap:40px; }
+.values:not(:has(.value-description)) { gap:16px; margin-top:16px; }
+.values:not(:has(.value-description)) li { font-size:56px; line-height:1; height:228px; min-height:0; gap:12px; padding:10px 28px; align-items:center; justify-content:center; text-align:center; }
+.values:not(:has(.value-description)) .point-icon { width:80px; height:80px; stroke-width:2.5; }
+.values:not(:has(.value-description)) .value-title { display:flex; align-items:center; justify-content:center; min-height:112px; }
+.pair li { font-size:60px; line-height:1.05; }
+.slide .triad.horizontal li { font-size:64px; line-height:1.05; min-height:420px; gap:40px; }
 .triad.horizontal .point-icon { width:96px; height:96px; stroke-width:2.5; }
 .slide[data-layout="triad"]:not(.with-photo) .triad.horizontal { margin-top:46px; }
-.triad li { transition:opacity .45s, box-shadow .45s, transform .45s; }
+.triad li { transition:background .2s, box-shadow .2s; }
 .focus-tag { position:absolute; top:-18px; left:50%; transform:translateX(-50%) rotate(-3deg); padding:4px 18px; background:var(--yellow); color:var(--ink); border:2px solid var(--ink); font:800 30px/1.1 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:1.5px; opacity:0; transition:opacity .45s; white-space:nowrap; }
 .triad.stepped li { position:relative; }
 .slide[data-step="1"] .triad.stepped .focus-tag { opacity:1; }
 .slide:not([data-step="1"]) .triad.stepped li.is-dim,.slide:not([data-step="1"]) .triad.stepped li.is-lit { opacity:1; }
-.slide[data-step="1"] .triad.stepped li.is-lit { box-shadow:0 0 0 5px var(--ink),8px 8px 0 5px var(--coral); transform:translateY(-6px) scale(1.03); }
-.slide[data-step="1"] .triad.stepped li.is-dim { opacity:.4; }
+.slide[data-step="1"] .triad.stepped li.is-lit { box-shadow:0 0 0 5px var(--ink),8px 8px 0 5px var(--coral); }
+.slide[data-step="1"] .triad.stepped li.is-dim { opacity:1; background:var(--paper); border-color:#827569; box-shadow:none; }
 /* Choice: the illustration carries the decision, so it fills the slide. */
 .slide[data-layout="choice"] h1 { margin-bottom:18px; }
 .slide[data-layout="choice"] .slide-photo { position:absolute; left:72px; right:72px; top:176px; width:1136px; height:470px; object-fit:cover; border-radius:36px; border:3px solid var(--ink); box-shadow:8px 8px 0 var(--ink); }
@@ -440,7 +447,7 @@ button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid va
 .slide[data-slide-id="opening"] h1::after { display:none; }
 .slide[data-slide-id="opening"][data-layout="statement"] .statement-meta { margin-top:54px; display:block; position:relative; z-index:1; }
 .slide[data-slide-id="opening"] .statement-meta li { display:inline-block; }
-.slide[data-slide-id="opening"][data-layout="statement"] .statement-lines:has(.statement-badge) .statement-badge { position:static; padding:6px 30px 2px; background:var(--ink); color:var(--paper); border:0; border-radius:0; box-shadow:10px 10px 0 var(--coral); font:800 104px/1.05 'Barlow Condensed',sans-serif; letter-spacing:5px; text-transform:uppercase; transform:rotate(-2deg); }
+.slide[data-slide-id="opening"][data-layout="statement"] .statement-lines:has(.statement-badge) .statement-badge { position:static; padding:0; background:transparent; color:var(--ink); border:0; border-radius:0; box-shadow:none; font:700 48px/1.2 'DM Sans',sans-serif; letter-spacing:0; text-transform:none; transform:none; }
 .slide[data-slide-id="opening"][data-layout="statement"] .statement-lines:has(.statement-date) .statement-date { position:static; display:block; margin:34px 0 0 6px; padding:0; font:800 36px/1 'Barlow Condensed',sans-serif; letter-spacing:6px; opacity:1; }
 .confetti { position:absolute; z-index:1; pointer-events:none; }
 .confetti.c1 { top:26px; right:46px; width:300px; height:170px; transform:rotate(-8deg); }
@@ -467,6 +474,30 @@ button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid va
 .slide[data-layout="triad"].with-photo .caption { position:absolute; right:72px; top:176px; width:420px; margin:0; font:800 54px/.98 'Barlow Condensed',sans-serif; text-transform:uppercase; letter-spacing:1px; }
 .slide[data-layout="triad"].with-photo:has(.caption) .slide-photo { top:330px; height:290px; }
 .atlas-link { position:absolute; z-index:2; right:72px; top:70px; padding:10px 26px 6px; background:var(--yellow); color:var(--ink); border:2px solid var(--ink); box-shadow:5px 5px 0 var(--ink); font:800 48px/1.05 'Barlow Condensed',sans-serif; letter-spacing:1.5px; text-decoration:none; transform:rotate(-2deg); }
+.slide[data-layout="movement"] h1 { font-size:64px; margin-bottom:20px; }
+/* Display type carries the key phrase; regular type explains it. */
+.values:has(.value-description) { margin-top:24px; gap:20px; }
+.values:has(.value-description) li { height:224px; min-height:0; padding:22px 26px; display:grid; grid-template-columns:44px 1fr; grid-template-rows:1fr auto; align-items:start; column-gap:18px; row-gap:16px; }
+.values:has(.value-description) .point-icon { width:44px; height:44px; }
+.values:has(.value-description) .value-title { font:800 48px/1.02 'Barlow Condensed',sans-serif; }
+.values .value-description { grid-column:1 / -1; font:400 40px/1.15 'DM Sans',sans-serif; text-transform:none; letter-spacing:0; }
+.slide[data-layout="pair"]:has(.caption) .pair { margin-top:36px; }
+.slide[data-layout="pair"] .caption { margin-top:28px; }
+.slide[data-layout="circles"]:has(.caption) h1 { margin-bottom:14px; }
+.slide[data-layout="circles"]:has(.caption) .circle-map { height:430px; }
+.slide[data-layout="circles"] .caption { margin-top:10px; }
+.action-cards { position:relative; z-index:1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; list-style:none; margin:20px 0 0; padding:0; }
+.action-cards li { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px; text-align:center; height:414px; padding:24px; background:var(--paper); border:2px solid var(--ink); border-radius:18px; }
+.action-cards li:nth-child(2) { background:var(--yellow); }
+.action-cards li:nth-child(3) { background:var(--sage); }
+.action-heading { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.action-cards .point-icon { width:48px; height:48px; }
+.action-title { font:800 64px/1 'Barlow Condensed',sans-serif; text-transform:uppercase; }
+.action-description { font:400 40px/1.15 'DM Sans',sans-serif; margin:18px 0; }
+.action-cards .action-link { font:700 40px/1.15 'DM Sans',sans-serif; max-width:100%; margin-top:0; border:0; text-decoration:underline; text-underline-offset:6px; overflow-wrap:anywhere; }
+.slide[data-layout="actions"] h1 { font-size:64px; margin-bottom:20px; }
+.slide[data-layout="actions"] .caption { margin-top:18px; }
+@media (prefers-reduced-motion:reduce) { .triad li,.focus-tag { transition:none; } }
 `
 
 const RUNTIME_JS = `
@@ -475,6 +506,7 @@ const RUNTIME_JS = `
   const previous = document.getElementById('previous');
   const next = document.getElementById('next');
   const link = document.getElementById('notes-link');
+  const present = document.getElementById('present');
   const deckId = JSON.parse(document.getElementById('deck-data').textContent).id;
   let presenter = null;
   const viewport = document.getElementById('viewport');
@@ -483,6 +515,13 @@ const RUNTIME_JS = `
   let step = 0;
   const stepsOf = slide => Number(slide?.dataset.steps || 0);
   function fit() { stage.style.setProperty('--scale', Math.min(viewport.clientWidth / 1280, viewport.clientHeight / 720)); }
+  function setPresenting(enabled) {
+    if (enabled && document.activeElement?.closest('#controls')) document.activeElement.blur();
+    document.body.classList.toggle('presenting', enabled);
+    present.setAttribute('aria-pressed', String(enabled));
+    fit();
+    if (!enabled) present.focus();
+  }
   function show(value, at = 0) {
     index = Math.max(0, Math.min(slides.length - 1, value));
     step = Math.min(at, stepsOf(slides[index]));
@@ -514,6 +553,7 @@ const RUNTIME_JS = `
   previous.addEventListener('click', () => advance(-1));
   next.addEventListener('click', () => advance(1));
   link.addEventListener('click', openNotes);
+  present.addEventListener('click', () => setPresenting(true));
   document.addEventListener('keydown', event => {
     if (event.altKey || event.ctrlKey || event.metaKey || event.target.isContentEditable || event.target.closest('input,textarea,select,[contenteditable="true"]')) return;
     if (event.key === ' ' && event.target.closest('button,a')) return;
@@ -521,6 +561,8 @@ const RUNTIME_JS = `
     else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'PageUp' || (event.key === ' ' && event.shiftKey)) advance(-1);
     else if (event.key === 'Home') show(0);
     else if (event.key === 'End') show(slides.length - 1, stepsOf(slides[slides.length - 1]));
+    else if (event.key.toLowerCase() === 'p') setPresenting(!document.body.classList.contains('presenting'));
+    else if (event.key === 'Escape' && document.body.classList.contains('presenting')) setPresenting(false);
     else if (event.key.toLowerCase() === 'n') { link.click(); return; }
     else return;
     event.preventDefault();
@@ -545,9 +587,10 @@ function pointIcon(index, hopeful) {
   return `<svg class="point-icon" viewBox="0 0 64 64" aria-hidden="true">${paths[index % 3]}</svg>`
 }
 
-function actionIcon(index) {
-  const paths = ['<path d="M32 54S8 38 8 22C8 7 26 6 32 18C38 6 56 7 56 22C56 38 32 54 32 54Z"/>', '<circle cx="23" cy="19" r="8"/><circle cx="44" cy="22" r="6"/><path d="M8 52V43Q8 31 23 31Q38 31 38 43V52M42 34Q56 34 56 44V52"/>', '<path d="M14 54V8M14 10H50L42 22L50 34H14"/>']
-  return `<svg class="point-icon" viewBox="0 0 64 64" aria-hidden="true">${paths[index % 3]}</svg>`
+function actionIcon(index, label) {
+  const paths = ['<path d="M32 54S8 38 8 22C8 7 26 6 32 18C38 6 56 7 56 22C56 38 32 54 32 54Z"/>', '<circle cx="23" cy="19" r="8"/><circle cx="44" cy="22" r="6"/><path d="M8 52V43Q8 31 23 31Q38 31 38 43V52M42 34Q56 34 56 44V52"/>', '<path d="M14 54V8M14 10H50L42 22L50 34H14"/>', '<circle cx="14" cy="32" r="7"/><circle cx="49" cy="13" r="7"/><circle cx="49" cy="51" r="7"/><path d="M20 28L43 16M20 36L43 48"/>']
+  const iconIndex = { Donate: 0, Join: 1, Organize: 2, Share: 3 }[label] ?? index % 3
+  return `<svg class="point-icon" viewBox="0 0 64 64" aria-hidden="true">${paths[iconIndex]}</svg>`
 }
 
 function valueIcon(index) {
@@ -579,10 +622,10 @@ function diagram(slide, index) {
   } else if (slide.layout === 'circles') {
     description = `${c.circle} contains the circles ${c.labels.join(', ')}. Nested circles show scopes of shared purpose and contain roles, without reporting arrows. This is an excerpt inspired by Sapiens First Atlas, not the complete roster. Small role dots are illustrative, not headcounts or organizational metrics.`
     const fills = ['#efe5d4', '#f4c9ad', '#d5e1bd', '#f4df9a']
-    body = `<ellipse class="circle-parent" cx="568" cy="240" rx="550" ry="230" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>${label(c.circle, 568, 65)}`
+    body = `<ellipse class="circle-parent" cx="568" cy="240" rx="560" ry="236" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"/>${label(c.circle, 568, 65, c.caption ? 50 : 44)}`
     body += c.labels.map((value, i) => {
       const x = [158, 432, 704, 978][i]
-      return `<circle class="subcircle" cx="${x}" cy="240" r="126" fill="${fills[i]}"/>${label(value, x, 236, 40)}<g aria-hidden="true">${[-35, 0, 35].map(offset => `<circle class="role-pip" cx="${x + offset}" cy="300" r="13"/>`).join('')}</g>`
+      return `<circle class="subcircle" cx="${x}" cy="240" r="132" fill="${fills[i]}"/>${label(value, x, 236, c.caption ? 45 : 40)}<g aria-hidden="true">${[-35, 0, 35].map(offset => `<circle class="role-pip" cx="${x + offset}" cy="300" r="13"/>`).join('')}</g>`
     }).join('')
   } else if (slide.layout === 'cycle') {
     description = `${c.labels.join(' → ')} → ${c.labels[0]}. Each stage leads to the next and repeats.`
@@ -621,61 +664,12 @@ function highlightLastWord(title) {
   return match ? `${escapeHTML(match[1])}<span class="hl">${escapeHTML(match[2])}</span>` : escapeHTML(title)
 }
 
-function renderTree(content, index) {
-  const all = treeNodes(content.tree), revealed = new Set(content.reveal)
-  // Size against the complete authored tree so every reveal retains its coordinates.
-  const byId = new Map(all.map(node => [node.id, node]))
-  const children = node => (node.children ?? []).map(child => byId.get(child.id))
-  const stacked = node => children(node).length >= 4 && children(node).every(child => !child.children?.length)
-  const weight = node => stacked(node) || !children(node).length ? 1 : children(node).reduce((sum, child) => sum + weight(child), 0)
-  const positions = new Map()
-  function place(node, left, width) {
-    const x = left + width / 2, height = node.depth === 1 ? 96 : node.depth === 0 ? 60 : 62
-    const y = [32, 134, 240][node.depth] ?? 326 + (node.depth - 3) * 60
-    positions.set(node.id, { x, y, width: Math.min(width - 12, node.depth === 0 ? 460 : 550), height })
-    if (stacked(node)) {
-      children(node).forEach((child, i) => positions.set(child.id, { x: Math.max(300, x), y: 326 + i * 54, width: 440, height: 50, stacked: true }))
-    } else {
-      const branchWeight = child => node.depth === 0 ? Math.max(1.5, weight(child) * (child.children?.length ? 1.2 : 1)) : weight(child)
-      const total = children(node).reduce((sum, child) => sum + branchWeight(child), 0)
-      let offset = left
-      for (const child of children(node)) {
-        // Leaf branches receive enough width for two lines of large condensed type.
-        const childWidth = width * branchWeight(child) / total
-        place(child, offset, childWidth)
-        offset += childWidth
-      }
-    }
-  }
-  place(all[0], 16, 1104)
-  const focused = node => !content.focus || node.id === content.focus || (node.parent && focused(byId.get(node.parent)))
-  const visible = all.filter(node => revealed.has(node.id))
-  const connectors = visible.filter(node => node.parent).map(node => {
-    const p = positions.get(node.parent), n = positions.get(node.id)
-    const path = n.stacked
-      ? `M${p.x} ${p.y + p.height / 2}V${p.y + p.height / 2 + 14}H${n.x - n.width / 2 - 28}V${n.y}H${n.x - n.width / 2}`
-      : `M${p.x} ${p.y + p.height / 2}V${(p.y + p.height / 2 + n.y - n.height / 2) / 2}H${n.x}V${n.y - n.height / 2}`
-    return `<path class="tree-edge" data-parent="${escapeHTML(node.parent)}" data-child="${escapeHTML(node.id)}"${!focused(node) ? ' data-dim="true"' : ''} d="${path}"/>`
-  }).join('')
-  const nodes = visible.map(node => {
-    const p = positions.get(node.id), maxChars = Math.floor((p.width - 24) / 14)
-    const lines = []
-    for (const word of node.label.split(/\s+/)) {
-      if (lines.length && `${lines.at(-1)} ${word}`.length <= maxChars) lines[lines.length - 1] += ` ${word}`
-      else lines.push(word)
-    }
-    const label = lines.map((line, i) => `<tspan x="${p.x}" dy="${i ? 42 : 0}">${escapeHTML(line)}${i < lines.length - 1 ? ' ' : ''}</tspan>`).join('')
-    return `<g class="tree-node" data-node="${escapeHTML(node.id)}"${node.current ? ' data-current="true"' : ''}${!focused(node) ? ' data-dim="true"' : ''}><rect x="${p.x - p.width / 2}" y="${p.y - p.height / 2}" width="${p.width}" height="${p.height}" rx="12" fill="${['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)'][Math.min(node.depth, 3)]}"/><text class="audience-text" x="${p.x}" y="${p.y + 6 - (lines.length - 1) * 21}" text-anchor="middle" dominant-baseline="middle">${label}</text>${node.current ? `<text class="current-tag" x="${p.x + p.width / 2 + 18}" y="${p.y}" dominant-baseline="middle">← You are here</text>` : ''}</g>`
-  }).join('')
-  const description = visible.map(node => `${node.label}${node.parent ? ` under ${byId.get(node.parent).label}` : ''}${node.current ? ' (You are here)' : ''}`).join('; ')
-  return `<svg class="diagram tree-map" viewBox="0 0 1136 530" role="img" aria-labelledby="tree-title-${index} tree-desc-${index}"><title id="tree-title-${index}">Strategy tree</title><desc id="tree-desc-${index}">${escapeHTML(description)}</desc>${connectors}${nodes}</svg>`
-}
 
 function dividerArt(index, graphic) {
   const topical = {
     book: '<path d="M830 285Q930 255 1040 305Q1150 255 1250 285V510Q1150 480 1040 530Q930 480 830 510Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="6"/><path d="M1040 305V530M855 240Q965 225 1040 285Q1120 220 1225 240M875 195Q970 205 1040 265Q1110 200 1200 195" fill="none" stroke="currentColor" stroke-width="14"/><path d="M865 335Q940 320 1005 350M865 390Q940 375 1005 405M1080 350Q1150 320 1215 335M1080 405Q1150 375 1215 390" fill="none" stroke="var(--ink)" stroke-width="5"/>',
     route: '<path d="M850 580C1120 580 1210 445 1010 405S850 205 1160 205" fill="none" stroke="currentColor" stroke-width="60"/><path d="M850 580C1120 580 1210 445 1010 405S850 205 1160 205" fill="none" stroke="var(--ink)" stroke-dasharray="12 18" stroke-width="4"/><path d="M1155 210V90L1255 120L1155 155" fill="var(--yellow)" stroke="var(--paper)" stroke-width="6"/>',
-    hands: '<path d="M1040 485S840 370 860 265C880 175 1000 175 1040 265C1080 175 1200 175 1220 265Q1240 370 1040 485Z" fill="var(--coral)" stroke="var(--ink)" stroke-width="6"/><path d="M830 500L940 410L1000 440L1080 400L1140 430L1250 505M940 410L970 370L1050 390L1080 400" fill="none" stroke="var(--paper)" stroke-linecap="round" stroke-linejoin="round" stroke-width="30"/>',
+    hands: '<path d="M1040 485S840 370 860 265C880 175 1000 175 1040 265C1080 175 1200 175 1220 265Q1240 370 1040 485Z" fill="var(--coral)" stroke="var(--ink)" stroke-width="6"/>',
     nested: '<circle cx="1060" cy="360" r="205" fill="var(--sage)" stroke="var(--ink)" stroke-width="6"/><circle cx="1000" cy="330" r="100" fill="var(--yellow)" stroke="var(--ink)" stroke-width="5"/><circle cx="1150" cy="420" r="70" fill="var(--coral)" stroke="var(--ink)" stroke-width="5"/><circle cx="980" cy="315" r="38" fill="var(--paper)" stroke="var(--ink)" stroke-width="4"/>',
     signpost: '<path d="M1050 185V590" stroke="var(--ink)" stroke-width="22"/><path d="M855 205H1170L1250 265L1170 325H855Z" fill="var(--paper)" stroke="var(--ink)" stroke-width="5"/><path d="M1210 350H900L825 405L900 460H1210Z" fill="var(--yellow)" stroke="var(--ink)" stroke-width="5"/><path d="M925 485H1180L1250 535L1180 585H925Z" fill="var(--sage)" stroke="var(--ink)" stroke-width="5"/>',
   }
@@ -715,8 +709,10 @@ export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.n
     if (slide.layout === 'statement') content = `<ul class="statement-lines${slide.image?.treatment ? ' statement-meta' : ''}">${slide.content.lines.map((value, i) => `<li class="audience-text${slide.id === 'opening' && slide.content.lines.length === 2 ? ` statement-${i ? 'date' : 'badge'}` : ''}">${escapeHTML(value)}</li>`).join('')}</ul>`
     if (slide.layout === 'agenda') content = `<ol class="agenda">${slide.content.labels.map(value => `<li><span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ol>`
     if (slide.layout === 'tree') content = renderTree(slide.content, index)
-    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}${slide.content.highlightStep ? ' stepped' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${slide.content.links ? actionIcon(i) : pointIcon(i, slide.tone !== 'dark' && !slide.content.highlightStep)}${slide.content.links ? `<span class="action-text"><span class="audience-text">${escapeHTML(value)}</span><a class="action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i])}</a></span>` : `<span class="audience-text">${escapeHTML(value)}</span>`}${slide.content.highlightStep && i === slide.content.highlight ? '<span class="focus-tag" aria-hidden="true">Our focus</span>' : ''}</li>`).join('')}</ul>`
-    if (slide.layout === 'values') content = `<ul class="values">${slide.content.labels.map((value, i) => `<li>${valueIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
+    if (slide.layout === 'movement') content = renderMovementPlan(slide.content, index)
+    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}${slide.content.highlightStep ? ' stepped' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${slide.content.links ? actionIcon(i, value) : pointIcon(i, slide.tone !== 'dark' && !slide.content.highlightStep)}${slide.content.links ? `<span class="action-text"><span class="audience-text">${escapeHTML(value)}</span><a class="action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i])}</a></span>` : `<span class="audience-text">${escapeHTML(value)}</span>`}${slide.content.highlightStep && i === slide.content.highlight ? '<span class="focus-tag" aria-hidden="true">Our focus</span>' : ''}</li>`).join('')}</ul>`
+    if (slide.layout === 'values') content = `<ul class="values">${slide.content.labels.map((value, i) => `<li>${valueIcon(i)}<span class="audience-text value-title">${escapeHTML(value)}</span>${slide.content.descriptions ? `<span class="audience-text value-description">${escapeHTML(slide.content.descriptions[i])}</span>` : ''}</li>`).join('')}</ul>`
+    if (slide.layout === 'actions') content = `<ul class="action-cards">${slide.content.labels.map((value, i) => `<li><div class="action-heading">${actionIcon(i, value)}<span class="audience-text action-title">${escapeHTML(value)}</span></div>${slide.content.descriptions ? `<span class="audience-text action-description">${escapeHTML(slide.content.descriptions[i])}</span>` : ''}<a class="audience-text action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i]).replace('/', '<wbr>/')}</a></li>`).join('')}</ul>`
     if (slide.layout === 'pair') content = `<ul class="pair">${slide.content.labels.map((value, i) => `<li>${pairIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`
     if (['cycle', 'steps', 'roles', 'circles', 'choice', 'pyramid'].includes(slide.layout)) content = diagram(slide, index) + (slide.content.link ? `<a class="atlas-link" href="https://${escapeHTML(slide.content.link)}" target="_blank" rel="noopener">${escapeHTML(slide.content.link)}</a>` : '')
     if (slide.layout === 'montage') content = `<div class="montage-photos">${slide.images.map(image => `<img class="slide-photo montage-photo" alt="${escapeHTML(image.alt)}" src="${imageAsset(image)}" style="object-position:${image.position ?? 'center'}">`).join('')}</div>`
@@ -726,11 +722,11 @@ export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.n
     const graphic = ['contours', 'arcs'].includes(slide.graphic) ? `<img class="brand-art" alt="" aria-hidden="true" src="data:image/svg+xml;base64,${asset(`assets/sapiens-${slide.graphic}.svg`).toString('base64')}">` : ''
     return `<section class="slide${slide.image || slide.images ? ' with-photo' : ''}" data-slide-id="${escapeHTML(slide.id)}" data-layout="${slide.layout}" data-purpose="${slide.purpose}" data-tone="${slide.tone ?? 'paper'}"${slide.content.highlightStep ? ' data-steps="1" data-step="0"' : ''}${slide.image?.treatment ? ` data-image-treatment="${slide.image.treatment}"` : ''} aria-labelledby="slide-title-${index}"${index ? ' hidden' : ''}>${graphic}${slide.layout === 'divider' ? dividerArt(index, slide.graphic) : ''}${photo}${slide.image?.treatment === 'background' ? `<div class="photo-overlay" aria-hidden="true"></div>${slide.id === 'opening' ? CONFETTI : ''}` : ''}${slide.sectionLabel ? `<p class="section-label audience-text">${escapeHTML(slide.sectionLabel)}</p>` : ''}<h1 class="audience-text" id="slide-title-${index}">${slide.id === 'opening' ? highlightLastWord(slide.title) : escapeHTML(slide.title)}</h1>${content}${slide.content.caption ? `<p class="caption audience-text">${escapeHTML(slide.content.caption)}</p>` : ''}<footer class="slide-footer"><img class="brand-logo" alt="Sapiens First" src="data:image/png;base64,${logo}">${progressStrip(slide, index)}${deck.origin === 'generated' ? '<span class="generated-label">Auto-generated from the handbook text</span>' : ''}<span>${index + 1} / ${deck.slides.length}</span></footer></section>`
   }).join('\n')
-  const audience = { id: deck.id, title: deck.title, slides: deck.slides.map(({ notes, ...slide }) => slide) }
+  const audience = { id: deck.id, title: deck.title, slides: deck.slides.map(({ notes, referenceImage, ...slide }) => slide) }
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)}</title>${icon}<style>${embeddedFonts()}\n${THEME_CSS}</style></head>
 <body><main id="presentation"><div id="viewport"><div id="stage" aria-label="Presentation slides">${slides}</div></div></main>
-<nav id="controls" aria-label="Presentation controls"><button id="previous" type="button" disabled aria-label="Previous slide">Previous</button><span id="progress" role="status" aria-live="polite">1 / ${deck.slides.length}</span><button id="next" type="button"${deck.slides.length === 1 ? ' disabled' : ''} aria-label="Next slide">Next</button><a id="notes-link" href="${escapeHTML(notesHref)}" target="_blank">Presenter notes</a></nav>
+<nav id="controls" aria-label="Presentation controls"><button id="previous" type="button" disabled aria-label="Previous slide">Previous</button><span id="progress" role="status" aria-live="polite">1 / ${deck.slides.length}</span><button id="next" type="button"${deck.slides.length === 1 ? ' disabled' : ''} aria-label="Next slide">Next</button><a id="notes-link" href="${escapeHTML(notesHref)}" target="_blank">Presenter notes</a><button id="present" type="button" aria-pressed="false" title="Hide controls (P). Press Escape to return.">Present</button></nav>
 <script id="deck-data" type="application/json">${embeddedJSON(audience)}</script><pre id="font-licenses" hidden>${escapeHTML(fontLicenses())}</pre><script>${RUNTIME_JS}</script></body></html>\n`
 }
 
@@ -754,6 +750,7 @@ h3 { font-size:20px; margin:28px 0 12px; }
 .source-passage { white-space:pre-wrap; overflow-wrap:anywhere; font:inherit; margin:0 0 20px; }
 .editorial-cues { padding-left:26px; }
 .asset-credit { font-size:16px; overflow-wrap:anywhere; }
+.reference-image { display:block; max-width:100%; height:auto; margin:20px 0; }
 a { color:#111; }
 @media(max-width:600px) { body { font-size:20px; } header,main { padding-left:20px; padding-right:20px; } nav { padding:12px 20px; gap:8px; } select { flex-basis:100%; } h1,h2 { font-size:36px; } }
 `
@@ -805,9 +802,9 @@ const NOTES_RUNTIME_JS = `
 export function renderNotes(deck) {
   const notes = deck.slides.map(slide => assembleNotes(deck, slide))
   const notesHTML = notes.map((note, index) => {
-    const slide = deck.slides[index], images = slide.image ? [slide.image] : slide.images ?? []
+    const slide = deck.slides[index], images = [...(slide.image ? [slide.image] : slide.images ?? []), ...(slide.referenceImage ? [slide.referenceImage] : [])]
     const credits = `${images.map(image => `<p class="asset-credit">${escapeHTML(image.credit)} · <a href="${escapeHTML(image.sourceUrl)}">Photo source</a> · <a href="${escapeHTML(image.licenseUrl)}">License</a></p>`).join('')}${slide.graphic ? `<p class="asset-credit">Sapiens First brand artwork · <a href="https://sapiensfirst.org/assets/homepage-${slide.graphic === 'contours' ? 'strategy-contours' : 'involved-arcs'}.svg">Artwork source</a></p>` : ''}`
-    return `<article class="slide-notes" data-slide-id="${escapeHTML(note.slideId)}"${index ? ' hidden' : ''}><h2>${escapeHTML(slide.title)}</h2><h3>Original source passages</h3>${note.passages.map(passage => `<pre class="source-passage"><span>${escapeHTML(passage)}</span></pre>`).join('')}${note.cues.length ? `<h3>Editorial cues (added prompts)</h3><ul class="editorial-cues">${note.cues.map(cue => `<li>${escapeHTML(cue)}</li>`).join('')}</ul>` : ''}${credits ? `<h3>Image and artwork credits</h3>${credits}` : ''}</article>`
+    return `<article class="slide-notes" data-slide-id="${escapeHTML(note.slideId)}"${index ? ' hidden' : ''}><h2>${escapeHTML(slide.title)}</h2><h3>Original source passages</h3>${note.passages.map(passage => `<pre class="source-passage"><span>${escapeHTML(passage)}</span></pre>`).join('')}${note.cues.length ? `<h3>Editorial cues (added prompts)</h3><ul class="editorial-cues">${note.cues.map(cue => `<li>${escapeHTML(cue)}</li>`).join('')}</ul>` : ''}${slide.referenceImage ? `<h3>Full reference figure</h3><img class="reference-image" src="${imageAsset(slide.referenceImage)}" alt="${escapeHTML(slide.referenceImage.alt)}">` : ''}${credits ? `<h3>Image and artwork credits</h3>${credits}` : ''}</article>`
   }).join('\n')
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHTML(deck.title)} — Presenter notes</title>${faviconLink()}<style>${embeddedFonts()}\n${NOTES_CSS}</style></head>

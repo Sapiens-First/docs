@@ -97,9 +97,9 @@ test('presentation source order permits requested reordering while retaining sou
   assert.match(validateDeck(data).errors.join(' '), /sourceOrder/)
 })
 
-test('opening statement renders a badge and short date without restyling other statements', () => {
-  const data = deck('statement', { lines: ['Sapiens First DNA', '10/09/26'] }, { id: 'opening', title: 'Revolt for our future' })
-  assert.match(renderDeck(data), /<li class="audience-text statement-badge">Sapiens First DNA<\/li>/)
+test('opening statement renders the training subtitle and short date without restyling other statements', () => {
+  const data = deck('statement', { lines: ['Sapiens First: Our DNA', '10/09/26'] }, { id: 'opening', title: 'Revolt for our future' })
+  assert.match(renderDeck(data), /<li class="audience-text statement-badge">Sapiens First: Our DNA<\/li>/)
   assert.match(renderDeck(data), /<li class="audience-text statement-date">10\/09\/26<\/li>/)
   data.slides[0].id = 'another-statement'
   assert.doesNotMatch(renderDeck(data), /<li class="audience-text statement-badge">/)

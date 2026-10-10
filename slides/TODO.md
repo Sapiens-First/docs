@@ -44,3 +44,24 @@ Second half (added mid-session)
 Housekeeping
 - [x] Update tests, source credits, notes and README counts; rebuild and check every slide in the browser.
 - [x] Commit straight to main.
+
+## Design improvements (2026-10-10)
+
+- [x] Rename the opening subtitle “Sapiens First: Our DNA” and use calm mixed-case type.
+- [x] Replace the dense audience Movement Action Plan image with eight readable stages; retain the original image in notes.
+- [x] Expand strategy trees to fill the canvas and keep context readable during focus.
+- [x] Keep inactive crisis cards readable when extinction is highlighted.
+- [x] Give Culture four short practical cues, identified as editorial additions in notes.
+- [x] Add useful takeaways to Movement Action Plan, Holacracy, and Atlas.
+- [x] Replace closing photography with Donate, Join, and Organize action cards and existing links.
+- [x] Add Present / P / Escape controls for a clean projection view.
+- [x] Preserve all 24 slides, order, source passages, and timings; verify text fit and offline presentation.
+
+Follow-up refinements
+- [x] Restore the original Movement Action Plan figure slide.
+- [x] Remove explanations and the closing instruction from Pathways to Action.
+- [x] Remove the Atlas takeaway.
+- [x] Rename slide 18 “Core values” and remove the subtext inside its boxes.
+
+- [x] Center slide 24 content vertically and horizontally; remove captions from slides 21 and 23.
+- [x] Center Core values text and enlarge the icons with bolder strokes.

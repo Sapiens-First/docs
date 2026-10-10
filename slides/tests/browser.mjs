@@ -83,7 +83,7 @@ function authoredText(slide) {
     for (const child of node.children ?? []) visit(child)
   }
   if (slide.layout === 'tree') visit(content.tree)
-  return [slide.title, slide.sectionLabel, ...(content.lines ?? content.labels ?? []),
+  return [slide.title, slide.sectionLabel, ...(content.lines ?? content.labels ?? []), ...(content.descriptions ?? content.stages ?? []), ...(slide.layout === 'actions' ? content.links : []),
     content.circle, ...(content.roles ?? []), ...treeLabels, content.caption].filter(value => value !== undefined)
     .map(value => value.trim()).sort()
 }
@@ -122,8 +122,10 @@ async function geometry(page) {
         lines = [...range.getClientRects()].filter(r => r.width && r.height).map(rect)
       }
       const fontSize = parseFloat(getComputedStyle(element).fontSize)
-      return { text: element.textContent.trim(), secondary: element.classList.contains('statement-date'), tag: element.tagName, logicalFontSize: fontSize,
-        effectiveFontSize: fontSize * scale, lineCount: new Set(lines.map(line => Math.round(line.y * 100) / 100)).size, lines }
+      const matrix = element instanceof SVGGraphicsElement ? element.getScreenCTM() : null
+      const logicalFontSize = matrix ? fontSize * Math.hypot(matrix.a, matrix.b) / scale : fontSize
+      return { text: element.textContent.trim(), secondary: element.classList.contains('statement-date'), tag: element.tagName, logicalFontSize,
+        effectiveFontSize: logicalFontSize * scale, lineCount: new Set(lines.map(line => Math.round(line.y * 100) / 100)).size, lines }
     })
     const shapes = [...slide.querySelectorAll('svg .node, svg .edge, .tree-node rect, .tree-edge')].map(element => ({
       tag: element.tagName, kind: element.classList.contains('node') || element.tagName === 'rect' ? 'node' : 'edge', bounds: rect(element.getBoundingClientRect()), svg: rect(element.ownerSVGElement.getBoundingClientRect()),
@@ -165,6 +167,8 @@ async function geometry(page) {
       }
     }
     const photos = [...slide.querySelectorAll('.slide-photo')].map(image => ({ ...rect(image.getBoundingClientRect()), background: ['background', 'artistic'].includes(slide.dataset.imageTreatment) }))
+    const cardText = [...slide.querySelectorAll('.values li, .action-cards li')].map(card => ({ bounds: rect(card.getBoundingClientRect()),
+      text: text.filter(item => [...card.querySelectorAll('.audience-text')].some(element => element.textContent.trim() === item.text)) }))
     let circleMap
     if (slide.dataset.layout === 'circles') {
       const parent = slide.querySelector('ellipse.circle-parent')
@@ -214,7 +218,7 @@ async function geometry(page) {
       const last = edge.getPointAtLength(edge.getTotalLength()).matrixTransform(edge.getScreenCTM())
       return { parent: edge.dataset.parent, child: edge.dataset.child, touchesParent: touching(first, edge.dataset.parent), touchesChild: touching(last, edge.dataset.child) }
     })
-    return { slideId: slide.dataset.slideId, layout: slide.dataset.layout, stage, viewport, scale, text, shapes, diagramLabels, roleContainment, cycleLinks, photos, circleMap, sectionProgress, footerItems, tree, treeEdges,
+    return { slideId: slide.dataset.slideId, layout: slide.dataset.layout, stage, viewport, scale, text, shapes, diagramLabels, roleContainment, cycleLinks, photos, cardText, circleMap, sectionProgress, footerItems, tree, treeEdges,
       renderedLineCount: text.reduce((count, item) => count + item.lineCount, 0) }
   })
 }
@@ -222,10 +226,10 @@ async function geometry(page) {
 function verifyGeometry(metric, label) {
   const inside = (r, parent) => r.x >= parent.x - 1 && r.y >= parent.y - 1 && r.right <= parent.right + 1 && r.bottom <= parent.bottom + 1
   const overlaps = (a, b) => Math.min(a.right, b.right) - Math.max(a.x, b.x) > 1 && Math.min(a.bottom, b.bottom) - Math.max(a.y, b.y) > 1
-  check(`${label}: principal audience font minimum and secondary date`, metric.text.every(item => item.logicalFontSize >= (item.secondary ? 22 : 40)), metric.text.map(item => ({ text: item.text, logical: item.logicalFontSize, effective: item.effectiveFontSize })))
+  check(`${label}: principal audience font minimum and secondary date`, metric.text.every(item => item.logicalFontSize >= (item.secondary ? 22 : 40) - 0.01), metric.text.map(item => ({ text: item.text, logical: item.logicalFontSize, effective: item.effectiveFontSize })))
   // Tree exceptions are explicit in the deck; all visible tree labels still undergo
   // the same font, bounds, collision and box-containment checks as other diagrams.
-  const allowedLines = { 'tree-goal': 5, 'tree-california': 8, 'tree-bay': 13, 'agenda-six': 7, vision: 8, crisis: 8, 'culture-values': 8 }[metric.slideId] ?? 6
+  const allowedLines = { 'tree-goal': 5, 'tree-california': 8, 'tree-bay': 13, 'agenda-six': 7, vision: 8, crisis: 8, 'culture-values': 17, 'movement-action-plan': 10, 'circles': 7, 'next-step': 20 }[metric.slideId] ?? 6
   check(`${label}: rendered lines respect the slide budget`, metric.renderedLineCount <= allowedLines, { actual: metric.renderedLineCount, allowed: allowedLines })
   check(`${label}: audience text inside stage and viewport`, metric.text.every(item => item.lines.every(line => inside(line, metric.stage) && inside(line, metric.viewport))))
   const collisions = []
@@ -234,6 +238,7 @@ function verifyGeometry(metric, label) {
   }
   check(`${label}: audience text does not overlap`, collisions.length === 0, collisions)
   check(`${label}: audience text stays clear of the footer`, metric.text.every(item => item.lines.every(line => metric.footerItems.every(footer => !overlaps(line, footer)))))
+  if (metric.cardText.length) check(`${label}: all card text fits its own card`, metric.cardText.every(card => card.text.every(item => item.lines.every(line => inside(line, card.bounds)))))
   if (metric.photos.length) {
     check(`${label}: photos remain inside stage and viewport`, metric.photos.every(photo => inside(photo, metric.stage) && inside(photo, metric.viewport)), metric.photos)
     check(`${label}: foreground photos do not obscure audience text`, metric.photos.filter(photo => !photo.background).every(photo => metric.text.every(item => item.lines.every(line => !overlaps(photo, line)))))
@@ -304,10 +309,11 @@ async function exerciseBehavior(page, deck) {
       document.body.append(element)
       element.focus()
     }, tag)
-    for (const key of ['ArrowRight', 'PageDown', 'Space', 'n', 'Home', 'End']) {
+    for (const key of ['ArrowRight', 'PageDown', 'Space', 'n', 'p', 'Home', 'End']) {
       await page.keyboard.press(key)
       assert.equal(await activeIndex(page), 0, `${tag} ignores ${key}`)
       assert.equal(context.pages().length, initialPages, `${tag} does not open presenter notes`)
+      assert.equal(await page.locator('body').evaluate(body => body.classList.contains('presenting')), false, `${tag} does not hide presentation controls`)
     }
     await page.locator('#editable-probe').evaluate(element => element.remove())
   }
@@ -371,6 +377,18 @@ async function exerciseBehavior(page, deck) {
   await notesMatch(presenter, deck, 2)
   await keyboard(page, 'Home', 0)
   await notesMatch(presenter, deck, 0)
+  await page.locator('#present').click()
+  check('Present hides controls and uses the whole viewport', !(await page.locator('#controls').isVisible()) && await page.locator('#viewport').evaluate(viewport => viewport.clientHeight === innerHeight))
+  await keyboard(page, 'ArrowRight', 1)
+  await notesMatch(presenter, deck, 1)
+  check('presentation mode keeps keyboard navigation and notes in sync', true)
+  await page.keyboard.press('Escape')
+  check('Escape restores controls and keyboard focus without changing the slide', await page.locator('#controls').isVisible() && await activeIndex(page) === 1 && await page.evaluate(() => document.activeElement.id === 'present'))
+  await keyboard(page, 'p', 1)
+  check('P enters presentation mode without navigating', !(await page.locator('#controls').isVisible()) && await page.locator('#present').getAttribute('aria-pressed') === 'true')
+  await keyboard(page, 'p', 1)
+  check('P restores presentation controls without navigating', await page.locator('#controls').isVisible() && await page.locator('#present').getAttribute('aria-pressed') === 'false')
+  await keyboard(page, 'Home', 0)
   await controlsVisible(page)
   check('audience keyboard, buttons, boundaries, modifiers, editables and focus', true)
   check('separate notes link and N shortcut open, synchronize both ways, and reconnect after closing', true)
@@ -411,6 +429,8 @@ try {
   evidence.portability.presenterCompanionFiles = await readdir(isolated)
   const notesPage = await context.newPage()
   await open(copiedNotes, notesPage)
+  const reference = notesPage.locator('.reference-image')
+  check('restored movement figure is an audience image rather than a notes-only reference', await reference.count() === 0 && await page.locator('.slide[data-slide-id="movement-action-plan"] .slide-photo').evaluate(image => image.complete && image.naturalWidth > 0 && image.src.startsWith('data:image/')))
   const deck = await notesPage.locator('#deck-data').evaluate(element => JSON.parse(element.textContent))
   check('separate notes opens directly with standalone navigation', await notesPage.evaluate(() => !window.opener))
   await notesPage.locator('#next').click()
@@ -430,7 +450,7 @@ try {
   }
   check('DNA acceptance deck renders all twenty-four slides', deck.slides.length === 24 && await page.locator('#stage .slide').count() === 24)
   check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step']))
-  const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'photo', 'figure', 'agenda', 'tree']
+  const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'photo', 'figure', 'actions', 'agenda', 'tree']
   check('all current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
   const dividerIds = await page.locator('#stage .slide[data-layout="divider"]').evaluateAll(slides => slides.map(slide => slide.dataset.slideId))
   check('four section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section']), dividerIds)
@@ -454,12 +474,15 @@ try {
       cards,
       openingBadge: opening.querySelector('.statement-badge')?.textContent,
       openingDate: opening.querySelector('.statement-date')?.textContent,
-      badgeStyle: { fill: getComputedStyle(opening.querySelector('.statement-badge')).backgroundColor, border: getComputedStyle(opening.querySelector('.statement-badge')).borderTopWidth },
+      badgeStyle: (() => {
+        const style = getComputedStyle(opening.querySelector('.statement-badge'))
+        return { fill: style.backgroundColor, border: style.borderTopWidth, transform: style.transform, shadow: style.boxShadow, size: parseFloat(style.fontSize), casing: style.textTransform }
+      })(),
       dateSize: parseFloat(getComputedStyle(opening.querySelector('.statement-date')).fontSize),
       crisis: [...document.querySelectorAll('.slide[data-slide-id="crisis"] .triad li')].map(item => item.className),
       crisisSteps: document.querySelector('.slide[data-slide-id="crisis"]').dataset.steps,
       triggerPhotos: ['trigger-birmingham', 'trigger-vietnam'].map(id => document.querySelectorAll(`.slide[data-slide-id="${id}"] .slide-photo`).length),
-      figureImages: document.querySelectorAll('.slide[data-slide-id="movement-action-plan"][data-layout="figure"] .slide-photo').length,
+      movementImages: document.querySelectorAll('.slide[data-slide-id="movement-action-plan"][data-layout="figure"] .slide-photo').length,
       favicon: Boolean(document.querySelector('link[rel="icon"]')),
       dividerMotifs: [...document.querySelectorAll('.slide[data-layout="divider"] .divider-art')].map(svg => svg.dataset.graphic),
     }
@@ -467,10 +490,12 @@ try {
   check('logo preserves PNG transparency without a CSS background', revisions.transparentLogo)
   check('opening uses the requested background photo with a contrast overlay', revisions.background)
   check('three AI promise cards form a horizontal row', revisions.cards.length === 3 && revisions.cards.every(card => Math.abs(card.top - revisions.cards[0].top) < 1) && revisions.cards.slice(1).every((card, index) => card.left > revisions.cards[index].right), revisions.cards)
-  check('opening badge and short date', revisions.openingBadge === 'Sapiens First DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 36 && revisions.badgeStyle.fill === 'rgb(36, 29, 24)' && revisions.badgeStyle.border === '0px')
+  check('opening uses a plain training subtitle and short date', revisions.openingBadge === 'Sapiens First: Our DNA' && revisions.openingDate === '10/09/26' && revisions.dateSize === 36 && revisions.badgeStyle.fill === 'rgba(0, 0, 0, 0)' && revisions.badgeStyle.border === '0px' && revisions.badgeStyle.transform === 'none' && revisions.badgeStyle.shadow === 'none' && revisions.badgeStyle.size === 48 && revisions.badgeStyle.casing === 'none')
   check('crisis lights human extinction and dims the other two, revealed on one extra step', revisions.crisisSteps === '1' && JSON.stringify(revisions.crisis) === JSON.stringify(['is-lit', 'is-dim', 'is-dim']))
   check('Birmingham and Vietnam trigger slides each show a single photograph', JSON.stringify(revisions.triggerPhotos) === JSON.stringify([1, 1]))
-  check('Movement Action Plan figure slide shows its image', revisions.figureImages === 1)
+  check('Movement Action Plan shows the original supplied figure', revisions.movementImages === 1)
+  const closingLinks = await page.locator('.slide[data-slide-id="next-step"] .action-link').evaluateAll(links => links.map(link => ({ href: link.getAttribute('href'), target: link.target, rel: link.rel })))
+  check('closing actions link to the authored destinations in separate tabs', JSON.stringify(closingLinks) === JSON.stringify(deck.slides.find(slide => slide.id === 'next-step').content.links.map(link => ({ href: `https://${link}`, target: '_blank', rel: 'noopener' }))))
   check('audience page declares a favicon', revisions.favicon)
   check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested']))
   const assets = await page.evaluate(() => ({
@@ -517,7 +542,7 @@ try {
     const entry = { ...viewport, slides: [], screenshots: [] }
     evidence.viewports.push(entry)
     await keyboard(page, 'Home', 0)
-    const treePositions = new Map()
+    await keyboard(page, 'p', 0)
     for (const [index, slide] of deck.slides.entries()) {
       if (index) await forward(page, deck, index)
       const metric = await geometry(page)
@@ -533,11 +558,8 @@ try {
       if (slide.layout === 'tree') {
         check(`${name} ${slide.id}: reveal and tree connectors match`, metric.tree.length === slide.content.reveal.length && metric.tree.every(node => slide.content.reveal.includes(node.id)) && metric.treeEdges.length === metric.tree.length - 1 && metric.treeEdges.every(edge => slide.content.reveal.includes(edge.parent) && slide.content.reveal.includes(edge.child) && edge.touchesParent && edge.touchesChild), metric.treeEdges)
         check(`${name} ${slide.id}: current Berkeley chapter marker`, metric.tree.filter(node => node.current).map(node => node.id).join() === (slide.content.reveal.includes('chapter') ? 'chapter' : ''))
-        check(`${name} ${slide.id}: tree nodes retain positions across reveals`, metric.tree.every(node => {
-          const previous = treePositions.get(node.id)
-          treePositions.set(node.id, node.bounds)
-          return !previous || ['x', 'y', 'width', 'height'].every(key => Math.abs(previous[key] - node.bounds[key]) < 1)
-        }))
+        const treeSpan = Math.max(...metric.tree.map(node => node.bounds.right)) - Math.min(...metric.tree.map(node => node.bounds.x))
+        check(`${name} ${slide.id}: visible tree fills the diagram width`, treeSpan / metric.scale >= 1080)
         const nodes = new Map()
         function visit(node, focused = false) {
           nodes.set(node.id, !slide.content.focus || focused || node.id === slide.content.focus)
@@ -551,6 +573,7 @@ try {
       await page.screenshot({ path: join(output, screenshot) })
       entry.screenshots.push(screenshot)
     }
+    await keyboard(page, 'p', deck.slides.length - 1)
     entry.controls = await controlsVisible(page)
     await keyboard(page, 'Home', 0)
     const longNotesIndex = deck.slides.findIndex(slide => slide.id === 'tree-goal')

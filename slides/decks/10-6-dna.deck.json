@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "id": "10-6-dna",
-  "title": "Sapiens First DNA",
+  "title": "Sapiens First: Our DNA",
   "slug": "dna",
   "origin": "handcrafted",
   "approved": true,
-  "lastUpdated": "2026-10-09",
+  "lastUpdated": "2026-10-10",
   "covers": [
     "dna",
     "dna-story",
@@ -97,7 +97,9 @@
     "Unverified source claims and operational details remain unchanged in notes, including AI examples, the 3.5% benchmark, roadmap phases, donation amounts, recommended dues, solidarity dues, and Discord. No donation link, QR code, or new financial promise is added.",
     "Audience slides and speaker notes remain separate offline HTML files, with a linked synchronized presenter window. Browser verification must cover the expanded deck, all layout types, and actual text/circle geometry.",
     "Website hero rights and permission for the user-supplied AP photographs remain unverified. See image provenance and each slide’s notes before public redistribution.",
-    "Revision 2 follows the October 9 plan: Revolt for our future, deck-wide agenda, promise before dangers, extinction focus, topical dividers, California/Berkeley strategy tree, cycle before trigger moments and participation threshold, and section progress. The removed Declaration slide’s notes remain on extinction-focus. Original source bytes and coverage are unchanged."
+    "Revision 2 follows the October 9 plan: Revolt for our future, deck-wide agenda, promise before dangers, extinction focus, topical dividers, California/Berkeley strategy tree, cycle before trigger moments and participation threshold, and section progress. The removed Declaration slide’s notes remain on extinction-focus. Original source bytes and coverage are unchanged.",
+    "October 10 design improvements preserve all 24 slides, durations, original source bytes, and source-range coverage. Larger strategy trees retain readable context; the opening subtitle uses calmer type; Core values uses centered text and prominent icons; presentation mode hides the toolbar.",
+    "User follow-up: retain the original Movement Action Plan figure; remove closing explanations and the captions on the participation threshold, Holacracy, Atlas, and role example; rename slide 18 Core values; simplify the Culture divider to a heart; caption the Vietnam photograph Napalm girl; and center the closing Join, Donate, and Share cards. Join and Donate retain their pages; Share links to sapiensfirst.org. Slide order, source ranges, and timings are unchanged."
   ],
   "slides": [
     {
@@ -108,7 +110,7 @@
       "title": "Revolt for our future",
       "content": {
         "lines": [
-          "Sapiens First DNA",
+          "Sapiens First: Our DNA",
           "10/09/26"
         ]
       },
@@ -122,7 +124,7 @@
         ],
         "cues": [
           "Introduce the movement and its reason for gathering. The four-part source agenda is classified as navigation in the coverage report.",
-          "Opening wording is decided: Revolt for our future. The badge names the training; the short date is October 9, 2026."
+          "Opening wording is decided: Revolt for our future. The subtitle names the training: Sapiens First: Our DNA; the short date is October 9, 2026."
         ]
       },
       "image": {
@@ -626,7 +628,7 @@
       "title": "Vietnam, 1972",
       "sectionLabel": "Trigger moment",
       "content": {
-        "caption": "The Vietnam War"
+        "caption": "Napalm girl"
       },
       "durationSeconds": 30,
       "notes": {
@@ -682,9 +684,7 @@
       "purpose": "engage",
       "role": "buffer",
       "title": "3.5%",
-      "content": {
-        "caption": "Sustained, organized participation"
-      },
+      "content": {},
       "durationSeconds": 30,
       "notes": {
         "sourceRanges": [
@@ -749,7 +749,7 @@
       "layout": "values",
       "purpose": "explain",
       "role": "content",
-      "title": "How we work together",
+      "title": "Core values",
       "content": {
         "labels": [
           "Strategic non-violence",
@@ -839,7 +839,8 @@
           }
         ],
         "cues": [
-          "Use the source’s two principles together: enforceable shared rules and clear areas of authority. This pair connects the nested-circle overview to the named role example that follows."
+          "Use the source’s two principles together: enforceable shared rules and clear areas of authority. This pair connects the nested-circle overview to the named role example that follows.",
+          "The movement draws on Holacracy through explicit roles and distributed responsibility. A complete Holacracy constitution and decision procedure have not been adopted; use recorded decision rights and current agreements."
         ]
       },
       "section": "structure"
@@ -886,8 +887,7 @@
         "roles": [
           "Social Media Manager",
           "Email Sender"
-        ],
-        "caption": "Clear rules. Clear ownership."
+        ]
       },
       "durationSeconds": 55,
       "notes": {
@@ -905,22 +905,21 @@
     },
     {
       "id": "next-step",
-      "layout": "triad",
+      "layout": "actions",
       "purpose": "empower",
       "role": "content",
       "title": "Pathways to Action",
       "content": {
         "labels": [
-          "Donate",
           "Join",
-          "Organize"
+          "Donate",
+          "Share"
         ],
         "links": [
-          "sapiensfirst.org/donate",
           "sapiensfirst.org/join",
-          "sapiensfirst.org/fellowship"
-        ],
-        "caption": "Express your interest today"
+          "sapiensfirst.org/donate",
+          "sapiensfirst.org"
+        ]
       },
       "durationSeconds": 90,
       "notes": {
@@ -933,20 +932,24 @@
         "cues": [
           "Invite a next step using the draft’s actual donation, dues, solidarity, and organizing details. Do not invent links or an enrollment mechanism.",
           "Pathways to Action is this slide’s title, not a section; it closes the Structure section.",
-          "Each pathway has its own page: donate, join, and the organizer fellowship. Invite people to express interest in whichever fits."
+          "The closing pathways are Join, Donate, and Share at the user’s request. Join and Donate link to their existing pages; Share points to sapiensfirst.org so participants can pass the website on. The original organizing passage remains in the source notes.",
+          "The action cards replace the illustrative photograph. Choose one pathway; each visible URL links to its existing page."
         ]
       },
       "tone": "coral",
-      "image": {
-        "path": "assets/civic-park.jpg",
-        "alt": "People sharing a public playground on London’s South Bank; illustrative stock photograph.",
-        "credit": "Jamie Street / Unsplash — illustrative public-space photograph, not a Sapiens First event.",
-        "sourceUrl": "https://unsplash.com/photos/people-in-park-JPyRvvUnQjU",
-        "licenseUrl": "https://unsplash.com/license",
-        "position": "top"
-      },
-      "graphic": "arcs",
-      "section": "structure"
+      "section": "structure",
+      "ruleExceptions": [
+        {
+          "rule": "1-6-6",
+          "reason": "Three equal action cards pair an action with its existing URL. These six related labels remain readable and actionable.",
+          "text": "Pathways to Action"
+        },
+        {
+          "rule": "5-5-5",
+          "reason": "Three equal action cards pair an action with its existing URL. These six related labels remain readable and actionable.",
+          "text": "Pathways to Action"
+        }
+      ]
     }
   ],
   "ruleExceptions": [

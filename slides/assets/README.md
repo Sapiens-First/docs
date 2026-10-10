@@ -4,7 +4,7 @@ Downloaded October 6, 2026. `sources.json` records original URLs, photographer c
 
 | File | Source and credit | Use |
 | --- | --- | --- |
-| `civic-park.jpg` | [Jamie Street / Unsplash](https://unsplash.com/photos/people-in-park-JPyRvvUnQjU) | People sharing a playground on London's South Bank; closing next-step slide |
+| `civic-park.jpg` | [Jamie Street / Unsplash](https://unsplash.com/photos/people-in-park-JPyRvvUnQjU) | Retired closing photograph; retained as a local asset |
 | `city-night.jpg` | [Nicolao Negrello / Unsplash](https://unsplash.com/photos/aerial-view-of-cityscape-during-night-time-vQy71wPTvgM) | Downtown Los Angeles from City Hall; technology section |
 | `sapiens-contours.svg` | [Sapiens First strategy artwork](https://sapiensfirst.org/assets/homepage-strategy-contours.svg) | Decorative contours |
 | `sapiens-arcs.svg` | [Sapiens First involvement artwork](https://sapiensfirst.org/assets/homepage-involved-arcs.svg) | Decorative arcs |
@@ -26,4 +26,4 @@ The two AP photographs are included in the local draft with their rights status 
 
 Revision 2 adds `crossroads.svg`, an original vector illustration of a road dividing toward storm clouds and sunrise, with no text or people. It has no third-party source image. `sources.json` records its SHA-256 digest. The Declaration asset is retired with its bridge slide; the public-domain March image remains on the participation-threshold slide.
 
-The Movement Action Plan revision adds `movement-action-plan.png`, a graphic of Bill Moyer's Movement Action Plan (MAP) supplied by the user for the `movement-action-plan` figure slide. The publisher of this particular rendering and its reuse licence are unverified. Moyer's model is credited in the slide's speaker notes, and the file is recorded in `sources.json` with its SHA-256 digest.
+The Movement Action Plan revision adds `movement-action-plan.png`, a graphic of Bill Moyer's Movement Action Plan (MAP) supplied by the user. The audience slide displays this original figure, restored at the user's request after the October 10 design revision. The publisher of this particular rendering and its reuse licence are unverified. Moyer's model is credited in the slide's speaker notes, and the file is recorded in `sources.json` with its SHA-256 digest.

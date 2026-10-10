@@ -299,7 +299,7 @@ test('four section dividers, the participation threshold and Culture have dedica
   const threshold = byId(data, 'participation-threshold')
   assert.equal(threshold.layout, 'impact')
   assert.equal(threshold.title, '3.5%')
-  assert.equal(threshold.content.caption, 'Sustained, organized participation')
+  assert.equal(threshold.content.caption, undefined)
   assert.ok(threshold.notes.sourceRanges.some(range => range.start <= 50 && range.end >= 50))
   const culture = byId(data, 'culture-values')
   assert.equal(culture.layout, 'values')
@@ -316,7 +316,7 @@ test('four section dividers, the participation threshold and Culture have dedica
 test('revision two preserves the revised narrative and source fidelity', () => {
   const data = deck()
   assert.equal(byId(data, 'opening').title, 'Revolt for our future')
-  assert.deepEqual(byId(data, 'opening').content.lines, ['Sapiens First DNA', '10/09/26'])
+  assert.deepEqual(byId(data, 'opening').content.lines, ['Sapiens First: Our DNA', '10/09/26'])
   assert.equal(byId(data, 'technology').title, 'Humanity faces a choice')
   assert.deepEqual(byId(data, 'crisis').content.labels, ['Human extinction', 'Threats to democracy', 'Vast inequality'])
   assert.equal(byId(data, 'vision').content.direction, 'horizontal')
