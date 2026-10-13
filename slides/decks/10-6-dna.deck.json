@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "id": "10-6-dna",
-  "title": "Sapiens First: Our DNA",
+  "title": "Sapiens First: Our DNA & Tactical Meetings",
   "slug": "dna",
   "origin": "handcrafted",
   "approved": true,
-  "lastUpdated": "2026-10-10",
+  "lastUpdated": "2026-10-13",
   "covers": [
     "dna",
     "dna-story",
@@ -13,11 +13,11 @@
     "dna-culture",
     "dna-structure"
   ],
-  "targetDurationSeconds": 1195,
+  "targetDurationSeconds": 1515,
   "source": {
     "path": "slides/sources/10-6-dna.md",
-    "sha256": "a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e",
-    "text": "## Introduction\n\nSince the dawn of humanity, people have used technology to build a more beautiful world.\n\nTechnology can be a remedy or a poison. It all depends on how it is used. The agricultural revolution, for example, meant less people had to labor on the fields, but also led to an increasingly feudal society. The industrial revolution increased human productivity, but also led to greater inequality. Technological innovation must be accompanied by political reformation.\n\nThis presentation aims to answer the following questions:\n1. Story. Who are we as a movement? What is our story?\n2. Strategy. What's our approach to creating change? What's our roadmap?\n3. Culture. What culture and values do we have as a movement?\n4. Structure. How are we structured, and how can you get involved?\n\n## Part 1: Story\n\n**Crisis**\n\nIn the digital age, we've seen many nefarious impacts of technology. Social media have allowed people to be more connected then ever, but also led to a teenage mental health crisis. Platform economies like Uber make life more inequality, but also lead to economic displacement.\n\nToday, we are facing a great technological shift: artificial intelligence. Artificial intelligence itself is not bad or good -- it is shaped by us, its human-makers. But right now, AI is being shaped by power-hungry tech companies. \n\nPeople are worried about artificial intelligence, and rightly so. It is likely that left unchecked, AI will lead to:\n- Rampant inequality. In Silicon Valley, people often refer to the \"economic underclass\" that will developed as AI automates vast portions of white collar work. While new jobs may eventually be created, in the meantime, vast numbers of people will be unemployed, while inequality increases.\n- Threats to democracy. The power of AI is unprecedented. Money generated from the AI boom has already corrupted our political institutions. If governments and corporations use AI effectively, we could end up living in a permanent surveillance state.\n- Omnicide. For decades, scientists have worried about \"loss of control\" of AI systems. AI itself is amoral, and often tasked with completing objectives -- even when humans are in the way. Recently, we've seen AI models use superhuman abilities to break out of sandboxes and commit real crimes. Furthermore, bad actors could easily direct AI to create deadly pandemics or take down the cyber grid.\n\n**Vision**\n\nBut not to fear! We have faced disruptive technologies before. As a movement, Sapiens First focuses on three things:\n- Life. We fight to ensure humanity survives the development of superintelligence. This means a global treaty on AI development, and international coordination to ensure advanced AI is aligned with human interests.\n- Liberty. We demand a reformation to our democracy. We believe in a government for the people, by the people -- not tech oligarchs. We also believe that technology can enhance democracy by increasing civic participation, eg. by experimenting with new democratic institutions like Citizens Assemblies and liquid democracy.\n- Happiness. We believe that technology should uplift humanity, not just the rich few. In practice, this means that the wealth of the AI boom should be distributed. We also believe in the reformation of governmental institutions, so that technology accelerates the development of science, public health, and economic development.\n\n## Part 2: Strategy\n\nCentral to our DNA is a cohesive strategy & roadmap. With a clear strategy, Sapiens First chapters can be both autonomous and unified under a common goal.\n\n**Strategy**\n\nPeople typically see advocacy as falling into one of two camps:\n- Structure-based organizing (eg. labor unions, typical political campaigns) use lots of one-on-one conversations and trainings to build a base.\n- Mass protests get lots of people out on the streets at critical periods (eg. Black Lives Matter; Occupy Wall Street)\n\nSuccessful social movements use a best-of-both-worlds approach: momentum-driven organizing. This means having solid structures & leadership development for your base, while also using \"trigger events\" to spur mass mobilization, and then absorbing those people into the movement.\n\nThis can be summarized in a simple diagram:\n- Act. Anything from a potluck to a protest.\n- Recruit. Getting connecting with participants.\n- Train. Empowering recruits to self-organize new actions.\n\nScholars have found that successful movements win -- doing things as serious as toppling dictators -- when they get 3.5% of the population engaged in a sustain, organized manner. \n\n**Roadmap**\n\nGiven the fact that AI may kill us all, we focus on this as our initial primary objective. \n\nMission: Federal legislation for an AI treaty\n  - Phase 1: Seed cities\n    - Campaigns\n      - Tactics\n  - Phase 2: California state\n  - Phase 3: Red & blue states\n  - Phase 4: 3.5%, Federal policy change\n\nWithin each Phase 1, local chapters have the freedom to organize any campaign that relates to AI safety, democracy, and abundance. We also hope chapters will experiment with tactics and share successful techniques through our shared tools.\n\n## Part 3: Culture\n\n- Strategic non-violence\n- Regenerative culture\n- Essentialism\n- Abundant leadership\n\n## Part 4: Structure\n\nTo scale to the size we need, we rely on volunteers to fuel our work.\n\nWe have a Cycle of Engagement, which follows from our strategy:\n- Act -> new Supporters (on the email list)\n- Recruit -> new Members (pay dues + on the Discord)\n- Train -> new Organizers (have an active role)\n\nBut what do Organizers do? How do we allow everyone to have a meaningful role while we scale to hundreds of thousands of people?\n\nSapiens First uses a system of Holacracy to allow self-organization. \n\nEssentially, we want people to be autonomous but also unified in our movement. This means an organizational structure that is less like a militaristic hierarchy, and more like organs in your body, or people in a city. \n\nThis boils down to two principles:\n- Rules of the road (enforceable rules)\n- Clear ownership (property rights)\n\nIn Sapiens First, when you become an Organizer, you are given one or more roles. Each Role has full authority over their areas of responsibility. Roles make up Circles -- for example, the Media Circle may include a Social Media Manager, an Email Sender, and so on. \n\n## Pathways to Action\n\nWe all have a choice: will we continue to be trodden on by corporate elites, or will we fight for a brighter future?\n\nWe believe we can achieve revolutionary social change around technology in this decade -- and we need your help.\n- Donate. $1000 funds an action.\n- Join. Our members host events and are part of an online community. Recommend $10 or $20 dollars. We also have a solidarity dues program.\n- Organize. Connect people in your area and develop as a leader."
+    "sha256": "965ee3e122a400b0c12f52f1b1a7e9a354dc0979713dd1004702c0fa4604cfdc",
+    "text": "## Introduction\n\nSince the dawn of humanity, people have used technology to build a more beautiful world.\n\nTechnology can be a remedy or a poison. It all depends on how it is used. The agricultural revolution, for example, meant less people had to labor on the fields, but also led to an increasingly feudal society. The industrial revolution increased human productivity, but also led to greater inequality. Technological innovation must be accompanied by political reformation.\n\nThis presentation aims to answer the following questions:\n1. Story. Who are we as a movement? What is our story?\n2. Strategy. What's our approach to creating change? What's our roadmap?\n3. Culture. What culture and values do we have as a movement?\n4. Structure. How are we structured, and how can you get involved?\n\n## Part 1: Story\n\n**Crisis**\n\nIn the digital age, we've seen many nefarious impacts of technology. Social media have allowed people to be more connected then ever, but also led to a teenage mental health crisis. Platform economies like Uber make life more inequality, but also lead to economic displacement.\n\nToday, we are facing a great technological shift: artificial intelligence. Artificial intelligence itself is not bad or good -- it is shaped by us, its human-makers. But right now, AI is being shaped by power-hungry tech companies. \n\nPeople are worried about artificial intelligence, and rightly so. It is likely that left unchecked, AI will lead to:\n- Rampant inequality. In Silicon Valley, people often refer to the \"economic underclass\" that will developed as AI automates vast portions of white collar work. While new jobs may eventually be created, in the meantime, vast numbers of people will be unemployed, while inequality increases.\n- Threats to democracy. The power of AI is unprecedented. Money generated from the AI boom has already corrupted our political institutions. If governments and corporations use AI effectively, we could end up living in a permanent surveillance state.\n- Omnicide. For decades, scientists have worried about \"loss of control\" of AI systems. AI itself is amoral, and often tasked with completing objectives -- even when humans are in the way. Recently, we've seen AI models use superhuman abilities to break out of sandboxes and commit real crimes. Furthermore, bad actors could easily direct AI to create deadly pandemics or take down the cyber grid.\n\n**Vision**\n\nBut not to fear! We have faced disruptive technologies before. As a movement, Sapiens First focuses on three things:\n- Life. We fight to ensure humanity survives the development of superintelligence. This means a global treaty on AI development, and international coordination to ensure advanced AI is aligned with human interests.\n- Liberty. We demand a reformation to our democracy. We believe in a government for the people, by the people -- not tech oligarchs. We also believe that technology can enhance democracy by increasing civic participation, eg. by experimenting with new democratic institutions like Citizens Assemblies and liquid democracy.\n- Happiness. We believe that technology should uplift humanity, not just the rich few. In practice, this means that the wealth of the AI boom should be distributed. We also believe in the reformation of governmental institutions, so that technology accelerates the development of science, public health, and economic development.\n\n## Part 2: Strategy\n\nCentral to our DNA is a cohesive strategy & roadmap. With a clear strategy, Sapiens First chapters can be both autonomous and unified under a common goal.\n\n**Strategy**\n\nPeople typically see advocacy as falling into one of two camps:\n- Structure-based organizing (eg. labor unions, typical political campaigns) use lots of one-on-one conversations and trainings to build a base.\n- Mass protests get lots of people out on the streets at critical periods (eg. Black Lives Matter; Occupy Wall Street)\n\nSuccessful social movements use a best-of-both-worlds approach: momentum-driven organizing. This means having solid structures & leadership development for your base, while also using \"trigger events\" to spur mass mobilization, and then absorbing those people into the movement.\n\nThis can be summarized in a simple diagram:\n- Act. Anything from a potluck to a protest.\n- Recruit. Getting connecting with participants.\n- Train. Empowering recruits to self-organize new actions.\n\nScholars have found that successful movements win -- doing things as serious as toppling dictators -- when they get 3.5% of the population engaged in a sustain, organized manner. \n\n**Roadmap**\n\nGiven the fact that AI may kill us all, we focus on this as our initial primary objective. \n\nMission: Federal legislation for an AI treaty\n  - Phase 1: Seed cities\n    - Campaigns\n      - Tactics\n  - Phase 2: California state\n  - Phase 3: Red & blue states\n  - Phase 4: 3.5%, Federal policy change\n\nWithin each Phase 1, local chapters have the freedom to organize any campaign that relates to AI safety, democracy, and abundance. We also hope chapters will experiment with tactics and share successful techniques through our shared tools.\n\n## Part 3: Culture\n\n- Strategic non-violence\n- Regenerative culture\n- Essentialism\n- Abundant leadership\n\n## Part 4: Structure\n\nTo scale to the size we need, we rely on volunteers to fuel our work.\n\nWe have a Cycle of Engagement, which follows from our strategy:\n- Act -> new Supporters (on the email list)\n- Recruit -> new Members (pay dues + on the Discord)\n- Train -> new Organizers (have an active role)\n\nBut what do Organizers do? How do we allow everyone to have a meaningful role while we scale to hundreds of thousands of people?\n\nSapiens First uses a system of Holacracy to allow self-organization. \n\nEssentially, we want people to be autonomous but also unified in our movement. This means an organizational structure that is less like a militaristic hierarchy, and more like organs in your body, or people in a city. \n\nThis boils down to two principles:\n- Rules of the road (enforceable rules)\n- Clear ownership (property rights)\n\nIn Sapiens First, when you become an Organizer, you are given one or more roles. Each Role has full authority over their areas of responsibility. Roles make up Circles -- for example, the Media Circle may include a Social Media Manager, an Email Sender, and so on. \n\n## Pathways to Action\n\nWe all have a choice: will we continue to be trodden on by corporate elites, or will we fight for a brighter future?\n\nWe believe we can achieve revolutionary social change around technology in this decade -- and we need your help.\n- Donate. $1000 funds an action.\n- Join. Our members host events and are part of an online community. Recommend $10 or $20 dollars. We also have a solidarity dues program.\n- Organize. Connect people in your area and develop as a leader.\n\n## Tactical Meetings for Organizers\n\nWe use the self-organizing system, based on Holacracy.\n\n### Three Parts\n\n- Check-ins\n- Tactical\n  - Creation of agenda\n  - Go through each item. \"What do you need from the group?\"\n  - Create next actions\n- Governance\n  - Creation of agenda\n  - Go through each item. \"Who owns what?\"\n  - Create roles & responsibilities\n\n### Teams\n\n- Community\n- Actions\n- Research\n\n### Regenerative culture\n\n- Share the space.\n- Radical inclusivity.\n- Clear red lines. No harassment or bullying.\n"
   },
   "sourceGaps": [],
   "sourceClassifications": [
@@ -99,7 +99,10 @@
     "Website hero rights and permission for the user-supplied AP photographs remain unverified. See image provenance and each slide’s notes before public redistribution.",
     "Revision 2 follows the October 9 plan: Revolt for our future, deck-wide agenda, promise before dangers, extinction focus, topical dividers, California/Berkeley strategy tree, cycle before trigger moments and participation threshold, and section progress. The removed Declaration slide’s notes remain on extinction-focus. Original source bytes and coverage are unchanged.",
     "October 10 design improvements preserve all 24 slides, durations, original source bytes, and source-range coverage. Larger strategy trees retain readable context; the opening subtitle uses calmer type; Core values uses centered text and prominent icons; presentation mode hides the toolbar.",
-    "User follow-up: retain the original Movement Action Plan figure; remove closing explanations and the captions on the participation threshold, Holacracy, Atlas, and role example; rename slide 18 Core values; simplify the Culture divider to a heart; caption the Vietnam photograph Napalm girl; and center the closing Join, Donate, and Share cards. Join and Donate retain their pages; Share links to sapiensfirst.org. Slide order, source ranges, and timings are unchanged."
+    "User follow-up: retain the original Movement Action Plan figure; remove closing explanations and the captions on the participation threshold, Holacracy, Atlas, and role example; rename slide 18 Core values; simplify the Culture divider to a heart; caption the Vietnam photograph Napalm girl; and center the closing Join, Donate, and Share cards. Join and Donate retain their pages; Share links to sapiensfirst.org. Slide order, source ranges, and timings are unchanged.",
+    "October 13: append Tactical Meetings for Organizers as a second presentation in the same master deck. The original 101-line DNA speech remains an unchanged prefix; the user-supplied meeting outline is appended to the source and mapped once into presenter notes. All original DNA slides and timings remain unchanged. Tactical and Governance process labels are concise paraphrases; their exact facilitation questions are dedicated question slides. Community, Actions, and Research are the teams in this organizer training, separate from the selected Global Atlas circles shown earlier.",
+    "October 13 design refinement: merge the repetitive Tactical and Governance process slides into One process. Two outcomes. A shared agenda-and-items path branches to Tactical: Next actions and Governance: Roles & responsibilities. The two exact facilitation questions remain separate, with coral and sage matching their branch colors. Meeting and team cards use relevant trusted outline icons. Source snapshot and original DNA slides remain unchanged.",
+    "User follow-up: insert Regenerative culture before the self-organizing-system slide. Preserve all three supplied principles on the audience slide: Share the space; Radical inclusivity; Clear red lines, with No harassment or bullying as the explicit boundary. Its source passage is appended to preserve existing line mappings; presentation order places it at slide 26."
   ],
   "slides": [
     {
@@ -950,13 +953,225 @@
           "text": "Pathways to Action"
         }
       ]
+    },
+    {
+      "id": "meetings-section",
+      "layout": "divider",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Tactical Meetings for Organizers",
+      "content": {},
+      "durationSeconds": 15,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 103,
+            "end": 103
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings",
+      "tone": "coral"
+    },
+    {
+      "id": "meetings-culture",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Regenerative culture",
+      "content": {
+        "labels": [
+          "Share the space.",
+          "Radical inclusivity.",
+          "Clear red lines."
+        ],
+        "caption": "No harassment or bullying."
+      },
+      "durationSeconds": 55,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 125,
+            "end": 129
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings"
+    },
+    {
+      "id": "meetings-system",
+      "layout": "statement",
+      "purpose": "explain",
+      "role": "content",
+      "title": "A self-organizing system",
+      "content": {
+        "lines": [
+          "Based on Holacracy"
+        ]
+      },
+      "durationSeconds": 35,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 105,
+            "end": 105
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings",
+      "graphic": "contours"
+    },
+    {
+      "id": "meetings-parts",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Three parts",
+      "content": {
+        "labels": [
+          "Check-ins",
+          "Tactical",
+          "Governance"
+        ],
+        "direction": "horizontal"
+      },
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 107,
+            "end": 109
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings"
+    },
+    {
+      "id": "meetings-process",
+      "layout": "steps",
+      "purpose": "explain",
+      "role": "content",
+      "title": "One process. Two outcomes.",
+      "content": {
+        "mode": "branching",
+        "labels": [
+          "Create the agenda",
+          "Go through each item",
+          "Tactical: Next actions",
+          "Governance: Roles & responsibilities"
+        ]
+      },
+      "durationSeconds": 70,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 110,
+            "end": 111
+          },
+          {
+            "start": 113,
+            "end": 115
+          },
+          {
+            "start": 117,
+            "end": 117
+          }
+        ],
+        "cues": [
+          "Both formats build an agenda and work through each item. Follow the shared path, then compare the outcomes: next actions for Tactical; roles and responsibilities for Governance. The next two slides give each format’s facilitation question."
+        ]
+      },
+      "section": "meetings"
+    },
+    {
+      "id": "meetings-tactical-question",
+      "layout": "question",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "What do you need from the group?",
+      "content": {},
+      "durationSeconds": 45,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 112,
+            "end": 112
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings",
+      "ruleExceptions": [
+        {
+          "rule": "1-6-6",
+          "text": "What do you need from the group?",
+          "reason": "Preserve the user’s exact seven-word facilitation question on its own spacious question slide."
+        }
+      ],
+      "tone": "coral"
+    },
+    {
+      "id": "meetings-governance-question",
+      "layout": "question",
+      "purpose": "engage",
+      "role": "buffer",
+      "title": "Who owns what?",
+      "content": {},
+      "durationSeconds": 30,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 116,
+            "end": 116
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings",
+      "tone": "sage"
+    },
+    {
+      "id": "meetings-teams",
+      "layout": "triad",
+      "purpose": "explain",
+      "role": "content",
+      "title": "Teams",
+      "content": {
+        "labels": [
+          "Community",
+          "Actions",
+          "Research"
+        ],
+        "direction": "horizontal"
+      },
+      "durationSeconds": 40,
+      "notes": {
+        "sourceRanges": [
+          {
+            "start": 119,
+            "end": 123
+          }
+        ],
+        "cues": []
+      },
+      "section": "meetings",
+      "tone": "sage"
     }
   ],
   "ruleExceptions": [
     {
       "rule": "10-20-30",
       "text": "slide count",
-      "reason": "The user requested section dividers, an agenda, a stepped extinction focus, three strategy-tree views, separate trigger-moment photographs, a Movement Action Plan slide, Culture and holacracy content. The slides total 1195 planned seconds, within twenty minutes."
+      "reason": "The master deck combines the original 24-slide DNA presentation with eight organizer meeting slides, including regenerative culture. The shared Tactical/Governance process appears once as a branching diagram, retaining sparse copy and distinct facilitation questions."
+    },
+    {
+      "rule": "10-20-30",
+      "text": "deck",
+      "reason": "The user requested a second presentation within one master deck. The DNA portion retains its 1195-second timing; the organizer meeting section adds 320 seconds, totaling 25 minutes 15 seconds."
     }
   ],
   "sourceOrder": "presentation"

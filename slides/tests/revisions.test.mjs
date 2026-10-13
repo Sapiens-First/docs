@@ -115,14 +115,39 @@ test('agenda lists three to six escaped audience labels in order', () => {
 
 test('footer progress marks each active section and its proportional progress', () => {
   const data = deck('statement', { lines: [] }, { section: 'story' })
-  data.slides.push({ ...data.slides[0], id: 'second', section: 'story' }, { ...data.slides[0], id: 'third', section: 'strategy' }, { ...data.slides[0], id: 'unsectioned', section: undefined })
+  data.slides.push({ ...data.slides[0], id: 'second', section: 'story' }, { ...data.slides[0], id: 'third', section: 'meetings' }, { ...data.slides[0], id: 'unsectioned', section: undefined })
   const html = renderDeck(data)
   assert.equal((html.match(/class="progress-seg/g) ?? []).length, 6)
   assert.equal((html.match(/<div class="progress-seg"[^>]*aria-current="step"/g) ?? []).length, 3)
   assert.match(html, /data-section="story"[^>]*aria-current="step"[^>]*style="--fill:50%"/)
   assert.match(html, /data-section="story"[^>]*aria-current="step"[^>]*style="--fill:100%"/)
+  assert.match(html, /data-section="meetings"[^>]*aria-current="step"[^>]*style="--fill:100%"/)
+  assert.match(html, /class="progress-label">Tactical Meetings<\/span>/)
   data.slides[0].section = 'unknown'
   assert.match(validateDeck(data).errors.join(' '), /section/)
+})
+
+test('three meeting steps use ordered rows while explicit participation progression retains its layout', () => {
+  const data = deck('steps', { labels: ['Create the agenda', 'Go through each item', 'Create roles & responsibilities'] })
+  assert.deepEqual(validateDeck(data).errors, [])
+  assert.match(renderDeck(data), /Ordered progression: 1\. Create the agenda; 2\. Go through each item; 3\. Create roles &amp; responsibilities/)
+  data.slides[0].content.mode = 'progression'
+  assert.match(renderDeck(data), /Participation progression:/)
+})
+
+test('branching steps distinguish shared process from two labeled outcomes', () => {
+  const data = deck('steps', { mode: 'branching', labels: ['Create the agenda', 'Go through each item', 'Tactical: Next actions', 'Governance: Roles & responsibilities'] })
+  assert.deepEqual(validateDeck(data).errors, [])
+  const html = renderDeck(data)
+  assert.match(html, /class="diagram branching-map"/)
+  assert.match(html, /Shared process: Create the agenda; Go through each item\. Outcomes: Tactical: Next actions; Governance: Roles &amp; responsibilities/)
+  assert.equal((html.match(/class="outcome-node"/g) ?? []).length, 2)
+  data.slides[0].content.labels.pop()
+  assert.match(validateDeck(data).errors.join(' '), /branching requires four/)
+  data.slides[0].content.labels.push('Missing outcome separator')
+  assert.match(validateDeck(data).errors.join(' '), /branching outcomes/)
+  data.slides[0].content.labels[3] = 'Governance: <script>unsafe</script>'
+  assert.match(renderDeck(data), /&lt;script&gt;unsafe&lt;\/script&gt;/)
 })
 
 test('topical divider graphics are trusted inline SVG with explicit motif identifiers', () => {
@@ -174,13 +199,13 @@ test('local crossroads SVG embeds offline and preserves source credit in notes',
 
 test('revision two deck has the complete requested sequence and exact original source', () => {
   const data = JSON.parse(readFileSync(new URL('../decks/10-6-dna.deck.json', import.meta.url)))
-  assert.deepEqual(data.slides.map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step'])
+  assert.deepEqual(data.slides.slice(0, 24).map(slide => slide.id), ['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step'])
   const report = validateDeck(data)
   assert.deepEqual(report.errors, [])
   assert.deepEqual(report.coverage.uncovered, [])
   assert.deepEqual(report.coverage.duplicated, [])
   assert.ok(report.findings.every(finding => finding.justified), JSON.stringify(report.findings))
-  assert.equal(data.source.sha256, 'a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e')
+  assert.equal(createHash('sha256').update(data.source.text.split('\n').slice(0, 101).join('\n')).digest('hex'), 'a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e')
   assert.equal(data.slides[3].image.path, 'assets/crossroads.svg')
   const trees = data.slides.filter(slide => slide.layout === 'tree')
   assert.equal(trees.length, 3)

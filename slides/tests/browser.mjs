@@ -448,12 +448,13 @@ try {
     if (error.code !== 'ENOENT') throw error
     evidence.originalSourceComparison = { status: 'unavailable', path: sourcePath }
   }
-  check('DNA acceptance deck renders all twenty-four slides', deck.slides.length === 24 && await page.locator('#stage .slide').count() === 24)
-  check('revision two narrative order', JSON.stringify(deck.slides.map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step']))
+  check('master deck renders all thirty-two slides', deck.slides.length === 32 && await page.locator('#stage .slide').count() === 32)
+  check('revision two narrative order', JSON.stringify(deck.slides.slice(0, 24).map(slide => slide.id)) === JSON.stringify(['opening', 'agenda', 'story-section', 'technology', 'vision', 'crisis', 'strategy-section', 'tree-goal', 'tree-california', 'tree-bay', 'momentum', 'trigger-birmingham', 'trigger-vietnam', 'movement-action-plan', 'participation-threshold', 'chapter-question', 'culture-section', 'culture-values', 'structure-section', 'participation', 'ownership-principles', 'circles', 'roles', 'next-step']))
+  check('organizer meeting slides follow the DNA presentation', JSON.stringify(deck.slides.slice(24).map(slide => slide.id)) === JSON.stringify(['meetings-section', 'meetings-culture', 'meetings-system', 'meetings-parts', 'meetings-process', 'meetings-tactical-question', 'meetings-governance-question', 'meetings-teams']))
   const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'photo', 'figure', 'actions', 'agenda', 'tree']
   check('all current deck layout forms exercised', layouts.every(layout => deck.slides.some(slide => slide.layout === layout) && audienceDeck.slides.some(slide => slide.layout === layout)))
   const dividerIds = await page.locator('#stage .slide[data-layout="divider"]').evaluateAll(slides => slides.map(slide => slide.dataset.slideId))
-  check('four section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section']), dividerIds)
+  check('five section dividers render in narrative order', JSON.stringify(dividerIds) === JSON.stringify(['story-section', 'strategy-section', 'culture-section', 'structure-section', 'meetings-section']), dividerIds)
   const threshold = await page.locator('.slide[data-slide-id="participation-threshold"] h1').evaluate(title => ({ text: title.textContent, fontSize: parseFloat(getComputedStyle(title).fontSize) }))
   check('participation threshold has a large standalone 3.5% heading', threshold.text === '3.5%' && threshold.fontSize >= 200, threshold)
   const revisions = await page.evaluate(() => {
@@ -497,7 +498,7 @@ try {
   const closingLinks = await page.locator('.slide[data-slide-id="next-step"] .action-link').evaluateAll(links => links.map(link => ({ href: link.getAttribute('href'), target: link.target, rel: link.rel })))
   check('closing actions link to the authored destinations in separate tabs', JSON.stringify(closingLinks) === JSON.stringify(deck.slides.find(slide => slide.id === 'next-step').content.links.map(link => ({ href: `https://${link}`, target: '_blank', rel: 'noopener' }))))
   check('audience page declares a favicon', revisions.favicon)
-  check('all section dividers have topical motifs', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested']))
+  check('DNA dividers keep topical motifs; meetings use the broad divider artwork', JSON.stringify(revisions.dividerMotifs) === JSON.stringify(['book', 'route', 'hands', 'nested', null]))
   const assets = await page.evaluate(() => ({
     fonts: [...document.fonts].map(font => ({ family: font.family, weight: font.weight, status: font.status })),
     logos: [...document.querySelectorAll('.brand-logo')].map(image => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight, embedded: image.src.startsWith('data:image/png;base64,') })),

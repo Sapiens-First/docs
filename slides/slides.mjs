@@ -6,9 +6,10 @@ import { generateDeck } from './generate.mjs'
 import { escapeHTML } from './html.mjs'
 import { renderTree, TREE_CSS } from './layouts/strategy-tree.mjs'
 import { renderMovementPlan, MOVEMENT_CSS } from './layouts/movement-plan.mjs'
+import { organizerIcon, renderBranchingSteps, ORGANIZER_CSS } from './layouts/organizer-meetings.mjs'
 
 const layouts = ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'pyramid', 'montage', 'agenda', 'tree', 'photo', 'figure', 'movement', 'actions']
-const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure' }
+const sections = { story: 'Story', strategy: 'Strategy', culture: 'Culture', structure: 'Structure', meetings: 'Tactical Meetings' }
 const topicalGraphics = ['book', 'route', 'hands', 'nested', 'signpost']
 const purposes = ['explain', 'engage', 'empower']
 const words = text => text.trim().split(/\s+/).filter(Boolean).length
@@ -203,8 +204,12 @@ export function validateDeck(deck) {
     if (slide.layout === 'pyramid') labelArray('labels', 5, 5)
     if (slide.layout === 'circles' && !text(c.circle)) fail(`${owner}: circle label required`)
     if (slide.layout === 'steps') labelArray('labels', 3, 4)
-    if (slide.layout === 'steps' && c.mode !== undefined && !['horizons', 'progression'].includes(c.mode)) fail(`${owner}: unsupported steps mode`)
+    if (slide.layout === 'steps' && c.mode !== undefined && !['horizons', 'progression', 'branching'].includes(c.mode)) fail(`${owner}: unsupported steps mode`)
     if (slide.layout === 'steps' && c.mode === 'horizons' && c.labels?.length !== 4) fail(`${owner}: horizons requires four labels`)
+    if (slide.layout === 'steps' && c.mode === 'branching') {
+      if (c.labels?.length !== 4) fail(`${owner}: branching requires four labels`)
+      if (!c.labels?.slice(2).every(value => typeof value === 'string' && /^[^:]+: \S.*$/.test(value))) fail(`${owner}: branching outcomes require a heading and outcome separated by ': '`)
+    }
     if (slide.layout === 'roles') { labelArray('roles', 2, 3); if (!text(c.circle)) fail(`${owner}: circle label required`) }
     if (c.caption !== undefined && !text(c.caption)) fail(`${owner}: caption must be nonempty text`)
     if (!object(slide.notes) || !Array.isArray(slide.notes.sourceRanges)) { fail(`${owner}: notes.sourceRanges must be an array`); continue }
@@ -346,6 +351,7 @@ body { height:100vh; height:100dvh; overflow:hidden; background:var(--ink); colo
 .agenda li:nth-child(5)::before { background:var(--coral); }
 ${TREE_CSS}
 ${MOVEMENT_CSS}
+${ORGANIZER_CSS}
 .slide[data-layout="statement"][data-image-treatment="artistic"] .slide-photo { inset:0 0 0 auto; width:690px; height:720px; border:0; border-radius:0; opacity:.45; filter:sepia(1) contrast(.82); mix-blend-mode:multiply; object-fit:cover; }
 .slide[data-layout="statement"][data-image-treatment="artistic"] h1 { margin-top:100px; max-width:1050px; font-size:102px; line-height:1.04; }
 .slide[data-layout="statement"][data-image-treatment="artistic"]:has(.statement-lines:empty) { display:block; }
@@ -604,6 +610,7 @@ function pairIcon(index) {
 }
 
 function diagram(slide, index) {
+  if (slide.layout === 'steps' && slide.content.mode === 'branching') return renderBranchingSteps(slide.content, index)
   const c = slide.content, marker = `arrow-${index}`
   const label = (value, x, y, size = 44) => `<text class="audience-text" x="${x}" y="${y}" text-anchor="middle" dominant-baseline="middle" style="font-size:${size}px">${escapeHTML(value)}</text>`
   const colors = ['var(--coral)', 'var(--yellow)', 'var(--sage)', 'var(--paper)']
@@ -634,7 +641,7 @@ function diagram(slide, index) {
   } else if (slide.layout === 'steps' && c.mode === 'horizons') {
     description = `Nested horizons of strategic focus, from local action to broader policy scale: ${c.labels.join('; ')}. The bands show perspectives of focus, not literal geographic boundaries, dated phases or completion gates.`
     body = [[550, 370, 70], [460, 280, 160], [350, 190, 246], [220, 100, 336]].map(([rx, ry, y], i) => `<path class="horizon-band" d="M${568 - rx} 380 A${rx} ${ry} 0 0 1 ${568 + rx} 380 Z" fill="${colors[3 - i]}" stroke="var(--ink)" stroke-width="2"/>${label(c.labels[3 - i], 568, y)}`).join('')
-  } else if (slide.layout === 'steps' && c.labels.length === 3) {
+  } else if (slide.layout === 'steps' && c.mode === 'progression' && c.labels.length === 3) {
     description = `Participation progression: ${c.labels.join(' → ')}. People can grow through participation.`
     body = c.labels.map((value, i) => {
       const x = 20 + i * 384
@@ -710,7 +717,7 @@ export function renderDeck(deck, { notesHref = `${encodeURIComponent(deck.id)}.n
     if (slide.layout === 'agenda') content = `<ol class="agenda">${slide.content.labels.map(value => `<li><span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ol>`
     if (slide.layout === 'tree') content = renderTree(slide.content, index)
     if (slide.layout === 'movement') content = renderMovementPlan(slide.content, index)
-    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}${slide.content.highlightStep ? ' stepped' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${slide.content.links ? actionIcon(i, value) : pointIcon(i, slide.tone !== 'dark' && !slide.content.highlightStep)}${slide.content.links ? `<span class="action-text"><span class="audience-text">${escapeHTML(value)}</span><a class="action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i])}</a></span>` : `<span class="audience-text">${escapeHTML(value)}</span>`}${slide.content.highlightStep && i === slide.content.highlight ? '<span class="focus-tag" aria-hidden="true">Our focus</span>' : ''}</li>`).join('')}</ul>`
+    if (slide.layout === 'triad') content = `<ul class="triad${slide.content.direction === 'horizontal' ? ' horizontal' : ''}${slide.content.highlightStep ? ' stepped' : ''}">${slide.content.labels.map((value, i) => `<li${slide.content.highlight !== undefined ? ` class="${i === slide.content.highlight ? 'is-lit' : 'is-dim'}"` : ''}>${slide.content.links ? actionIcon(i, value) : slide.section === 'meetings' ? organizerIcon(value) : pointIcon(i, slide.tone !== 'dark' && !slide.content.highlightStep)}${slide.content.links ? `<span class="action-text"><span class="audience-text">${escapeHTML(value)}</span><a class="action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i])}</a></span>` : `<span class="audience-text">${escapeHTML(value)}</span>`}${slide.content.highlightStep && i === slide.content.highlight ? '<span class="focus-tag" aria-hidden="true">Our focus</span>' : ''}</li>`).join('')}</ul>`
     if (slide.layout === 'values') content = `<ul class="values">${slide.content.labels.map((value, i) => `<li>${valueIcon(i)}<span class="audience-text value-title">${escapeHTML(value)}</span>${slide.content.descriptions ? `<span class="audience-text value-description">${escapeHTML(slide.content.descriptions[i])}</span>` : ''}</li>`).join('')}</ul>`
     if (slide.layout === 'actions') content = `<ul class="action-cards">${slide.content.labels.map((value, i) => `<li><div class="action-heading">${actionIcon(i, value)}<span class="audience-text action-title">${escapeHTML(value)}</span></div>${slide.content.descriptions ? `<span class="audience-text action-description">${escapeHTML(slide.content.descriptions[i])}</span>` : ''}<a class="audience-text action-link" href="https://${escapeHTML(slide.content.links[i])}" target="_blank" rel="noopener">${escapeHTML(slide.content.links[i]).replace('/', '<wbr>/')}</a></li>`).join('')}</ul>`
     if (slide.layout === 'pair') content = `<ul class="pair">${slide.content.labels.map((value, i) => `<li>${pairIcon(i)}<span class="audience-text">${escapeHTML(value)}</span></li>`).join('')}</ul>`

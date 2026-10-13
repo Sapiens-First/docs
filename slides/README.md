@@ -1,6 +1,23 @@
 # DNA slide experiment
 
-This experiment turns the DNA speech into twenty-four audience slides and preserves its original passages in a separate presenter notes page. An agenda, four topical section dividers, a click-to-reveal extinction focus on the crisis slide, three strategy-tree views, separate Birmingham and Vietnam trigger photographs, the original Movement Action Plan figure, a 3.5% impact slide, Culture, and holacracy vary the pacing. The footer shows the current section and progress within it. The editable deck lives in `decks/10-6-dna.deck.json`. Building produces two self-contained HTML files; authoring files are needed only to rebuild them.
+The master deck contains twenty-four DNA slides followed by eight Tactical Meetings for Organizers slides, with source passages in a separate presenter notes page. An agenda, four topical DNA section dividers, a click-to-reveal extinction focus on the crisis slide, three strategy-tree views, separate Birmingham and Vietnam trigger photographs, the original Movement Action Plan figure, a 3.5% impact slide, Culture, and holacracy vary the pacing. The footer shows the current section and progress within it. The editable deck lives in `decks/10-6-dna.deck.json`. Building produces two self-contained HTML files; authoring files are needed only to rebuild them.
+
+## Tactical Meetings for Organizers
+
+The second presentation starts at slide 25, after Pathways to Action. It reuses the deck's fonts, colors, cards, ordered steps, question slides, and section progress. The original DNA slides and their timings remain unchanged.
+
+| Slide | Content |
+| --- | --- |
+| 25 | Tactical Meetings for Organizers |
+| 26 | Regenerative culture: share the space, radical inclusivity, clear red lines; no harassment or bullying |
+| 27 | A self-organizing system, based on Holacracy |
+| 28 | Three parts: Check-ins, Tactical, Governance |
+| 29 | One process. Two outcomes: shared agenda and items, branching to next actions or roles & responsibilities |
+| 30 | What do you need from the group? |
+| 31 | Who owns what? |
+| 32 | Teams: Community, Actions, Research |
+
+The user-supplied meeting outline is appended to `sources/10-6-dna.md` and mapped into presenter notes; the original 101-line speech remains an unchanged prefix. The master deck totals 1515 planned seconds (25 minutes 15 seconds), including 320 seconds for the meeting section. Explicit deck exceptions document the combined slide count and duration. The seven-word tactical question has one title-budget exception to preserve the exact wording; the remaining new copy fits the standard budgets. Coral identifies Tactical and sage identifies Governance throughout the process, overview, and question slides. Meeting and team cards use matching outline icons; the system statement uses an unboxed subtitle for a quieter transition.
 
 ## Build and present
 
@@ -41,7 +58,7 @@ The JSON boundary is `schemaVersion: 1`. A deck contains `id`, `title`, `targetD
 
 `source` contains the repository-relative `path`, the lowercase SHA-256 `sha256` of its UTF-8 bytes, and the complete original `text`. Preserve every character, including whitespace. A changed original requires an editorial refresh of the snapshot, digest, and line mapping together.
 
-Each slide contains a stable unique `id`, `layout`, `purpose` (`explain`, `engage`, or `empower`), `role` (`content` or `buffer`), audience-facing `title`, layout-specific `content`, positive integer `durationSeconds`, and `notes`. An optional `sectionLabel` is audience text too. Optional `section` selects `story`, `strategy`, `culture`, or `structure`. The progress strip derives section order from first appearance, counts all slides in the section, and fills proportionally to the current slide. Slides without `section` omit the strip. Optional `tone` selects `paper` (default), `coral`, `yellow`, `sunrise`, `sage`, or `dark` (valid but unused by the DNA deck) without changing the layout.
+Each slide contains a stable unique `id`, `layout`, `purpose` (`explain`, `engage`, or `empower`), `role` (`content` or `buffer`), audience-facing `title`, layout-specific `content`, positive integer `durationSeconds`, and `notes`. An optional `sectionLabel` is audience text too. Optional `section` selects `story`, `strategy`, `culture`, `structure`, or `meetings`. The progress strip derives section order from first appearance, counts all slides in the section, and fills proportionally to the current slide. Slides without `section` omit the strip. Optional `tone` selects `paper` (default), `coral`, `yellow`, `sunrise`, `sage`, or `dark` (valid but unused by the DNA deck) without changing the layout.
 
 Optional `image` contains `path`, `alt`, `credit`, `sourceUrl`, `licenseUrl`, and optional `position` (`center`, `top`, or `bottom`). Paths must identify local JPEG, PNG, WebP, or SVG files under `slides/assets/`; external paths, traversal, escaping symlinks, missing files, and invalid signatures fail validation. Attribution URLs must use HTTPS. Statement images may use `treatment: "background"` for full-slide photography with a dark contrast overlay, or `"artistic"` for a sepia parchment treatment behind text. `photo` and `figure` slides require exactly one `image` (`content` allows only `caption`). A `montage` supplies `images` with exactly two image metadata objects instead of `image`; each keeps its own alt text and credits. Optional `referenceImage` uses the same metadata but embeds the image only in presenter notes. Optional `graphic` selects trusted `contours` or `arcs` brand artwork, or divider-only inline motifs: `book`, `route`, `hands`, `nested`, and `signpost`. Image alt text and attribution are separate from audience copy.
 
@@ -51,7 +68,7 @@ Optional `image` contains `path`, `alt`, `credit`, `sourceUrl`, `licenseUrl`, an
 | `triad` | `labels`: exactly three strings; optional `direction: "horizontal"`; optional integer `highlight` (0–2) accents one label while retaining readable context; `highlightStep: true` (requires `highlight`) holds the highlight back until the next Next press, giving the slide `data-steps="1"` |
 | `cycle` | `labels`: exactly three strings in repeating order |
 | `question` | Empty object; the title is the question |
-| `steps` | `labels`: three or four strings; optional `caption` and `mode` (`horizons` or `progression`); horizons requires four labels |
+| `steps` | `labels`: three or four strings; optional `caption` and `mode` (`horizons`, `progression`, or `branching`); horizons and branching require four labels. Branching uses two shared steps followed by two `Heading: Outcome` labels |
 | `roles` | `circle`: one string; `roles`: two or three strings inside that circle; optional `caption` |
 | `divider` | Empty object; the title names a section |
 | `impact` | Optional `caption`; the title is the oversized focal statement |
@@ -141,6 +158,12 @@ The original UTF-8 snapshot and SHA-256 digest were checked byte for byte. Its d
 
 ## Verification and evidence
 
+October 13 regenerative-culture addition: strict validation passes with 32 slides, 1515 planned seconds, complete source coverage, and no duplicate passages. All 82 repository tests and 1314 Chromium checks pass. The new slide sits at 26, before the self-organizing-system statement, with the three supplied principles and the explicit no-harassment-or-bullying boundary.
+
+October 13 design refinement: strict validation passes with 31 slides, 1460 planned seconds, complete source coverage, and no duplicate passages. All 82 repository tests pass. Chromium passes 1278 checks at 1280 × 720, 1920 × 1080, and 390 × 844, including the branching process, outcome-card text containment, section progress, and presenter syncing. The exact questions remain intact, and all 24 original DNA slides, notes, and durations are unchanged.
+
+October 13 initial master-deck verification: strict validation passes with 32 slides, 1480 planned seconds, complete source coverage, and no duplicate passages. All 81 repository tests pass. Chromium passes 1314 checks at 1280 × 720, 1920 × 1080, and 390 × 844. The process slides use vertical ordered rows; the existing Ladder of Engagement retains its explicit horizontal `progression` layout. The original 24 slides, notes, and timings match their prior Git version exactly.
+
 October 10 design verification: strict validation passes with 24 slides, 1195 planned seconds, and complete source coverage. All 80 repository tests pass. Chromium passes 1025 checks at 1280 × 720, 1920 × 1080, and 390 × 844, including projection mode, actual SVG font sizes, text/card containment, closing links, offline figure-image decoding, and notes syncing. Handbook validation checks 77 pages and two diagrams without errors. Live rehearsal remains pending.
 
 Run the browser check against the built HTML, directly over `file://`:
@@ -155,7 +178,7 @@ It uses Playwright's installed Chromium by default. To select an existing instal
 SLIDES_CHROMIUM=/path/to/chrome node slides/tests/browser.mjs
 ```
 
-Optional positional arguments select another HTML path and an evidence directory. The harness checks this DNA acceptance deck's twenty-four slides and current layouts, including `photo`, `figure`, and `actions`. It copies the audience HTML alone to a temporary directory and verifies its offline appearance, then adds the companion notes file to test the presenter link, synchronized windows, and standalone notes. It loads embedded assets, exercises navigation/focus and projection mode, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary files.
+Optional positional arguments select another HTML path and an evidence directory. The harness checks the master deck's thirty-two slides and current layouts, including `photo`, `figure`, and `actions`. It copies the audience HTML alone to a temporary directory and verifies its offline appearance, then adds the companion notes file to test the presenter link, synchronized windows, and standalone notes. It loads embedded assets, exercises navigation/focus and projection mode, and measures text after fonts load. It writes `output/browser-evidence/report.json` and screenshots, then removes its temporary files.
 
 Historical checks performed on October 6, 2026 (before the October 9 revision):
 

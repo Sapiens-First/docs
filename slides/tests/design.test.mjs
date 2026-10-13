@@ -1,5 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { audienceLines, renderDeck, renderNotes, validateDeck } from '../slides.mjs'
 import { renderTree } from '../layouts/strategy-tree.mjs'
@@ -37,9 +38,9 @@ test('the full movement reference is embedded only in the presenter companion', 
 
 test('design changes keep the agreed slides, timings, and speech snapshot', () => {
   const data = deck()
-  assert.equal(data.slides.length, 24)
-  assert.deepEqual(data.slides.map(item => item.durationSeconds), [45,20,10,75,90,120,10,40,30,35,90,55,30,50,30,60,10,90,10,75,30,45,55,90])
-  assert.equal(data.source.sha256, 'a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e')
+  assert.equal(data.slides.length, 32)
+  assert.deepEqual(data.slides.slice(0, 24).map(item => item.durationSeconds), [45,20,10,75,90,120,10,40,30,35,90,55,30,50,30,60,10,90,10,75,30,45,55,90])
+  assert.equal(createHash('sha256').update(data.source.text.split('\n').slice(0, 101).join('\n')).digest('hex'), 'a23a8c3855415511f3a635f3975c9aff0890f017383d0f279303bed5bfd7f85e')
   assert.deepEqual(slide(data, 'opening').content.lines, ['Sapiens First: Our DNA', '10/09/26'])
 })
 

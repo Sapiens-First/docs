@@ -30,8 +30,8 @@ test('DNA deck passes strict coverage and rule validation', t => {
   assert.equal(result.status, 0, result.stdout + result.stderr)
   assert.equal(result.report.errors.length, 0)
   assert.equal(result.report.coverage.uncovered.length, 0)
-  assert.equal(result.report.durationSeconds, 1195)
-  assert.equal(result.report.slideCount, 24)
+  assert.equal(result.report.durationSeconds, 1515)
+  assert.equal(result.report.slideCount, 32)
   assert.equal(result.report.coverage.duplicated.length, 0)
 })
 
@@ -144,7 +144,7 @@ test('private presenter cues are absent from audience HTML and preserved in sepa
   assert.equal(embeddedDeck(presenter).source.text, data.source.text)
 })
 
-test('build produces twenty-four slides and deterministic self-contained resources', t => {
+test('build produces thirty-two slides and deterministic self-contained resources', t => {
   const fixture = build(t, deck(), ['--strict'])
   const first = fixture.run()
   assert.equal(first.status, 0, first.stdout + first.stderr)
@@ -157,7 +157,7 @@ test('build produces twenty-four slides and deterministic self-contained resourc
   assert.ok(audience.slides.every(slide => slide.notes === undefined))
   assert.doesNotMatch(html, /class="(?:source-passage|editorial-cues|slide-notes)"|id="notes-panel"/)
   const sections = html.match(/<section\b[^>]*>/g) ?? []
-  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 24)
+  assert.equal(sections.filter(tag => tag.match(/\bclass="([^"]*)"/)?.[1].split(/\s+/).includes('slide')).length, 32)
   for (const layout of ['statement', 'triad', 'cycle', 'question', 'steps', 'roles', 'divider', 'impact', 'values', 'pair', 'circles', 'choice', 'photo', 'figure', 'agenda', 'tree']) assert.ok(html.includes(`data-layout="${layout}"`))
   for (const page of [html, notesHTML]) assert.match(page, /<link rel="icon" type="image\/png"[^>]*href="data:image\/png;base64,/, 'self-contained favicon')
   assert.match(html, /data-steps="1"/, 'crisis exposes a click-to-reveal step')
@@ -292,10 +292,10 @@ test('reusable steps horizons retain their four-level focus mode; unknown modes 
   assert.notEqual(check(t, data).status, 0, 'four nested focus levels are required')
 })
 
-test('four section dividers, the participation threshold and Culture have dedicated audience slides', () => {
+test('five section dividers, the participation threshold and Culture have dedicated audience slides', () => {
   const data = deck()
   assert.deepEqual(data.slides.filter(slide => slide.layout === 'divider').map(slide => slide.id),
-    ['story-section', 'strategy-section', 'culture-section', 'structure-section'])
+    ['story-section', 'strategy-section', 'culture-section', 'structure-section', 'meetings-section'])
   const threshold = byId(data, 'participation-threshold')
   assert.equal(threshold.layout, 'impact')
   assert.equal(threshold.title, '3.5%')
@@ -354,7 +354,7 @@ test('new layout contracts reject unsupported content and invalid label counts',
   }
 })
 
-test('twenty-four slides require an explicit exception that cannot waive the twenty-minute limit', t => {
+test('master deck requires explicit slide-count and duration exceptions', t => {
   const data = deck(), accepted = check(t, data, '--strict')
   assert.ok(accepted.report.findings.some(finding => /slide count/.test(finding.message) && finding.justified))
   delete data.ruleExceptions
@@ -366,6 +366,7 @@ test('twenty-four slides require an explicit exception that cannot waive the twe
     assert.notEqual(check(t, invalid).status, 0)
   }
   const tooLong = deck(); byId(tooLong, 'opening').durationSeconds = 1500
+  tooLong.ruleExceptions = tooLong.ruleExceptions.filter(exception => exception.text !== 'deck')
   const timing = check(t, tooLong, '--strict')
   assert.notEqual(timing.status, 0)
   assert.ok(timing.report.findings.some(finding => /duration.*exceeds/.test(finding.message) && !finding.justified))
