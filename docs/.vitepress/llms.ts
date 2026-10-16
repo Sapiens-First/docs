@@ -9,8 +9,8 @@ import { getHandbookItems, getHandbookSections, PAGE_STATUSES } from '../../scri
 // at buildEnd — see docs/.vitepress/config.mts. Reads source Markdown
 // directly rather than depending on gray-matter (not installed here).
 
-const SITE_ORIGIN = 'https://sapiens-first.github.io'
-const BASE_PATH = '/docs'
+const SITE_ORIGIN = 'https://docs.sapiensfirst.org'
+const BASE_PATH = ''
 const ATLAS_URL = 'https://sapiensfirst.org/atlas'
 
 const SECTION_ORDER = [...getHandbookSections().map(section => section.text), 'For Supporters', 'For Members', 'For Organizers']

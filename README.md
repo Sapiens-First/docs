@@ -2,7 +2,7 @@
 
 The shared handbook for continuous training, for people curious about the movement and those already organizing, leading, or teaching. Begin at [0 Start here](docs/introduction/index.md), then choose from 1 DNA, 2 Go deeper, 3 Lead, 4 Train others, and 5 Supplemental. Appendices A–D keep their reference numbers; staff guidance is Appendix E.
 
-Built with [VitePress](https://vitepress.dev) for [GitHub Pages](https://sapiens-first.github.io/docs/). [Atlas](https://sapiensfirst.org/atlas) holds current governance, projects, priorities, and owners; the handbook explains the concepts and practices behind them.
+Built with [VitePress](https://vitepress.dev) for GitHub Pages, with [docs.sapiensfirst.org](https://docs.sapiensfirst.org/) as the configured custom domain. [Atlas](https://sapiensfirst.org/atlas) holds current governance, projects, priorities, and owners; the handbook explains the concepts and practices behind them.
 
 ## Incremental handbook implementation
 
@@ -56,7 +56,7 @@ npm run docs:preview
 npm run docs:check   # validate frontmatter and links; add --warn-only locally
 ```
 
-The production build is written to `docs/.vitepress/dist`. The site uses the `/docs/` base path. Do not commit generated build files.
+The production build is written to `docs/.vitepress/dist`. The custom domain uses the `/` base path. Do not commit generated build files.
 
 The build also writes `llms.txt`, `llms-full.md`, `llms-full.txt`, a `sitemap.xml`, and a raw-Markdown twin of every page (for example `leadership/strategic-planning.md` next to `leadership/strategic-planning.html`), plus redirect stubs for retired legacy routes, for LLMs and other tools that read the site directly. See "Metadata and machine-readable files" in [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -67,3 +67,5 @@ Edit Markdown under `docs/`. Use lowercase, hyphenated filenames and relative `.
 ## Deployment
 
 Every push to `main` builds and deploys through `.github/workflows/deploy.yml`. Local edits and builds do not publish the site.
+
+For the custom-domain cutover and verification, see [custom domain deployment](maintenance/custom-domain-deployment.md).

@@ -11,7 +11,7 @@ import { loadRedirects, writeRedirects } from '../../scripts/handbook-redirects.
 import { VERSION } from './version.mjs'
 import { loadDeckRegistry, publishedDecks } from '../../slides/registry.mjs'
 
-const base = '/docs/'
+const base = '/'
 
 // Decks the site publishes (see scripts/build-slides.mjs); SLIDES_PREVIEW=1
 // also lists handcrafted decks that are not yet approved.
@@ -25,7 +25,7 @@ const coveredPage = (id: string) => {
 const slideDecks = deckRegistry.map(({ slug, title, origin, approved, covers, lastUpdated }) => ({
   slug, title, origin, approved, lastUpdated, covers: covers.map(coveredPage), published: published.has(slug)
 }))
-const siteHostname = 'https://sapiens-first.github.io/docs/'
+const siteHostname = 'https://docs.sapiensfirst.org/'
 
 // One ordered registry supplies navigation and checks authored numbering.
 const tocErrors = validateHandbookToc()
@@ -50,15 +50,12 @@ const isRedirectedLink = (url: string) => redirectedRoutes.has(url.split('#')[0]
 export default withMermaid(defineConfig({
   title: 'Sapiens First Handbook',
   description: 'The Sapiens First handbook: our story, how we lead, and how to get involved, chapter by chapter.',
-  // Served from https://sapiens-first.github.io/docs/. When the site moves to
-  // docs.sapiensfirst.org, set `base` to '/' and add docs/public/CNAME.
+  // The custom GitHub Pages domain serves the handbook at its root.
   base,
   cleanUrls: true,
   ignoreDeadLinks: [isRedirectedLink],
   lastUpdated: true,
 
-  // Advisory until the site has its own domain: robots.txt only takes
-  // effect at a host root, and GitHub Pages serves this site under /docs/.
   sitemap: { hostname: siteHostname },
 
   markdown: {

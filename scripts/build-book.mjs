@@ -3,7 +3,7 @@
 //   npm run docs:build && npm run book:build
 //
 // Output: docs/.vitepress/dist/downloads/sapiens-first-handbook.{html,pdf,epub}
-// (served at /docs/downloads/…).
+// (served at /downloads/ on the handbook domain).
 //
 // How it works: page order comes from the VitePress sidebar (first occurrence
 // of a page wins). dist/ is served locally, each page is opened in headless
@@ -105,7 +105,7 @@ function serve(base) {
 }
 
 // ─── extract one page (runs in the browser) ────────────────────────────────
-function extractInPage({ slug, origin, base, known }) {
+function extractInPage({ slug, origin, base, known, site }) {
   const doc = document.querySelector('.vp-doc')
   if (!doc) return null
   const el = doc.cloneNode(true)
@@ -125,7 +125,7 @@ function extractInPage({ slug, origin, base, known }) {
       const path = ('/' + u.pathname.slice(base.length)).replace(/\.html$/, '').replace(/\/index$/, '/')
       const target = known[path] ?? known[path.replace(/\/$/, '')] ?? known[path + '/']
       if (target) a.setAttribute('href', u.hash ? `#${target}--${u.hash.slice(1)}` : `#${target}`)
-      else a.setAttribute('href', `https://sapiens-first.github.io${u.pathname}${u.hash}`)
+      else a.setAttribute('href', new URL(`${u.pathname.slice(base.length)}${u.hash}`, site).href)
     } else a.setAttribute('href', u.href)
     a.removeAttribute('target'); a.removeAttribute('rel')
   })
@@ -271,7 +271,7 @@ async function buildEpub(groups, pages, images, file) {
 
 // ─── main ──────────────────────────────────────────────────────────────────
 if (!existsSync(join(DIST, 'index.html'))) throw new Error('dist/ not found — run `npm run docs:build` first')
-const { base, groups } = await sidebarOrder()
+const { base, groups, site } = await sidebarOrder()
 const all = groups.flatMap(g => g.pages)
 const slugOf = path => path.replace(/^\/|\/$/g, '').replace(/\//g, '-') || 'home'
 for (const p of all) p.slug = `p-${slugOf(p.path)}`
@@ -298,7 +298,7 @@ try {
     // Mermaid diagrams render client-side into empty .sf-diagram containers.
     await page.waitForFunction(() => [...document.querySelectorAll('.sf-diagram, .mermaid')].every(d => d.querySelector('svg')), null, { timeout: 15000 })
       .catch(() => console.warn(`warning: diagram not rendered on ${p.path}`))
-    const data = await page.evaluate(extractInPage, { slug: p.slug, origin, base, known })
+    const data = await page.evaluate(extractInPage, { slug: p.slug, origin, base, known, site })
     if (!data) throw new Error(`No .vp-doc on ${p.path}`)
     pages.set(p.path, data)
     data.imgs.forEach(u => imageUrls.add(u))
